@@ -21,21 +21,21 @@ const NavBar = () => {
 
   return (
     <>
-      <nav className='flex justify-between py-4 items-center px-5'>
+      <nav className='flex justify-between py-4 items-center nav-bar'>
         <div>
           <Image src={logo} alt='logo' />
         </div>
-        <div className='hidden md:inline-flex gap-4 text-black'>
+        <div className='gap-4 text-black nav-link'>
           <Link href='/about-us'>About Us</Link>
           <Link href='/reviews'>Reviews</Link>
           <Link href='/term-of-service'>Term Of Service</Link>
           <Link href='/contact-us'>Contact Us</Link>
         </div>
-        <div className='hidden md:inline-flex gap-3'>
+        <div className='gap-3 nav-button'>
           <button className='btn-1'>Log In</button>
           <button className='btn-2'>Sign Up</button>
         </div>
-        <CButton className='d-md-none' onClick={() => setVisible(true)}>
+        <CButton className='lg:hidden menu-button' onClick={() => setVisible(true)}>
           <Image src={menu} alt='' />
         </CButton>
 

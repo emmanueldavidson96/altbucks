@@ -37,11 +37,23 @@ body {
 }
 
 .btn-3 {
-  background: #2877EA;
+  background: #2877ea;
   border-radius: 6px;
   padding: 12px 18px;
   color: #ffffff;
   font-size: 14px;
+}
+
+.nav-bar {
+  padding: 0 4rem;
+}
+
+.nav-link {
+  display: flex;
+}
+
+.nav-button {
+  display: flex;
 }
 
 .hero-section {
@@ -70,4 +82,17 @@ body {
   font-size: 48px;
   font-weight: 700;
   color: #f2994a;
+}
+
+@media (max-width: 1024px) {
+  .nav-bar {
+    padding: 0 2rem;
+  }
+
+  .nav-link {
+    display: none;
+  }
+  .nav-button {
+    display: none;
+  }
 }
