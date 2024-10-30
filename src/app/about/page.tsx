@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const  About= () => {
+const About = () => {
     return (
         <div className="min-h-screen flex flex-col bg-white">
             {/* Navigation */}
@@ -36,15 +36,15 @@ const  About= () => {
                     </div>
                 </div>
             </header>
+
             {/* Hero Section */}
             <div className="relative w-full h-[400px] flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 w-full h-full">
                     <Image
                         src="/questionmark.jpeg"
                         alt="Background Pattern"
-                        layout="fill"
-                        objectFit="cover"
-                        className="opacity-90"
+                        fill
+                        className="opacity-90 object-cover"
                         priority
                     />
                 </div>
@@ -57,96 +57,97 @@ const  About= () => {
             </div>
 
             {/* Main Content */}
-            <main className="max-w-4xl mx-auto px-6 py-16">
+            <main className="w-full">
                 {/* About Section */}
-                <section className="text-center mb-20">
-                    <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                        At <span className="text-[#FF7A00]"> ALTBUCKS </span>, we make it easy for you to earn real cash
-                        online by completing simple tasks
-                        that fit into your everyday routine. Whether you're taking surveys, watching videos, and more.
-                        Every activity helps you earn rewards that can be cashed out instantly.
-                        Withdraw earnings easily through multiple payment methods.
-                    </p>
-                    <p className="text-lg text-gray-700 leading-relaxed">
-                        We are dedicated to creating a flexible and user-friendly platform where you can earn money on
-                        your terms.
-                        Plus, with our referral program, you can increase your earnings by inviting friends to join in
-                        the fun.
-                    </p>
+                <section className="w-full px-6 py-16">
+                    <div className="max-w-4xl mx-auto text-center">
+                        <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                            At <span className="text-[#FF7A00]">ALTBUCKS</span>, we make it easy for you to earn real cash
+                            online by completing simple tasks that fit into your everyday routine. Whether you're taking surveys, watching videos, and more.
+                            Every activity helps you earn rewards that can be cashed out instantly. Withdraw earnings easily through multiple payment methods.
+                        </p>
+                        <p className="text-lg text-gray-700 leading-relaxed">
+                            We are dedicated to creating a flexible and user-friendly platform where you can earn money on your terms.
+                            Plus, with our referral program, you can increase your earnings by inviting friends to join in the fun.
+                        </p>
+                    </div>
                 </section>
 
-                {/*  Goal Section */}
-                <section className="flex items-center gap-16 mb-24">
-                    <div className="w-1/2">
-                        <h2 className="text-3xl font-semibold text-[#FF7A00] mb-6">Our Goal</h2>
-                        <p className="text-gray-700 leading-relaxed mb-8">
-                            Our goal at ALTBUCKS, is to empower individuals by providing a simple and accessible way to
-                            earn
-                            money online. We strive to build a platform that rewards users for their time and input,
-                            while
-                            fostering meaningful connections between them and the activities they engage in. By
-                            continually
-                            expanding opportunities—from surveys to interactive tasks—we aim to make online earning
-                            effortless and enjoyable for everyone.
-                        </p>
-                        <button className="bg-[#4285F4] text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-600">
-                            Get Started
-                        </button>
-                    </div>
-                    <div className="w-1/2">
-                        <Image
-                            src="/target.png"
-                            alt="Target illustration"
-                            width={400}
-                            height={400}
-                            className="w-full"
-                            priority
-                        />
+                {/* Goal Section */}
+                <section className="w-full px-6 py-16">
+                    <div className="max-w-7xl mx-auto flex items-center gap-16">
+                        <div className="w-1/2">
+                            <h2 className="text-3xl font-semibold text-[#FF7A00] mb-6">Our Goal</h2>
+                            <p className="text-gray-700 leading-relaxed mb-8">
+                                Our goal at ALTBUCKS, is to empower individuals by providing a simple and accessible way to earn money online. We strive to build a platform that rewards users for their time and input,
+                                while fostering meaningful connections between them and the activities they engage in. By continually
+                                expanding opportunities—from surveys to interactive tasks—we aim to make online earning
+                                effortless and enjoyable for everyone.
+                            </p>
+                            <button className="bg-[#4285F4] text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-600">
+                                Get Started
+                            </button>
+                        </div>
+                        <div className="w-1/2">
+                            <Image
+                                src="/target.png"
+                                alt="Target illustration"
+                                width={400}
+                                height={400}
+                                className="w-full"
+                                priority
+                            />
+                        </div>
                     </div>
                 </section>
+
                 {/* Reviews Section */}
                 <section className="w-full bg-gray-50 py-16">
-                    <div className="max-w-4xl mx-auto px-6">
-                        <h2 className="text-2xl font-semibold text-center mb-16 text-black">
-                            Reviewed by the community
-                        </h2>
+                    <h2 className="text-2xl font-semibold text-center mb-16 text-black">
+                        Reviewed by the community
+                    </h2>
 
-                        {/* Card Container */}
-                        <div className="relative max-w-2xl mx-auto">
-                            {/* Floating Images */}
-                            <img
-                                src=""
-                                alt="Reviewer"
-                                className="absolute left-0 top-1/3 w-12 h-12 rounded-full border-2 border-white"
-                            />
-                            <img
-                                src=""
-                                alt="Reviewer"
-                                className="absolute right-0 top-1/3 w-12 h-12 rounded-full border-2 border-white"
-                            />
-                            <img
-                                src=""
-                                alt="Reviewer"
-                                className="absolute left-1/4 top-0 w-12 h-12 rounded-full border-2 border-white"
-                            />
-                            <img
-                                src=""
-                                alt="Reviewer"
-                                className="absolute right-1/4 -bottom-6 w-12 h-12 rounded-full border-2 border-white"
-                            />
-                            <img
-                                src=""
-                                alt="Reviewer"
-                                className="absolute left-16 bottom-0 w-12 h-12 rounded-full border-2 border-white"
-                            />
+                    {/* Card Container */}
+                    <div className="max-w-2xl mx-auto px-6 relative">
+                        {/* Floating reviewer images */}
+                        <img
+                            src=""
+                            alt="Reviewer"
+                            className="absolute -left-20 top-1/3 w-12 h-12 rounded-full border-2 border-white"
+                        />
+                        <img
+                            src=""
+                            alt="Reviewer"
+                            className="absolute -right-20 top-1/3 w-12 h-12 rounded-full border-2 border-white"
+                        />
+                        <img
+                            src=""
+                            alt="Reviewer"
+                            className="absolute -left-12 top-0 w-12 h-12 rounded-full border-2 border-white"
+                        />
+                        <img
+                            src=""
+                            alt="Reviewer"
+                            className="absolute -right-12 -bottom-6 w-12 h-12 rounded-full border-2 border-white"
+                        />
+                        <img
+                            src=""
+                            alt="Reviewer"
+                            className="absolute -left-16 bottom-0 w-12 h-12 rounded-full border-2 border-white"
+                        />
 
-                            {/* Quote Mark (above card) */}
-                            <div
-                                className="absolute left-1/2 -top-8 -translate-x-1/2 w-16 h-16 rounded-full bg-[#4285F4] flex items-center justify-center z-10">
-                                <span className="text-white text-4xl mb-2">"</span>
+                        {/* Quote mark and review card */}
+                        <div className="relative">
+                            <div className="absolute left-1/2 -top-8 -translate-x-1/2 w-16 h-16 rounded-full bg-[#4285F4] flex items-center justify-center z-10">
+                                <svg
+                                    className="w-6 h-6"
+                                    viewBox="0 0 25 23"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path d="M10.5 0C4.7 0 0 4.7 0 10.5c0 5.8 4.7 10.5 10.5 10.5V23C4.7 23 0 18.3 0 12.5V0h10.5zm14.5 0C19.2 0 14.5 4.7 14.5 10.5c0 5.8 4.7 10.5 10.5 10.5V23c-5.8 0-10.5-4.7-10.5-10.5V0H25z" fill="currentColor"/>
+                                </svg>
                             </div>
-
-                            {/* Review Card */}
                             <div className="bg-white rounded-2xl px-12 py-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
                                 <div className="space-y-2 text-center">
                                     <p className="text-gray-600 leading-relaxed">
@@ -175,15 +176,15 @@ const  About= () => {
                                     </p>
                                 </div>
                             </div>
+                        </div>
 
-                            {/* Navigation Dots */}
-                            <div className="flex justify-center gap-2 mt-12">
-                                <div className="w-2 h-2 rounded-full bg-gray-200"></div>
-                                <div className="w-2 h-2 rounded-full bg-[#4285F4]"></div>
-                                <div className="w-2 h-2 rounded-full bg-gray-200"></div>
-                                <div className="w-2 h-2 rounded-full bg-gray-200"></div>
-                                <div className="w-2 h-2 rounded-full bg-gray-200"></div>
-                            </div>
+                        {/* Navigation Dots */}
+                        <div className="flex justify-center gap-2 mt-12">
+                            <div className="w-2 h-2 rounded-full bg-gray-200"></div>
+                            <div className="w-2 h-2 rounded-full bg-[#4285F4]"></div>
+                            <div className="w-2 h-2 rounded-full bg-gray-200"></div>
+                            <div className="w-2 h-2 rounded-full bg-gray-200"></div>
+                            <div className="w-2 h-2 rounded-full bg-gray-200"></div>
                         </div>
                     </div>
                 </section>
@@ -207,20 +208,16 @@ const  About= () => {
                                     </div>
 
                                     <div className="flex gap-4">
-                                        <button
-                                            className="bg-white px-6 py-2.5 rounded-lg flex items-center gap-2 hover:bg-gray-50 transition-colors">
+                                        <button className="bg-white px-6 py-2.5 rounded-lg flex items-center gap-2 hover:bg-gray-50 transition-colors">
                                             <span className="text-sm text-[#4285F4] font-medium">Browse Tasks</span>
                                             <svg className="w-4 h-4 text-[#4285F4]" viewBox="0 0 16 16" fill="none">
-                                                <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2"
-                                                      strokeLinecap="round" strokeLinejoin="round"/>
+                                                <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                             </svg>
                                         </button>
-                                        <button
-                                            className="px-6 py-2.5 rounded-lg border border-white flex items-center gap-2 hover:bg-white/10 transition-colors">
+                                        <button className="px-6 py-2.5 rounded-lg border border-white flex items-center gap-2 hover:bg-white/10 transition-colors">
                                             <span className="text-sm text-white font-medium">Post Tasks</span>
                                             <svg className="w-4 h-4 text-white" viewBox="0 0 16 16" fill="none">
-                                                <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2"
-                                                      strokeLinecap="round" strokeLinejoin="round"/>
+                                                <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                             </svg>
                                         </button>
                                     </div>
@@ -247,14 +244,12 @@ const  About= () => {
                             <div className="space-y-2">
                                 <a href="/about" className="block text-sm opacity-80 hover:opacity-100">About Us</a>
                                 <a href="/contact" className="block text-sm opacity-80 hover:opacity-100">Contact Us</a>
-                                <a href="/reviews" className="block text-sm opacity-80 hover:opacity-100">View
-                                    Reviews</a>
+                                <a href="/reviews" className="block text-sm opacity-80 hover:opacity-100">View Reviews</a>
                             </div>
                         </div>
                         <div>
                             <div className="space-y-2">
-                                <a href="/terms" className="block text-sm opacity-80 hover:opacity-100">Terms of
-                                    Service</a>
+                                <a href="/terms" className="block text-sm opacity-80 hover:opacity-100">Terms of Service</a>
                                 <a href="/faq" className="block text-sm opacity-80 hover:opacity-100">FAQ</a>
                             </div>
                         </div>
@@ -266,6 +261,6 @@ const  About= () => {
             </footer>
         </div>
     );
-}
+};
 
 export default About;

@@ -43,9 +43,8 @@ const  Reviews = () => {
                     <Image
                         src="/review.png"
                         alt="Background Pattern"
-                        layout="fill"
-                        objectFit="contain"
-                        className="opacity-90"
+                        fill
+                        className="opacity-90 object-contain"
                         priority
                     />
                 </div>
