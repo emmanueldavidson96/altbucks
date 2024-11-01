@@ -26,9 +26,9 @@ export default function contactUs() {
         {/* card section */}
         <section className='px-6 pb-7 lg:mt-[-3rem] text-black relative z-10'>
           <div className='card-container flex flex-wrap items-center justify-around lg:mt-[-60px]'>
-            <div className='card flex flex-col gap-4 lg:items-start bg-white border-2 p-3 rounded-md'>
+            <div className='card flex flex-col gap-4 items-center lg:items-start bg-white border-2 p-3 rounded-md'>
               <Image src={chat} alt='chat' />
-              <div>
+              <div className='card-text text-start'>
                 <h6 className='text-[16px] font-bold'>Chat with Us</h6>
                 <p className='text-[16px]'>Speak with our friendly team</p>
               </div>
@@ -37,20 +37,20 @@ export default function contactUs() {
               </button>
             </div>
             <div className='card flex flex-col gap-4 bg-white items-center lg:items-start border-2 p-3 rounded-md'>
-              <Image src={mail} alt='chat' />
-              <div>
-                <h6 className='text-[16px] font-bold'>Chat with Us</h6>
-                <p className='text-[16px]'>Speak with our friendly team</p>
+              <Image src={mail} alt='mail' />
+              <div className='card-text'>
+                <h6 className='text-[16px] font-bold'>Chat to support</h6>
+                <p className='text-[16px]'>We’re here to help</p>
               </div>
               <button className='border-2 rounded px-2 text-[16px]'>
                 sales@altbucks.com
               </button>
             </div>
             <div className='card flex flex-col gap-4 bg-white items-center lg:items-start border-2 p-3 rounded-md'>
-              <Image src={location} alt='chat' />
-              <div className='text-center'>
-                <h6 className='text-[16px] font-bold'>Chat with Us</h6>
-                <p className='text-[16px]'>Speak with our friendly team</p>
+              <Image src={location} alt='map' />
+              <div className='card-text text-start'>
+                <h6 className='text-[16px] font-bold'>Visit Us</h6>
+                <p className='text-[16px]'>Visit our office headquarters</p>
               </div>
               <button className='border-2 rounded px-2 text-[16px]'>
                 View on googlemaps
@@ -58,9 +58,9 @@ export default function contactUs() {
             </div>
             <div className='card flex flex-col gap-4 bg-white items-center lg:items-start border-2 p-3 rounded-md'>
               <Image src={dialer} alt='chat' />
-              <div className='md:text-center'>
-                <h6 className='text-[16px] font-bold'>Chat with Us</h6>
-                <p className='text-[16px]'>Speak with our friendly team</p>
+              <div className='card-text text-start'>
+                <h6 className='text-[16px] font-bold'>Call Us</h6>
+                <p className='text-[16px]'>Monday to Friday 8am - 5pm</p>
               </div>
               <button className='border-2 rounded px-2 text-[16px]'>
                 +(233) 555 555 555
@@ -69,15 +69,15 @@ export default function contactUs() {
           </div>
         </section>
 
-        <section className='lg:pt-20 lg:px-32'>
-          <div className='lg:flex items-center justify-between p-4 lg:w-[100%] border-2 rounded-md'>
-            <div className='flex flex-col items-start justify-center lg:w-[48%] text-black'>
+        <section className='lg:pt-20 lg:px-32 px-7'>
+          <div className='lg:flex items-center justify-between p-3 lg:p-4 lg:w-[100%] border-2 rounded-md'>
+            <div className='flex flex-col lg:items-start items-center justify-center lg:w-[48%] text-black'>
               <h6 className='text-[20px] font-bold'>Still have questions?</h6>
-              <p className='text-[20px] font-bold'>
+              <p className='text-[20px] font-bold py-3 text-center'>
                 Can’t find the answer you’re looking for? Please get in touch.
               </p>
             </div>
-            <button className='lg:[30%] btn-6 text-[16px] font-bold'>
+            <button className='w-[100%] lg:w-[30%] btn-6 text-[16px] font-bold'>
               Get In Touch
             </button>
           </div>
