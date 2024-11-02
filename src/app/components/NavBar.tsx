@@ -36,7 +36,7 @@ const NavBar = () => {
           <button className='btn-2'>Sign Up</button>
         </div>
         <CButton className='lg:hidden menu-button' onClick={() => setVisible(true)}>
-          <Image src={menu} alt='' />
+          <Image src={logo} alt='logo' />
         </CButton>
 
         <COffcanvas
