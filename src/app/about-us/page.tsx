@@ -4,8 +4,6 @@ const About = () => {
     return (
         <div className="min-h-screen flex flex-col bg-white">
             {/* Navigation */}
-
-
             {/* Hero Section */}
             <div className="relative w-full h-[400px] flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 w-full h-full">
