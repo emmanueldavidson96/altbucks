@@ -1,3 +1,4 @@
+import React from "react";
 import Image from "next/image";
 
 const  Reviews = () => {
@@ -36,13 +37,13 @@ const  Reviews = () => {
                                 </div>
                             </div>
 
-                            {/* Card Content - Same structure */}
+                            {/* Card Content */}
                             <div className="p-8">
                                 <div className="flex items-center gap-2 mb-6">
                                     <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center">
                                         <span className="text-sm text-white">A</span>
                                     </div>
-                                    <span className="text-white text-lg">Al Bucks</span>
+                                    <span className="text-white text-lg">Alt Bucks</span>
                                 </div>
 
                                 <div className="mb-8">
@@ -55,7 +56,7 @@ const  Reviews = () => {
 
                                 <div className="flex items-center gap-4">
                                     <img
-                                        src=""
+                                        src="/david.png"
                                         alt="David Beckham"
                                         className="w-12 h-12 rounded-full object-cover"
                                     />
@@ -93,7 +94,7 @@ const  Reviews = () => {
 
                                 <div className="flex items-center gap-4">
                                     <img
-                                        src=""
+                                        src="/david.png"
                                         alt="David Beckham"
                                         className="w-12 h-12 rounded-full object-cover"
                                     />
@@ -128,7 +129,7 @@ const  Reviews = () => {
                                 <div className="w-full h-px bg-white/10 mb-8"/>
                                 <div className="flex items-center gap-4">
                                     <img
-                                        src=""
+                                        src="/david.png"
                                         alt="David Beckham"
                                         className="w-12 h-12 rounded-full object-cover"
                                     />
