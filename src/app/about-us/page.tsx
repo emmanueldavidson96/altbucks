@@ -1,7 +1,5 @@
 import React from "react";
-
 import Image from "next/image";
-
 
 const About = () => {
     return (
@@ -113,13 +111,9 @@ const About = () => {
                         {/* Quote mark and review card */}
                         <div className="relative">
                             <div className="absolute left-1/2 -top-8 -translate-x-1/2 w-16 h-16 rounded-full bg-[#4285F4] flex items-center justify-center z-10">
-                                <svg
-                                    className="w-8 h-8 text-white"
-                                    viewBox="0 0 25 23"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path d="M10.5 0C4.7 0 0 4.7 0 10.5c0 5.8 4.7 10.5 10.5 10.5V23C4.7 23 0 18.3 0 12.5V0h10.5zm14.5 0C19.2 0 14.5 4.7 14.5 10.5c0 5.8 4.7 10.5 10.5 10.5V23c-5.8 0-10.5-4.7-10.5-10.5V0H25z" fill="currentColor"/>
+                                <svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6.5 0C10.5 0 13.5 3 13.5 7C13.5 18.5 4.5 23 0 23C2.5 20.5 5.5 16.5 5.5 14C2.5 14.5 0 12 0 8.5C0 4 3 0 6.5 0Z" fill="white"/>
+                                    <path d="M18.5 0C22.5 0 25.5 3 25.5 7C25.5 18.5 16.5 23 12 23C14.5 20.5 17.5 16.5 17.5 14C14.5 14.5 12 12 12 8.5C12 4 15 0 18.5 0Z" fill="white"/>
                                 </svg>
                             </div>
 
