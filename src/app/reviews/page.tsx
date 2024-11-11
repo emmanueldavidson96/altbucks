@@ -47,7 +47,7 @@ const Reviews = () => {
                             className="absolute w-[400px] h-[300px] -translate-x-[380px] bg-[#4285F4] rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
                             <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                                 <div
-                                    className="w-8 h-8 bg-[#4285F4] rounded-full flex items-center justify-center shadow-md ring-2 ring-white">
+                                    className="w-10 h-9 bg-[#4285F4] rounded-full flex items-center justify-center shadow-md ">
                                     <QuoteIcon />
                                 </div>
                             </div>
@@ -84,7 +84,7 @@ const Reviews = () => {
                             className="absolute w-[400px] h-[360px] translate-x-0  bg-[#4285F4] rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.15)] z-10">
                             <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                                 <div
-                                    className="w-8 h-8 bg-[#4285F4] rounded-full flex items-center justify-center shadow-md ring-2 ring-white">
+                                    className="w-10 h-9 bg-[#4285F4] rounded-full flex items-center justify-center shadow-md ">
                                     <QuoteIcon />
                                 </div>
                             </div>
@@ -121,7 +121,7 @@ const Reviews = () => {
                             className="absolute w-[400px] h-[300px] translate-x-[380px] bg-[#4285F4] rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
                             <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                                 <div
-                                    className="w-8 h-8 bg-[#4285F4] rounded-full flex items-center justify-center shadow-md ring-2 ring-white">
+                                    className="w-10 h-9 bg-[#4285F4] rounded-full flex items-center justify-center shadow-md ">
                                     <QuoteIcon />
                                 </div>
                             </div>
