@@ -35,7 +35,7 @@ export default function How_Altbucks_Works() {
                     Complete Simple Tasks-Take surveys, <br/> Watch videos, and more.
                 </p>
             </div>
-            <Image src={second_arrowImg} alt='' className='h-[40px] w-[200px] absolute top-6 left-[500px] '/>
+            <Image src={second_arrowImg} alt='' className='h-[40px] w-[200px] absolute top-6 left-[560px] '/>
 
             {/* Apply */}
             <div className='flex flex-col gap-3 w-[20%] items-center justify-center'>
@@ -47,7 +47,7 @@ export default function How_Altbucks_Works() {
                     Sign up for Free <br/> Register in less than 2 minutes.
                 </p>
             </div>
-            <Image src={third_arrowImg} alt='' className='h-[40px] w-[200px] absolute top-1 left-[800px] '/>
+            <Image src={third_arrowImg} alt='' className='h-[40px] w-[200px] absolute top-1 left-[880px] '/>
 
             {/* Cashout Earnings */}
             <div className='flex flex-col gap-3 w-[20%] items-center justify-center'>
