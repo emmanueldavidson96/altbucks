@@ -29,9 +29,9 @@ function ViewReviews() {
         
         <Swiper 
             modules={[Pagination]}
-            style={{
-                "--swiper-pagination-bullet-active-width":"32px"
-            }}
+            // style={{
+            //     "--swiper-pagination-bullet-active-width":"32px"
+            // }}
             grabCursor={true}
             initialSlide={1}
             centeredSlides={true}
