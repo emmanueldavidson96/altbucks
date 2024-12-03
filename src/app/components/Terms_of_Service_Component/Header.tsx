@@ -42,32 +42,31 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Navigation */}
-        <div className='flex gap-6 items-center '>
-          {site_links.map((links) => {
-            return (
-              <p key={links.id}>
-                <Link
-                  href={links.navigate}
-                  className='text-gray-500 text-sm tracking-wide'
-                >
-                  {links.link_name}
-                </Link>
-              </p>
-            );
-          })}
-        </div>
-
-        {/* User Authentication */}
-        <div className='flex items-center gap-3'>
-          <button className='border border-gray-400 w-fit h-fit px-4 py-2 text-gray-400 rounded-md hover:bg-[#2877EA] hover:text-white transition-all duration-300'>
-            Log In
-          </button>
-          <button className='w-fit h-fit px-4 py-2 bg-[#2877EA] text-white rounded-md hover:bg-blue-700 duration-300 transition-all '>
-            Sign Up
-          </button>
-        </div>
-      </nav>
+            {/* Navigation */}
+            <div className='flex gap-6 items-center '>
+                {
+                    site_links.map((links) => {
+                        return (
+                            <p key={links.id}>
+                                <Link href={links.navigate} className='text-gray-500 text-sm tracking-wide'>
+                                    {links.link_name}
+                                </Link>
+                            </p>
+                        )
+                    })
+                }
+            </div>
+            
+            {/* User Authentication */}
+            <div className='flex items-center gap-3'>
+                <button className='border border-gray-400 w-fit h-fit px-4 py-2 text-gray-400 rounded-md hover:bg-[#2877EA] hover:text-white transition-all duration-300'>Log In</button>
+                <button className='w-fit h-fit px-4 py-2 bg-[#2877EA] text-white rounded-md hover:bg-blue-700 duration-300 transition-all '>
+                    <Link href={"/sign-up"}>
+                        Sign Up
+                    </Link>
+                </button>
+            </div>
+        </nav>
     </div>
   );
 }

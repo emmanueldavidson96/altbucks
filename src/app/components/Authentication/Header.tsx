@@ -2,6 +2,9 @@ import Image from 'next/image'
 import React from 'react'
 import logo from "../../../../public/assets/Group 39230.png";
 import Link from 'next/link';
+import { BiSearch } from 'react-icons/bi';
+import { BsArrowBarDown } from 'react-icons/bs';
+import { IoMdArrowDropdown } from "react-icons/io";
 
 export const site_links = [
     {
@@ -43,29 +46,19 @@ export default function Header() {
                 </Link>
             </div>
 
-            {/* Navigation */}
-            <div className='flex gap-6 items-center '>
-                {
-                    site_links.map((links) => {
-                        return (
-                            <p key={links.id}>
-                                <Link href={links.navigate} className='text-gray-500 text-sm tracking-wide'>
-                                    {links.link_name}
-                                </Link>
-                            </p>
-                        )
-                    })
-                }
-            </div>
+            
             
             {/* User Authentication */}
-            <div className='flex items-center gap-3'>
-                <button className='border border-gray-400 w-fit h-fit px-4 py-2 text-gray-400 rounded-md hover:bg-[#2877EA] hover:text-white transition-all duration-300'>Log In</button>
-                <button className='w-fit h-fit px-4 py-2 bg-[#2877EA] text-white rounded-md hover:bg-blue-700 duration-300 transition-all '>
-                    <Link href={"/sign-up"}>
-                        Sign Up
-                    </Link>
-                </button>
+            <div className='flex items-center gap-8'>
+                <div className='w-[150px] h-[35px] flex relative'>
+                    <BiSearch size={15} color='gray' className='absolute left-3 top-1/3'/>
+                    <input type='text' className="w-full h-full px-8 bg-gray-200 rounded-xl text-xs text-black" placeholder='Search'/>
+                </div>
+                <div className='flex items-center gap-1'>
+                    <p className='text-sm text-black tracking-wide'>English (United States)</p>
+                    <IoMdArrowDropdown size={20} color='black'/>
+                </div>
+                <button className='w-fit h-fit text-sm tracking-wide px-6 py-2 bg-[#2877EA] text-white rounded-md hover:bg-blue-700 duration-300 transition-all '>Log in</button>
             </div>
         </nav>
     </div>
