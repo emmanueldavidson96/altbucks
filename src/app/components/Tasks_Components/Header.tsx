@@ -4,10 +4,11 @@ import logoImg from "../../../../public/assets/Group 39230.png";
 import Link from 'next/link';
 import { IoIosNotificationsOutline } from "react-icons/io";
 import avatarImg from "../../../../public/assets/Avatar.png";
+import { FaAngleDown } from "react-icons/fa";
 
 export default function Header() {
   return (
-    <nav className='w-screen h-[80px] flex items-center'>
+    <nav className='w-full h-[80px] flex items-center'>
         <div className='h-fit w-[90%] mx-auto flex items-center justify-between '>
             
             <div className='w-fit h-fit'>
@@ -15,14 +16,14 @@ export default function Header() {
             </div>
 
             <div className='flex gap-4 items-center h-full'>
-                <p className='h-fit w-fit p-2 bg-blue-600 rounded-lg text-white'>
+                <p className='text-sm text-gray-600'>
                     <Link href={"/dashboard"} className='text-sm tracking-wide'>Dashboard</Link>
                 </p>
-                <p className='text-sm text-gray-600 tracking-wide'>
-                    <Link href={"/task"}>Tasks</Link>
+                <p className='h-fit w-fit p-2 bg-blue-600 rounded-lg text-white tracking-wide'>
+                    <Link href={"/dashboard/tasks"} className='flex gap-2 items-center'>Tasks <FaAngleDown /> </Link>
                 </p>
                 <p className='text-sm text-gray-600 tracking-wide'>
-                    <Link href={"/wallet"}>My Wallet</Link>
+                    <Link href={"/my_wallet"}>My Wallet</Link>
                 </p>
                 <p className='text-sm text-gray-600 tracking-wide'>
                     <Link href={"/referral"}>Referral</Link>
