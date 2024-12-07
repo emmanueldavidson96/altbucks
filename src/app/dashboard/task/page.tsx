@@ -1,14 +1,13 @@
 "use client"
-
+import Card from "@/app/components/Tasks_Components/Card";
+import { CardsData } from "@/app/components/Tasks_Components/CardsData";
 import React, { useState } from 'react'
-import Cards from '@/app/components/Tasks_Components/Cards'
-import Header from '@/app/components/Homepage_Components/Header'
+import Header from '@/app/components/Tasks_Components/Header'
 import TaskTable from '@/app/components/Tasks_Components/Table'
 import CreateTaskForm from '@/app/components/Tasks_Components/CreateTaskForm'
 
-const Tasks: React.FC = () => {
+const Task: React.FC = () => {
     const [isFormOpen, setIsFormOpen] = useState(false);
-
     const openForm = () => {
       setIsFormOpen(true);
     };
@@ -28,7 +27,13 @@ const Tasks: React.FC = () => {
                 Create a Task
                 </button>
         </div>
-        <Cards />
+      <div className="bg-white px-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {CardsData.map((card, index) => (
+          <Card key={index} {...card} />
+        ))}
+      </div>
+    </div>
         <p className='text-xl w-full font-medium pt-8 pl-8'>Task List</p>
         <TaskTable />
 
@@ -41,4 +46,4 @@ const Tasks: React.FC = () => {
     </div>
   )
 }
-export default Tasks;
+export default Task;
