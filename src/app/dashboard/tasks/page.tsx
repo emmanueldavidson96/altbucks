@@ -44,12 +44,12 @@ const Tasks: React.FC = () => {
     <img src="/assets/task-image.png" alt="" className="w-60 h-60"/>
     </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-6">
             <div className="w-1/3 rounded-lg border border-gray-300">
         <Filter />
         </div>
-    <div className="bg-white px-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="bg-white">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {CardsData.map((card, index) => (
           <Card key={index} {...card} />
         ))}

@@ -21,8 +21,6 @@ const Filter = () => {
     "Number of Applications": ["5 - 10 Applications"],
     "Task Pay": ["$150K - $200K"],
   });
-
-  const [showList, setShowList] = useState<{ [key: string]: boolean }>({});
   
   const filterSections: FilterSection[] = [
     {
@@ -70,6 +68,13 @@ const Filter = () => {
       ],
     },
   ];
+
+  
+  const [showList, setShowList] = useState<{ [key: string]: boolean }>(filterSections.reduce((acc, section) => {
+    acc[section.title] = true;
+    return acc;
+  }, {} as { [key: string]: boolean })
+);
 
   const skillColors: { [key: string]: string } = {
     Design: "bg-purple-100 text-purple-700",
