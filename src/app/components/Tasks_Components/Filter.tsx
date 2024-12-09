@@ -117,7 +117,7 @@ const Filter = () => {
   };
 
   return (
-    <div className="w-72 bg-white text-gray-800 rounded-lg">
+    <div className="w-full lg:w-72 bg-white text-gray-800 rounded-lg">
       <div className="flex justify-between items-center  px-4 py-2 mb-4 border-b border-b-gray-300">
         <h2 className="text-lg font-semibold">Filter</h2>
         <button

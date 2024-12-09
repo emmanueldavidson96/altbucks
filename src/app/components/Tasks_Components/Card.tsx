@@ -35,7 +35,7 @@ const Card: React.FC<CardProps> = ({
       <div className="flex flex-col space-y-4">
         <div className="pb-4 border-b">
           <div className="flex justify-between items-center">
-            <h2 className="text- font-base">{title}</h2>
+            <h2 className="text-md font-base">{title}</h2>
             <p className="text-black text-xs opacity-60">Posted: {posted}</p>
           </div>
           <p className="text-black text-sm opacity-50">{category}</p>
@@ -43,7 +43,7 @@ const Card: React.FC<CardProps> = ({
         <p className="text-black text-sm opacity-70 line-clamp-3">
           {description}
         </p>
-        <div className="flex justify-between items-end text-sm text-black">
+        <div className="flex justify-between gap-2 items-end text-sm text-black">
           <div className="flex flex-col space-y-2">
             <p className="text-black text-sm opacity-50">Earnings </p>
             <p className="text-md">${earnings}</p>
@@ -64,7 +64,7 @@ const Card: React.FC<CardProps> = ({
       </div>
       {isModalOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 px-4"
           onClick={handleModalClose}
         >
           <div
@@ -150,7 +150,7 @@ const Card: React.FC<CardProps> = ({
 
             {/* Links */}
             <div className="mb-6">
-              <div className="space-y-2 flex justify-between items-center w-1/2">
+              <div className="space-y-2 flex justify-between items-center w-full md:w-1/2">
                 <p className="flex flex-col gap-2">
                   <span className="font-semibold text-black text-sm">Video link:</span>{" "}
                   <a href="#" className="text-blue-800 text-sm underline">
