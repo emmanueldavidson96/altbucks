@@ -13,7 +13,7 @@ export default function Header() {
     const [isNavOpen, setIsNavOpen] = useState(false);
 
   return (
-    <nav className='w-full h-[80px] flex items-center'>
+    <nav className='w-full h-[80px] flex items-center font-Satoshi'>
         <div className='h-fit w-[90%] mx-auto flex items-center justify-between '>
             
             <div className='w-fit h-fit'>

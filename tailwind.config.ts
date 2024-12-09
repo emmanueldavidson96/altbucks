@@ -55,7 +55,10 @@ const config: Config = {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+		  fontFamily: {
+			satoshi: ['Satoshi', 'sans-serif'], // Add Satoshi as a custom font family
+		  }
   	}
   },
   plugins: [require("tailwindcss-animate")],

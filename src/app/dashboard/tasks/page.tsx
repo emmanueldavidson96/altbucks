@@ -14,7 +14,7 @@ const Tasks: React.FC = () => {
   return (
     <>
     <Header />
-      <div className="bg-white p-3 md:p-8">
+      <div className="bg-white p-3 md:p-8 font-Satoshi">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between">
           <div className="flex flex-col my-auto w-full md:w-1/2">

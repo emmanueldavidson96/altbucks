@@ -16,8 +16,9 @@ const Task: React.FC = () => {
       setIsFormOpen(false);
     };
   return (
-    <div className='bg-white'>
-        <Header />
+    <>
+      <Header />
+    <div className='bg-white font-Satoshi'>
         <div className="flex justify-between items-center w-full p-8">
             <p className='text-xl font-medium'>Recent Posts</p>
             <button 
@@ -44,6 +45,7 @@ const Task: React.FC = () => {
         </div>
       )}
     </div>
+    </>
   )
 }
 export default Task;
