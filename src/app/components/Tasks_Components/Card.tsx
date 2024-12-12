@@ -31,7 +31,7 @@ const Card: React.FC<CardProps> = ({
   const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
 
   return (
-    <div className="border border-gray-300 font-satoshi rounded-lg p-4 bg-white">
+    <div className="border border-gray-300 font-Satoshi rounded-lg p-4 bg-white">
       <div className="flex flex-col space-y-4">
         <div className="pb-4 border-b">
           <div className="flex justify-between items-center">
