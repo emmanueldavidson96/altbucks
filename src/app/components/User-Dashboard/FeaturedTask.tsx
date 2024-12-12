@@ -36,7 +36,7 @@ const TaskActivities = () => {
 
   return (
     <div className="bg-white rounded-lg shadow p-6 border 
-      border-transparent hover:border-4 hover:border-blue-600">
+      border-transparent hover:border-4 hover:border-blue-600 font-mulish">
       {/* Title Section */}
       <div className="mb-6">
         <h1 className="text-xl font-bold text-black mb-2">Featured Task</h1>

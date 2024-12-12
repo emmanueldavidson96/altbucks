@@ -29,27 +29,12 @@ const data = [
 const LineGraph = () => {
   return (
     <div className="bg-white rounded-lg p-6 border 
-      border-transparent hover:border-4 hover:border-blue-600 p-6">
+      border-transparent hover:border-4 hover:border-blue-600 h-[500px]">
       {/* Header Section */}
+      <div className="flex justify-between">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold text-black">Task Earning Report</h2>
-        <button className="flex items-center bg-gray-100 text-gray-600 px-4 py-2 rounded-md shadow hover:bg-gray-200">
-          <span className="mr-2">Export PDF</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-            className="w-5 h-5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2v-8m-6-9l6 6m-6-6v6"
-            />
-          </svg>
-        </button>
+        
       </div>
 
       {/* Filter Section */}
@@ -71,13 +56,34 @@ const LineGraph = () => {
         <span className="text-gray-600 font-medium">June 2021</span>
       </div>
 
+      {/* Export Button */}
+      <button className="flex items-center bg-gray-100 text-gray-600 px-6 py-0 rounded-md shadow hover:bg-gray-200">
+          <span className="mr-2">Export PDF</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="w-5 h-5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2v-8m-6-9l6 6m-6-6v6"
+            />
+          </svg>
+        </button>
+      </div>
+
       {/* Line Chart */}
+      <div className="mt-10 mb-1">
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
           data={data}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid stroke="bg-white" strokeDasharray="none" />
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip
@@ -104,6 +110,7 @@ const LineGraph = () => {
           />
         </LineChart>
       </ResponsiveContainer>
+      </div>
     </div>
   );
 };

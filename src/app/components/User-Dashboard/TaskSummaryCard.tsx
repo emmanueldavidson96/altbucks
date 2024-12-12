@@ -2,7 +2,7 @@ import React from 'react';
 
 const TaskSummaryCard = () => {
   return (
-    <div className="bg-white rounded-lg p-4 w-[450px] h-[450px] mt-6 mx-6 border border-blue-600 hover:border-2 hover:border-blue-600 transition-all">
+    <div className="bg-white rounded-lg p-4 w-[450px] h-[450px] font-mulish mb-5 mt-12 mx-6 border border-blue-600 hover:border-2 hover:border-blue-600 transition-all">
       {/* Encapsulated Task Total and Chart */}
       <div className="flex flex-col h-full justify-between relative">
         {/* Task Total Section */}
