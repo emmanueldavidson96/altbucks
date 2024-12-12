@@ -8,17 +8,6 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-<<<<<<< HEAD
-    extend: {
-      fontFamily: {
-        mulish: ['Mulish', 'sans-serif'],
-      },
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
-    },
-=======
   	extend: {
   		colors: {
   			background: 'hsl(var(--background))',
@@ -69,9 +58,9 @@ const config: Config = {
   		},
 		  fontFamily: {
 			satoshi: ['Satoshi', 'sans-serif'], // Add Satoshi as a custom font family
+			mulish: ['Mulish', 'sans-serif'],
 		  }
   	}
->>>>>>> 3d8f1a426d321f8c1b2d65c876fff59a313083c1
   },
   plugins: [require("tailwindcss-animate")],
 };

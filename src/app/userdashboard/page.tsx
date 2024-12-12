@@ -1,7 +1,7 @@
 "use client"; // Ensure this is treated as a Client Component
 
 import React from "react";
-import Header from "../components/Dashboard_Components/Header";
+import Header from "../components/User-Dashboard/Header";
 import HeroSection from "../components/User-Dashboard/HeroSection";
 import UserCards from "../components/User-Dashboard/UserCards";
 import LineGraph from "../components/User-Dashboard/LineGraph";
@@ -22,7 +22,7 @@ export default function Dashboard() {
     <div className="w-screen h-screen flex flex-col bg-white font-mulish">
       {/* Navbar Section with Border */}
       <div className="bg-white border-b border-gray-300">
-        <Navbar />
+        <Header />
       </div>
 
       {/* Main Content Section */}
