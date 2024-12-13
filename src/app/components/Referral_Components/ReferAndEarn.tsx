@@ -1,6 +1,7 @@
 import React from 'react';
 import { CiBookmark } from "react-icons/ci";
 import { PiWalletDuotone } from "react-icons/pi";
+import { MdKeyboardArrowRight } from "react-icons/md";
 
 const ReferAndEarn: React.FC = () => {
   const userName = "Smith";
@@ -10,38 +11,40 @@ const ReferAndEarn: React.FC = () => {
   const earnedRewards = 1700;
 
   return (
-    <div className="text-white py-10 px-6 flex flex-col space-y-10">
+    <div className="text-white py-6 px-6 flex flex-col space-y-10">
       {/* Header Section */}
-      <div className="bg-[#2877EA] flex rounded-lg p-12 flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+      <div className="bg-[#2877EA] flex rounded-lg px-12 py-4 flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
         <div className="md:w-2/3">
-          <h1 className="text-2xl font-bold mb-2">Hi {userName},</h1>
-          <h2 className="text-4xl font-extrabold mb-3">Refer & Earn Rewards</h2>
+          <h1 className="text-xl mb-2">Hi {userName},</h1>
+          <h2 className="text-4xl font-semibold mb-3">Refer & Earn Rewards</h2>
           <p className="text-lg mb-5">Invite your friends and earn cash or credits</p>
           <div className="flex items-center space-x-4">
+            <div className="flex gap-6 bg-white rounded-l-full p-1">
             <input
               type="text"
               readOnly
-              value={referralLink}
-              className="bg-white text-gray-800 px-4 py-2 rounded-lg w-full md:w-auto"
+              placeholder={referralLink}
+              className="bg-white text-gray-800 px-4 py-2 rounded-l-full w-full md:w-auto placeholder:text-gray-500 text-sm"
             />
             <button
               onClick={() => navigator.clipboard.writeText(referralLink)}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-full text-sm"
             >
               Copy
             </button>
+            </div>
             <button
-              className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-lg"
+              className="bg-gray-800 hover:bg-opacity-80 text-sm bg-opacity-70 text-white px-4 py-3 rounded-r-full"
             >
               Share
             </button>
           </div>
         </div>
-        <div className="md:w-1/3 flex justify-center items-center">
+        <div className="md:w-1/3 flex justify-start items-center py-4">
           <img
             src="/assets/referral-image/image.png"
             alt="Wallet Illustration"
-            className="w-48 h-48"
+            className="w-60 h-44"
           />
         </div>
       </div>
@@ -60,14 +63,14 @@ const ReferAndEarn: React.FC = () => {
         <div className="p-1 bg-[#D2E1FE]">
         <PiWalletDuotone className='text-[#2877EA]'/>
         </div> 
-        <p className="text-4xl font-bold text-gray-500">£{pendingRewards}</p>
+        <p className="flex gap-1 items-end text-4xl font-bold text-gray-500"><span className='text-2xl text-gray-500'> £ </span>{pendingRewards}</p>
           <p className="text-sm text-gray-600">Pending Rewards</p>
         </div>
         <div className="bg-white flex gap-2 items-center text-gray-800 rounded-lg px-6 py-4 shadow-md text-center w-64">
         <div className="p-1 bg-[#D2E1FE]">
         <PiWalletDuotone className='text-[#2877EA]'/>
         </div> 
-        <p className="text-4xl font-bold text-gray-500">£{earnedRewards}</p>
+        <p className="flex gap-1 items-end text-4xl font-bold text-gray-500"><span className='text-2xl text-gray-500'> £ </span>{earnedRewards}</p>
           <p className="text-sm text-gray-600">Earned Rewards</p>
         </div>
       </div>
@@ -146,9 +149,9 @@ export const RecentTasks: React.FC = () => {
           </div>
           <a
             href="#"
-            className="text-blue-600 hover:text-blue-500 text-sm font-medium"
+            className="flex items-center gap-1 text-blue-600 hover:text-blue-500 text-sm font-medium"
           >
-            See All Transactions →
+            See All Transactions <MdKeyboardArrowRight className='text-xl'/>
           </a>
         </div>
         <div className="divide-y divide-gray-200">
