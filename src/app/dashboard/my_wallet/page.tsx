@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
-import Header from '../components/My_Wallet_Component/Header';
-import Main from '../components/My_Wallet_Component/Main';
-import SideBar from '../components/My_Wallet_Component/SideBar';
+import Header from '../../components/My_Wallet_Component/Header';
+import Main from '../../components/My_Wallet_Component/Main';
+import SideBar from '../../components/My_Wallet_Component/SideBar';
 
 const page = () => {
   return (

@@ -1,5 +1,6 @@
 import React from 'react';
 import Cards from './Cards';
+import Chart from './Chart/Chart';
 
 const Main = () => {
   return (
@@ -9,7 +10,8 @@ const Main = () => {
         Your wallet is ready—secure, fast, and always within reach. Manage your
         funds easily and unlock new possibilities with every transaction.
       </p>
-      <Cards/>
+      <Cards />
+      <Chart />
     </div>
   );
 };
