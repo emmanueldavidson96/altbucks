@@ -1,41 +1,41 @@
-'use client';
+import { Search } from 'lucide-react';
 
-import type { Task } from './types';
-import TaskCard from './TasksCard';
+export function TasksList() {
+    return (
+        <div className="mt-12">
+            <h2 className="text-xl font-semibold mb-6 text-black">Task List</h2>
 
-const TasksList = () => {
-  // Sample tasks - replace this with API data later
-  const tasks = [
-    {
-      id: '1',
-      title: 'Graphic Design',
-      category: 'Design',
-      description:
-        'Create a visually appealing graphic design for social media promotion.',
-      earnings: 35,
-      deadline: 'Nov 5, 2024',
-      postedTime: '2 hours ago',
-    },
-    // Add more sample tasks here
-  ];
+            <div className="flex items-center gap-4 mb-6">
+                <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <input
+                        type="text"
+                        placeholder="Search here..."
+                        className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    />
+                </div>
+                <button className="px-4 py-2.5 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 flex items-center gap-2">
+                    <span>Filter</span>
+                </button>
+            </div>
 
-  return (
-    <div className='flex-1'>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-        {tasks.map((task) => (
-          <TaskCard
-            key={task.id}
-            title={task.title}
-            category={task.category}
-            description={task.description}
-            earnings={task.earnings}
-            deadline={task.deadline}
-            postedTime={task.postedTime}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default TasksList;
+            <div className="bg-white rounded-lg border border-gray-200">
+                <table className="w-full">
+                    <thead>
+                    <tr className="border-b border-gray-200">
+                        <th className="text-left px-6 py-4 text-sm font-medium text-gray-500">Task Name</th>
+                        <th className="text-left px-6 py-4 text-sm font-medium text-gray-500">Task Type</th>
+                        <th className="text-left px-6 py-4 text-sm font-medium text-gray-500">Status</th>
+                        <th className="text-left px-6 py-4 text-sm font-medium text-gray-500">Deadline</th>
+                        <th className="text-left px-6 py-4 text-sm font-medium text-gray-500">Payout</th>
+                        <th className="w-10"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {/* Add task rows here */}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
