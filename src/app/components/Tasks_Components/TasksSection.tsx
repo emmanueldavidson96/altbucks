@@ -1,5 +1,7 @@
-import React from 'react';
-import Link from 'next/link';
+'use client';
+
+import React, { useState } from 'react';
+import  TaskDetailsModal  from '../FindTasks_Components/TaskDetailsModal';
 
 interface TaskCardProps {
     title: string;
@@ -10,85 +12,106 @@ interface TaskCardProps {
     postedTime: string;
 }
 
-export function TaskCard({ title, category, description, earnings, deadline, postedTime }: TaskCardProps) {
+function TaskCard({ title, category, description, earnings, deadline, postedTime }: TaskCardProps) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
-        <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-            <div className="mb-2">
-                <h3 className="text-base font-semibold text-gray-900">{title}</h3>
-                <p className="text-sm text-gray-500">{category}</p>
-            </div>
-
-            <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                {description}
-            </p>
-
-            <div className="mt-auto">
-                <div className="flex items-center justify-between text-sm">
-                    <div>
-                        <span className="text-gray-500">Earnings</span>
-                        <span className="text-gray-900 ml-2">{earnings}</span>
-                    </div>
-                    <div>
-                        <span className="text-gray-500">Deadline</span>
-                        <span className="text-gray-900 ml-2">{deadline}</span>
-                    </div>
+        <>
+            <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                <div className="mb-2">
+                    <h3 className="text-base font-semibold text-gray-900">{title}</h3>
+                    <p className="text-sm text-gray-500">{category}</p>
                 </div>
 
-                <div className="flex items-center justify-between mt-3">
-                    <span className="text-gray-400 text-xs">Posted {postedTime}</span>
-                    <Link
-                        href="#"
-                        className="text-blue-500 hover:text-blue-600 text-sm inline-flex items-center"
-                    >
-                        View Details →
-                    </Link>
+                <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                    {description}
+                </p>
+
+                <div className="mt-auto">
+                    <div className="flex items-center justify-between text-sm">
+                        <div>
+                            <span className="text-gray-500">Earnings</span>
+                            <span className="text-gray-900 ml-2">{earnings}</span>
+                        </div>
+                        <div>
+                            <span className="text-gray-500">Deadline</span>
+                            <span className="text-gray-900 ml-2">{deadline}</span>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between mt-3">
+                        <span className="text-gray-400 text-xs">Posted {postedTime}</span>
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="text-blue-500 hover:text-blue-600 text-sm inline-flex items-center"
+                        >
+                            View Details →
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <TaskDetailsModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                task={{
+                    title,
+                    type: category,
+                    description,
+                    amount: parseInt(earnings.replace('$', '')),
+                    deadline
+                }}
+            />
+        </>
     );
 }
 
 export function TasksSection() {
+    const [searchQuery, setSearchQuery] = useState('');
+
     const tasks = [
         {
             title: "Write Blog Post",
             category: "Writing",
-            description: "Create a well-researched blog post of 800-1000 words on the topic provided. Ensure the content is original, engaging, and...",
+            description: "Create a well-researched blog post of 800-1000 words on the topic provided. Ensure the content is original, engaging, and optimized for SEO.",
             earnings: "$25",
             deadline: "Oct 25, 2024",
             postedTime: "3 hours ago"
-        },
-        {
-            title: "Video Review",
-            category: "Review",
-            description: "Watch and review a short product video, providing feedback on its clarity and content. Share your thoughts on the product's features...",
-            earnings: "$40",
-            deadline: "Oct 28, 2024",
-            postedTime: "3 hours ago"
-        },
-        {
-            title: "Graphic Design",
-            category: "Design",
-            description: "Create a visually appealing graphic design for social media promotion. Use vibrant colors and engaging visuals to attract the target audience...",
-            earnings: "$35",
-            deadline: "Nov 5, 2024",
-            postedTime: "2 hours ago"
-        },
-        {
-            title: "Web Dev Project",
-            category: "Web Development",
-            description: "Develop a responsive website for a client, following the provided design mockup. Implement interactive features and ensure cross-browser compatibility...",
-            earnings: "$60",
-            deadline: "Nov 12, 2024",
-            postedTime: "1 hour ago"
         }
     ];
 
+    // Filter tasks based on search query
+    const filteredTasks = tasks.filter(task =>
+        task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        task.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {tasks.map((task, index) => (
-                <TaskCard key={index} {...task} />
-            ))}
+        <div className="max-w-7xl mx-auto px-4 py-8">
+            {/* Search Section */}
+            <div className="mb-6">
+                <input
+                    type="text"
+                    placeholder="Search tasks..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+            </div>
+
+            {/* Tasks Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredTasks.map((task, index) => (
+                    <TaskCard key={index} {...task} />
+                ))}
+            </div>
+
+            {/* Empty State */}
+            {filteredTasks.length === 0 && (
+                <div className="text-center py-12">
+                    <p className="text-gray-500">No tasks found matching your criteria.</p>
+                </div>
+            )}
         </div>
     );
 }

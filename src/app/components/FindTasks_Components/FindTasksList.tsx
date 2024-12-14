@@ -2,25 +2,45 @@
 
 import { useEffect, useState } from 'react';
 import TaskCard from './FindTasksCard';
-import { taskService } from '@/services/api/tasks';
 
 const FindTasksList = ({ filters }) => {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchTasks = async () => {
-            try {
-                const data = await taskService.getAllTasks();
-                setTasks(data);
-            } catch (error) {
-                console.error('Failed to fetch tasks:', error);
-            } finally {
-                setLoading(false);
+        // Mock data
+        const mockTasks = [
+            {
+                _id: '1',
+                title: 'Web Development Project',
+                type: 'Development',
+                description: 'Need help building a responsive website using React and Tailwind CSS',
+                amount: 500,
+                createdAt: '2024-12-14'
+            },
+            {
+                _id: '2',
+                title: 'Logo Design',
+                type: 'Design',
+                description: 'Looking for a creative designer to create a modern logo for my startup',
+                amount: 250,
+                createdAt: '2024-12-13'
+            },
+            {
+                _id: '3',
+                title: 'Content Writing',
+                type: 'Writing',
+                description: 'Need articles written for my tech blog. Topics include AI and web development',
+                amount: 150,
+                createdAt: '2024-12-12'
             }
-        };
+        ];
 
-        fetchTasks();
+        // Simulate API call delay
+        setTimeout(() => {
+            setTasks(mockTasks);
+            setLoading(false);
+        }, 1000);
     }, [filters]);
 
     if (loading) {
