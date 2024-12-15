@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { taskService } from '@/services/api/tasks';
 import TaskCard from './FindTasksCard';
 
 const FindTasksList = ({ filters }) => {
@@ -8,39 +9,18 @@ const FindTasksList = ({ filters }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Mock data
-        const mockTasks = [
-            {
-                _id: '1',
-                title: 'Web Development Project',
-                type: 'Development',
-                description: 'Need help building a responsive website using React and Tailwind CSS',
-                amount: 500,
-                createdAt: '2024-12-14'
-            },
-            {
-                _id: '2',
-                title: 'Logo Design',
-                type: 'Design',
-                description: 'Looking for a creative designer to create a modern logo for my startup',
-                amount: 250,
-                createdAt: '2024-12-13'
-            },
-            {
-                _id: '3',
-                title: 'Content Writing',
-                type: 'Writing',
-                description: 'Need articles written for my tech blog. Topics include AI and web development',
-                amount: 150,
-                createdAt: '2024-12-12'
+        const fetchTasks = async () => {
+            try {
+                const response = await taskService.getAllTasks();
+                setTasks(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching tasks:', error);
+                setLoading(false);
             }
-        ];
+        };
 
-        // Simulate API call delay
-        setTimeout(() => {
-            setTasks(mockTasks);
-            setLoading(false);
-        }, 1000);
+        fetchTasks();
     }, [filters]);
 
     if (loading) {
@@ -69,13 +49,18 @@ const FindTasksList = ({ filters }) => {
                     <TaskCard
                         key={task._id}
                         title={task.title}
-                        type={task.type}
+                        type={task.taskType}
                         description={task.description}
-                        amount={task.amount}
-                        postedTime={new Date(task.createdAt).toLocaleDateString()}
+                        amount={task.compensation.amount}
+                        postedTime={new Date(task.postedDate).toLocaleDateString()}
                     />
                 ))}
             </div>
+            {tasks.length === 0 && !loading && (
+                <div className="text-center py-12">
+                    <p className="text-gray-500">No tasks found matching your criteria.</p>
+                </div>
+            )}
         </div>
     );
 };

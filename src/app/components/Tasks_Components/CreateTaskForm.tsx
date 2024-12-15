@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Calendar } from 'lucide-react';
+import { taskService } from '@/services/api/tasks';
 
 interface CreateTaskFormProps {
     isOpen: boolean;
@@ -11,6 +11,7 @@ interface CreateTaskFormProps {
 export function CreateTaskForm({ isOpen, onClose }: CreateTaskFormProps) {
     if (!isOpen) return null;
 
+    const [loading, setLoading] = useState(false);
     const [form, setForm] = useState({
         title: '',
         taskType: '',
@@ -23,11 +24,32 @@ export function CreateTaskForm({ isOpen, onClose }: CreateTaskFormProps) {
         requirements: '',
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle form submission logic here
-        console.log(form);
-        onClose();
+        setLoading(true);
+
+        const taskData = {
+            title: form.title,
+            taskType: form.taskType,
+            description: form.description,
+            requirements: form.requirements,
+            location: form.location || 'remote',
+            compensation: {
+                amount: Number(form.amount),
+                currency: form.currency
+            },
+            deadline: form.deadline,
+            maxRespondents: Number(form.respondents.split('-')[1]) || 5
+        };
+
+        try {
+            await taskService.createTask(taskData);
+            onClose();
+        } catch (error) {
+            console.error('Error creating task:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -189,9 +211,10 @@ export function CreateTaskForm({ isOpen, onClose }: CreateTaskFormProps) {
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 font-medium shadow-sm transition-colors"
+                        disabled={loading}
+                        className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 font-medium shadow-sm transition-colors disabled:bg-blue-400"
                     >
-                        Create Task
+                        {loading ? 'Creating...' : 'Create Task'}
                     </button>
                 </form>
             </div>

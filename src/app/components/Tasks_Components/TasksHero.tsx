@@ -18,6 +18,7 @@ export function TasksHero() {
                 </button>
             </div>
 
+            {/* CreateTaskForm will only render when isCreateModalOpen is true */}
             <CreateTaskForm
                 isOpen={isCreateModalOpen}
                 onClose={() => setIsCreateModalOpen(false)}

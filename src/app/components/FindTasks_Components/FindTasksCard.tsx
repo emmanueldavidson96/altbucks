@@ -14,13 +14,12 @@ interface TaskCardProps {
 const TaskCard = ({ title, type, description, amount, postedTime }: TaskCardProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Get type color based on category
     const getTypeStyle = (taskType: string) => {
         const styles = {
-            'content-writing': 'text-blue-600',
-            'social-media': 'text-purple-600',
+            'writing': 'text-blue-600',
             'design': 'text-pink-600',
             'development': 'text-green-600',
+            'review': 'text-purple-600',
             'default': 'text-gray-600'
         };
         return styles[taskType.toLowerCase()] || styles.default;

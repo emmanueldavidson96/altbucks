@@ -1,18 +1,27 @@
-export interface Task {
-    id: string;
+export interface FindTask {
     title: string;
+    category: string;  // "Writing", "Design", "Web Development" etc.
+    postedTime: string;
     description: string;
-    type: string;
-    platform: string;
-    amount: number;
-    status: 'pending' | 'completed' | 'cancelled' | 'under review' | 'approved';
-    createdAt: string;
-    performedAt?: string;
+    earnings: {
+        amount: number;
+        currency: string;
+    };
+    deadline: string;
 }
 
-export interface FilterState {
-    datePosted: string;
-    type: string[];
-    status: string;
-    amountRange: string;
+export interface TaskCardProps {
+    title: string;
+    category: string;
+    description: string;
+    earnings: number;
+    deadline: string;
+    postedTime: string;
+    onViewDetails: () => void;
+}
+
+export interface TaskFilterProps {
+    category?: string;
+    datePosted?: string;
+    priceRange?: string;
 }
