@@ -1,4 +1,4 @@
-import { Search } from 'lucide-react';
+import { Search, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
 interface ApplicationHeroProps {
@@ -8,35 +8,55 @@ interface ApplicationHeroProps {
 
 export function ApplicationHero({ searchTerm, onSearchChange }: ApplicationHeroProps) {
     return (
-        <div>
-            {/* Header */}
-            <div className="mb-8">
-                <h1 className="text-2xl font-semibold text-gray-900">My Applications</h1>
-                <p className="text-sm text-gray-500 mt-1">View and manage tasks you've applied for</p>
+        <div className="relative bg-gradient-to-r from-blue-50/50 via-white to-blue-50/50 px-6 py-6 rounded-xl">
+            {/* Header Section */}
+            <div className="relative mb-6">
+                <h1 className="text-2xl font-bold text-gray-900">
+                    My Applications
+                </h1>
+                <p className="text-gray-600 text-sm mt-1">
+                    View and manage tasks you've applied for
+                </p>
             </div>
-
-            {/* Search and Actions */}
-            <div className="flex items-center gap-4 mb-8">
-                <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            {/* Search and Actions Section */}
+            <div className="relative flex items-center gap-3">
+                {/* Search Input */}
+                <div className="relative flex-1 group">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400
+                                     group-hover:text-blue-500 transition-colors duration-200" />
                     <input
                         type="text"
                         placeholder="Search by Task Name or Poster"
-                        className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="w-full pl-9 pr-4 py-2 bg-white border border-gray-200
+                                 rounded-lg text-sm
+                                 placeholder:text-gray-400
+                                 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500
+                                 hover:border-blue-200 transition-all duration-200"
                         value={searchTerm}
                         onChange={(e) => onSearchChange(e.target.value)}
                     />
                 </div>
-                <button className="px-6 py-2.5 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
+                {/* Filter Button */}
+                <button className="px-4 py-2 text-sm text-gray-700 bg-white border border-gray-200
+                                 rounded-lg hover:bg-gray-50 hover:border-gray-300
+                                 transition-all duration-200">
                     Filter
                 </button>
                 <Link
                     href="find-tasks"
-                    className="px-6 py-2.5 text-sm text-white bg-blue-500 rounded-lg hover:bg-blue-600 inline-block"
+                    className="px-4 py-2 text-sm text-blue-600 bg-white
+                             border-2 border-blue-500/30 rounded-lg
+                             hover:border-blue-500 hover:bg-blue-50
+                             group flex items-center gap-2
+                             transition-all duration-300 ease-in-out"
                 >
-                    Find Tasks
+                    <span>Find Tasks</span>
+                    <Sparkles
+                        className="w-4 h-4 text-blue-500 group-hover:animate-pulse"
+                    />
                 </Link>
             </div>
+            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full -translate-y-1/2 translate-x-1/2" />
         </div>
     );
 }

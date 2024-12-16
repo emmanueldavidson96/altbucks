@@ -1,6 +1,5 @@
-'use client';
-
 import { useState } from 'react';
+import { ArrowRight, Clock, DollarSign } from 'lucide-react';
 import TaskDetailsModal from './TaskDetailsModal';
 
 interface TaskCardProps {
@@ -14,58 +13,47 @@ interface TaskCardProps {
 const TaskCard = ({ title, type, description, amount, postedTime }: TaskCardProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const getTypeStyle = (taskType: string) => {
-        const styles = {
-            'writing': 'text-blue-600',
-            'design': 'text-pink-600',
-            'development': 'text-green-600',
-            'review': 'text-purple-600',
-            'default': 'text-gray-600'
-        };
-        return styles[taskType.toLowerCase()] || styles.default;
-    };
-
     return (
         <>
-            <div className="bg-white border border-gray-100 rounded-lg overflow-hidden hover:border-gray-200 transition-all duration-200">
-                <div className="p-4">
-                    {/* Header */}
-                    <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-[15px] font-medium text-gray-900 leading-tight">
-                            {title}
-                        </h3>
-                        <span className="text-xs text-gray-500">
-                            {postedTime}
-                        </span>
+            <div className="group bg-white rounded-xl p-5 border border-gray-200
+                          hover:border-blue-100 hover:shadow-md hover:bg-blue-50/5
+                          transition-all duration-300">
+                {/* Header with Title and Time */}
+                <div className="flex justify-between gap-4 mb-4">
+                    <h3 className="font-medium text-gray-900 group-hover:text-blue-600">{title}</h3>
+                    <div className="flex items-center gap-1.5 text-gray-400">
+                        <Clock className="w-4 h-4" />
+                        <time className="text-xs">{postedTime}</time>
                     </div>
+                </div>
 
-                    {/* Type */}
-                    <div className="mb-2">
-                        <span className={`text-xs ${getTypeStyle(type)}`}>
-                            {type}
-                        </span>
+                {/* Type Badge */}
+                <div className="mb-3">
+                    <span className="px-2.5 py-1 bg-blue-50 text-blue-600 text-xs
+                                   rounded-full font-medium ring-1 ring-blue-100">
+                        {type}
+                    </span>
+                </div>
+
+                {/* Description */}
+                <p className="text-sm text-gray-600 line-clamp-2 mb-4 group-hover:text-gray-700">
+                    {description}
+                </p>
+
+                {/* Footer with Price and Action */}
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                        <DollarSign className="w-4 h-4 text-green-500" />
+                        <span className="text-lg font-semibold">{amount}</span>
                     </div>
-
-                    {/* Description */}
-                    <p className="text-sm text-gray-600 line-clamp-2 leading-snug mb-3">
-                        {description}
-                    </p>
-
-                    {/* Footer */}
-                    <div className="flex items-center justify-between mt-auto">
-                        <div className="flex items-center gap-2">
-                            <span className="text-blue-600 font-semibold">${amount}</span>
-                        </div>
-                        <button
-                            onClick={() => setIsModalOpen(true)}
-                            className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
-                        >
-                            View Details
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/>
-                            </svg>
-                        </button>
-                    </div>
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="flex items-center gap-1.5 text-sm font-medium text-blue-600
+                                 hover:text-blue-700 group-hover:gap-2.5 transition-all"
+                    >
+                        View Details
+                        <ArrowRight className="w-4 h-4" />
+                    </button>
                 </div>
             </div>
 

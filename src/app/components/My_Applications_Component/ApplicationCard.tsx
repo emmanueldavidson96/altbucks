@@ -7,43 +7,65 @@ export function ApplicationCard({ application }: { application: Application }) {
 
     return (
         <>
-            <div className="border border-gray-200 rounded-lg p-4 bg-white hover:shadow-sm transition-shadow">
+            <div className="bg-white rounded-2xl border border-gray-100 p-6
+                          hover:shadow-lg hover:border-blue-100 hover:-translate-y-1
+                          transition-all duration-500 ease-in-out">
                 {/* Header with Brand and Status */}
-                <div className="flex justify-between items-start">
-                    <div>
-                        <h3 className="font-medium text-gray-900">{application.brand}</h3>
-                        <p className="text-sm text-gray-500 mt-0.5">{application.taskType}</p>
+                <div className="flex justify-between items-start group">
+                    <div className="space-y-1">
+                        <h3 className="text-lg font-bold text-gray-800 group-hover:text-blue-600 transition-colors">
+                            {application.brand}
+                        </h3>
+                        <p className="text-sm text-gray-500 tracking-wide">
+                            {application.taskType}
+                        </p>
                     </div>
-                    <span className={`px-2 py-0.5 rounded-full text-xs ${
-                        application.status === 'Completed'
-                            ? 'bg-green-50 text-green-600'
-                            : 'bg-blue-50 text-blue-600'
+                    <span className={`animate-fade-in px-3 py-1.5 rounded-full text-xs font-medium 
+                                   ${application.status === 'Completed'
+                        ? 'bg-green-50 text-green-600 ring-1 ring-green-100'
+                        : 'bg-blue-50 text-blue-600 ring-1 ring-blue-100'
                     }`}>
-            {application.status}
-          </span>
+                        {application.status}
+                    </span>
                 </div>
 
                 {/* Amount and Dates */}
-                <div className="flex justify-between mt-4 mb-4">
-                    <span className="text-sm text-gray-500">${application.earnedAmount}</span>
-                    <div className="text-sm">
-                        <span className="text-gray-500">{application.startDate}</span>
-                        <span className="text-red-500 ml-2">{application.dueDate}</span>
+                <div className="flex justify-between items-center mt-6">
+                    <div className="flex flex-col">
+                        <span className="text-xs text-gray-500 mb-1">Earning</span>
+                        <span className="text-lg font-bold text-gray-800">
+                            ${application.earnedAmount}
+                        </span>
+                    </div>
+                    <div className="text-sm flex flex-col items-end">
+                        <span className="text-gray-400 text-xs mb-1">Timeline</span>
+                        <div className="space-x-2">
+                            <span className="text-gray-600">{application.startDate}</span>
+                            <span className="text-red-500 font-medium">{application.dueDate}</span>
+                        </div>
                     </div>
                 </div>
 
                 {/* Description */}
-                <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+                <p className="text-sm text-gray-600 mt-4 leading-relaxed line-clamp-2
+                             hover:line-clamp-none transition-all duration-300">
                     {application.description}
                 </p>
 
                 {/* View Task Button */}
-                <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="text-blue-500 text-sm border border-gray-200 rounded-lg px-8 py-2 w-30% hover:bg-gray-50"
-                >
-                    View Task
-                </button>
+                <div className="flex justify-end mt-6">
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="px-4 py-1.5 text-sm font-medium text-blue-600
+                                 border border-blue-200 rounded-lg
+                                 hover:border-blue-400 hover:bg-blue-50
+                                 focus:outline-none focus:ring-2 focus:ring-blue-100
+                                 transition-all duration-300 ease-in-out
+                                 transform hover:scale-105"
+                    >
+                        View Task
+                    </button>
+                </div>
             </div>
 
             <ApplicationDetailsModal
