@@ -77,6 +77,7 @@ const FindTasksList = ({ filters }) => {
                 {tasks.map((task) => (
                     <TaskCard
                         key={task._id}
+                        taskId={task._id}
                         title={task.title}
                         type={task.taskType}
                         description={task.description}

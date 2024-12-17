@@ -1,3 +1,4 @@
+
 import { X, Calendar, DollarSign, CheckCircle, Clock, FileText, ListChecks, ArrowRight } from 'lucide-react';
 import { Application } from './types';
 
