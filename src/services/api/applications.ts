@@ -1,16 +1,24 @@
-import axios from 'axios';
 import { API_BASE_URL } from './config';
 
 export const applicationService = {
-    createApplication: async (applicationData) => {
-        return axios.post(`${API_BASE_URL}/api/applications`, applicationData);
+    getCompletedApplications: async () => {
+        const response = await fetch(`${API_BASE_URL}/api/tasks/status/Completed`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch completed applications');
+        }
+        return response.json();
     },
 
-    getUserApplications: async (userId) => {
-        return axios.get(`${API_BASE_URL}/api/applications/user/${userId}`);
-    },
-
-    updateApplicationStatus: async (id, status) => {
-        return axios.patch(`${API_BASE_URL}/api/applications/${id}/status`, { status });
+    markTaskAsComplete: async (taskId: string) => {
+        const response = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/complete`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if (!response.ok) {
+            throw new Error('Failed to mark task as complete');
+        }
+        return response.json();
     }
 };

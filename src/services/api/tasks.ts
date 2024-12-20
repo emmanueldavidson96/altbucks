@@ -41,16 +41,38 @@ export const taskService = {
         return response.json();
     },
 
-    updateTaskStatus: async (id: string, status: string) => {
-        const response = await fetch(`${API_BASE_URL}/api/tasks/${id}/status`, {
+    markTaskComplete: async (id: string) => {
+        const response = await fetch(`${API_BASE_URL}/api/tasks/${id}/complete`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ status }),
+            }
         });
         if (!response.ok) {
-            throw new Error('Failed to update task status');
+            throw new Error('Failed to mark task as complete');
+        }
+        return response.json();
+    },
+
+    markTaskPending: async (id: string) => {
+        const response = await fetch(`${API_BASE_URL}/api/tasks/${id}/pending`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        if (!response.ok) {
+            throw new Error('Failed to mark task as pending');
+        }
+        return response.json();
+    },
+
+    deleteTask: async (id: string) => {
+        const response = await fetch(`${API_BASE_URL}/api/tasks/${id}`, {
+            method: 'DELETE'
+        });
+        if (!response.ok) {
+            throw new Error('Failed to delete task');
         }
         return response.json();
     },

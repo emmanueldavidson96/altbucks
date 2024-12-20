@@ -1,6 +1,7 @@
 import { X, Clock } from 'lucide-react';
 import { useEffect, useState } from "react";
 import { taskService } from '@/services/api/tasks';
+import {Task} from './types'
 
 interface TaskDetailsModalProps {
     isOpen: boolean;
@@ -9,21 +10,8 @@ interface TaskDetailsModalProps {
 }
 
 
-interface Task {
-    title: string;
-    taskType: string;
-    description: string;
-    requirements: string;
-    location: string;
-    compensation: {
-        amount: number;
-        currency: string;
-    };
-    deadline: string;
-    maxRespondents: number;
-}
 
-export function TaskDetailsModal({ isOpen, onClose, taskId }: TaskDetailsModalProps) {
+export function StartTaskModal({ isOpen, onClose, taskId }: TaskDetailsModalProps) {
     const [task, setTask] = useState<Task | null>(null);
     const [loading, setLoading] = useState(false);
 
@@ -131,4 +119,4 @@ export function TaskDetailsModal({ isOpen, onClose, taskId }: TaskDetailsModalPr
     );
 }
 
-export default TaskDetailsModal;
+export default StartTaskModal;

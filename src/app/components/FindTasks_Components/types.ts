@@ -12,28 +12,18 @@ export interface FindTask {
 
 
 export interface Task {
-    _id: string;
     title: string;
-    taskType: 'writing' | 'design' | 'development' | 'review';
+    taskType: string;
     description: string;
     requirements: string;
+    location: string;
     compensation: {
         amount: number;
         currency: string;
     };
-    deadline: Date;
-    status: 'Open' | 'In Progress' | 'Completed';
-    attachments?: {
-        files: Array<{
-            url: string;
-            type: string;
-            size: number;
-        }>;
-        links: string[];
-    };
-    postedDate: Date;
+    deadline: string;
+    maxRespondents: number;
 }
-
 
 
 
@@ -44,7 +34,6 @@ export interface TaskCardProps {
     earnings: number;
     deadline: string;
     postedTime: string;
-    onViewDetails: () => void;
 }
 
 export interface TaskFilterProps {

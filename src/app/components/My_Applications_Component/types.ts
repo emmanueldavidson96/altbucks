@@ -1,21 +1,33 @@
-export type Application = {
-    id: string;
+export interface Application {
+    _id: string;
+    userId: string;
     brand: string;
     taskType: string;
-    status: 'Completed' | 'In Progress' | 'Pending';
-    earnedAmount: number;
-    startDate: string;
-    dueDate: string;
+    earnings: number;
+    appliedOn: string;
+    deadline: string;
+    status: string;
     description: string;
-    details?: {
-        requirements: string[];
-        submissionFormat: string;
-        additionalNotes?: string;
-    };
-};
+}
 
 export type FilterState = {
     status: string;
     datePosted: string;
     taskType: string;
 };
+
+
+export interface ModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    application: Application;
+
+}
+export interface ApplicationHeroProps {
+    searchTerm: string;
+    onSearchChange: (value: string) => void;
+}
+
+ export interface ApplicationsListProps {
+    applications: Application[];
+}

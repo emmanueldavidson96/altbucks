@@ -1,10 +1,7 @@
 import { FileSearch } from 'lucide-react';
 import type { Application } from './types';
 import { ApplicationCard } from './ApplicationCard';
-
-interface ApplicationsListProps {
-    applications: Application[];
-}
+import {ApplicationsListProps} from "./types";
 
 export function ApplicationsList({ applications }: ApplicationsListProps) {
     return (
@@ -12,7 +9,7 @@ export function ApplicationsList({ applications }: ApplicationsListProps) {
             {applications.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 animate-in fade-in duration-500">
                     {applications.map((application) => (
-                        <div key={application.id} className="transform hover:-translate-y-1 transition-all duration-300">
+                        <div key={application._id} className="transform hover:-translate-y-1 transition-all duration-300">
                             <ApplicationCard application={application} />
                         </div>
                     ))}

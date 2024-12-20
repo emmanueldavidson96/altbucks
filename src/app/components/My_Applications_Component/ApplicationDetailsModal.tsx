@@ -1,12 +1,7 @@
 
 import { X, Calendar, DollarSign, CheckCircle, Clock, FileText, ListChecks, ArrowRight } from 'lucide-react';
-import { Application } from './types';
+import { Application  , ModalProps } from './types';
 
-interface ModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    application: Application;
-}
 
 export function ApplicationDetailsModal({ isOpen, onClose, application }: ModalProps) {
     if (!isOpen) return null;
@@ -66,7 +61,7 @@ export function ApplicationDetailsModal({ isOpen, onClose, application }: ModalP
                                     <DollarSign className="w-4 h-4" />
                                     <h3 className="font-medium">Payment</h3>
                                 </div>
-                                <p className="text-2xl font-bold text-gray-900">${application.earnedAmount}</p>
+                                <p className="text-2xl font-bold text-gray-900">${application.earnings}</p>
                             </div>
 
                             <div className="group p-4 bg-gray-50 rounded-xl hover:bg-gray-100/80 transition-colors">
@@ -75,9 +70,9 @@ export function ApplicationDetailsModal({ isOpen, onClose, application }: ModalP
                                     <h3 className="font-medium">Timeline</h3>
                                 </div>
                                 <div className="space-x-3">
-                                    <span className="text-sm text-gray-600">{application.startDate}</span>
+                                    <span className="text-sm text-gray-600">{application.taskType}</span>
                                     <ArrowRight className="inline w-4 h-4 text-gray-400" />
-                                    <span className="text-sm font-medium text-red-500">{application.dueDate}</span>
+                                    <span className="text-sm font-medium text-red-500">{application.deadline}</span>
                                 </div>
                             </div>
                         </div>

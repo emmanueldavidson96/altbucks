@@ -1,70 +1,51 @@
+
 export interface Task {
-    _id: string;
+    _id: string; // Changed from id to _id to match API response
     title: string;
-    taskType: string;
-    description: string;
-    compensation: {
-        amount: number;
-        currency: string;
-    };
-    status: TaskStatus;
+    type: string;
+    earnings: number;
     deadline: string;
-    postedDate: string;
+    description: string;
+    requirements: {
+        instructions: string[];
+        criteria: string[];
+    };
 }
 
-export type TaskStatus = 'Open' | 'In Progress' | 'Completed';
+export interface TaskDetailsProps {
+    isOpen: boolean;
+    onClose: () => void;
+    taskId: string;
+    onDeleteTask: (taskId: string) => void;
+    onMarkComplete: (taskId: string) => void;
+    onMarkPending: (taskId: string) => void;
+}
 
-// RecentTaskCard Types
 export interface RecentTaskCardProps {
-    title: string;
-    taskType: string;
-    description: string;
-    compensation: {
-        amount: number;
-        currency: string;
-    };
-    deadline: string;
-    postedDate: string;
+    status: string;
+    task: Task;
     onViewDetails: () => void;
 }
 
-// TaskList Types
-export interface TaskListProps {
-    tasks: Task[];
-    loading: boolean;
-    onSearch: (query: string) => void;
-}
 
-export interface TaskRowProps {
-    title: string;
-    taskType: string;
-    status: TaskStatus;
-    deadline: string;
-    compensation: {
-        amount: number;
-        currency: string;
-    };
-}
-
-// CreateTaskForm Types
 export interface CreateTaskFormProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
-export interface TaskFormData {
+export  interface  MoreActionsMenuProps{
+    taskId: string;
+    onDeleteTask: (taskId: string) => void;
+    onTaskUpdated?: () => void; // Optional callback to refresh task list
+}
+  export interface TaskList {
+    _id: string;
     title: string;
     taskType: string;
-    respondents: string;
-    description: string;
-    location: string;
-    amount: string;
-    currency: string;
+    status: string;
     deadline: string;
-    requirements: string;
-}
-
-// TasksHero Types
-export interface TasksHeroProps {
-    onCreateTask: () => void;
+    compensation: {
+        amount: number;
+        currency: string;
+    };
 }

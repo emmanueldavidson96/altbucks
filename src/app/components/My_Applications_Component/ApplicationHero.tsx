@@ -1,10 +1,6 @@
 import { Search, Sparkles } from 'lucide-react';
 import Link from 'next/link';
-
-interface ApplicationHeroProps {
-    searchTerm: string;
-    onSearchChange: (value: string) => void;
-}
+import {ApplicationHeroProps} from "@/app/components/My_Applications_Component/types";
 
 export function ApplicationHero({ searchTerm, onSearchChange }: ApplicationHeroProps) {
     return (

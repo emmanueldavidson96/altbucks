@@ -1,15 +1,9 @@
 import { useState } from 'react';
 import { ArrowRight, Clock, DollarSign } from 'lucide-react';
-import {TaskDetailsModal} from '../FindTasks_Components/TaskDetailsModal';
+import {StartTaskModal} from './StartTaskModal';
+import {TaskCardProps}  from './types'
 
-interface TaskCardProps {
-    taskId: string;
-    title: string;
-    type: string;
-    description: string;
-    amount: number;
-    postedTime: string;
-}
+
 
 const TaskCard = ({ taskId, title, type, description, amount, postedTime }: TaskCardProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,7 +52,7 @@ const TaskCard = ({ taskId, title, type, description, amount, postedTime }: Task
                     </button>
                 </div>
             </div>
-            <TaskDetailsModal
+            <StartTaskModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 taskId={taskId}  // Pass taskId instead of task object
