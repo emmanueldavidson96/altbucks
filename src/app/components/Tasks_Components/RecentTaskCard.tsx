@@ -1,46 +1,45 @@
 'use client';
 
 import { useState } from 'react';
-import { Calendar, DollarSign, Clock } from 'lucide-react';
+import { Calendar, DollarSign } from 'lucide-react';
 import { useTaskOperations } from '@/hooks/useTaskOperations';
-import { TaskDetailsModal } from './TasksDetailsmodal';
-import { RecentTaskCardProps } from './types';
+import { TaskDetailsModal } from './TaskDetailsModal';
 
-export const RecentTaskCard = ({ task }: RecentTaskCardProps) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const { handleViewDetails, handleTaskComplete, handleTaskPending, handleDeleteTask } = useTaskOperations();
+export function RecentTaskCard({ task }) {
+    const [showModal, setShowModal] = useState(false);
+    const { handleViewDetails, selectedTask } = useTaskOperations();
 
     const handleOpenModal = async () => {
-        const success = await handleViewDetails(task._id);
-        if (success) {
-            setIsModalOpen(true);
+        try {
+            await handleViewDetails(task._id);
+            setShowModal(true);
+        } catch (error) {
+            console.error('Error opening modal:', error);
         }
     };
 
     const handleCloseModal = () => {
-        setIsModalOpen(false);
+        setShowModal(false);
     };
 
     return (
         <>
-            <div className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-all duration-200">
-                <div className="space-y-4">
+            <div className="bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200">
+                <div className="p-5 space-y-4">
                     <div>
-                        <h3 className="text-xl font-semibold text-gray-900">
+                        <h3 className="text-lg font-semibold text-gray-900">
                             {task.title}
                         </h3>
-                        <span className="inline-block px-3 py-1 mt-2 text-xs font-medium text-blue-600 bg-blue-50 rounded-full">
+                        <span className="inline-block mt-2 px-2.5 py-1 text-xs font-medium bg-blue-50 text-blue-700 rounded-full">
                             {task.type}
                         </span>
                     </div>
 
-                    <p className="text-sm text-gray-600 line-clamp-2">
-                        {task.description}
-                    </p>
-
                     <div className="grid grid-cols-2 gap-4">
-                        <div className="flex items-center space-x-2">
-                            <DollarSign className="w-4 h-4 text-gray-400" />
+                        <div className="flex items-center gap-2">
+                            <div className="p-2 bg-blue-50 rounded-lg">
+                                <DollarSign className="w-4 h-4 text-blue-600" />
+                            </div>
                             <div>
                                 <p className="text-xs text-gray-500">Earnings</p>
                                 <p className="text-sm font-medium text-gray-900">
@@ -48,9 +47,10 @@ export const RecentTaskCard = ({ task }: RecentTaskCardProps) => {
                                 </p>
                             </div>
                         </div>
-
-                        <div className="flex items-center space-x-2">
-                            <Calendar className="w-4 h-4 text-gray-400" />
+                        <div className="flex items-center gap-2">
+                            <div className="p-2 bg-blue-50 rounded-lg">
+                                <Calendar className="w-4 h-4 text-blue-600" />
+                            </div>
                             <div>
                                 <p className="text-xs text-gray-500">Deadline</p>
                                 <p className="text-sm font-medium text-gray-900">
@@ -60,29 +60,23 @@ export const RecentTaskCard = ({ task }: RecentTaskCardProps) => {
                         </div>
                     </div>
 
-                    <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                            <Clock className="w-4 h-4 text-gray-400" />
-                            <span className="text-xs text-gray-500">Status: {task.status}</span>
-                        </div>
-                        <button
-                            onClick={handleOpenModal}
-                            className="text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-4 py-2 rounded-lg transition-colors"
-                        >
-                            View Details →
-                        </button>
-                    </div>
+                    <button
+                        onClick={handleOpenModal}
+                        className="w-full px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50
+                                hover:bg-blue-100 rounded-lg transition-colors"
+                    >
+                        View Details →
+                    </button>
                 </div>
             </div>
 
-            <TaskDetailsModal
-                isOpen={isModalOpen}
-                onClose={handleCloseModal}
-                taskId={task._id}
-                onDeleteTask={handleDeleteTask}
-                onMarkComplete={handleTaskComplete}
-                onMarkPending={handleTaskPending}
-            />
+            {showModal && selectedTask && (
+                <TaskDetailsModal
+                    isOpen={showModal}
+                    onClose={handleCloseModal}
+                    taskId={task._id}
+                />
+            )}
         </>
     );
-};
+}

@@ -4,7 +4,7 @@ import { DateFilter } from '@/app/components/FindTasks_Components/Filters/DateFi
 import { SkillsFilter } from '@/app/components/FindTasks_Components/Filters/SkillsFilter';
 import { ApplicationsFilter } from '@/app/components/FindTasks_Components/Filters/ApplicationsFilter';
 import { TaskPayFilter } from '@/app/components/FindTasks_Components/Filters/TaskPayFilter';
-import type { FilterState }from './types';
+import type { FilterState } from './types';
 
 interface TasksFilterProps {
     onFilterChange: (filters: FilterState) => void;

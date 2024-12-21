@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { ArrowLeft, Upload, PenLine, Users, MapPin, Calendar, FileText, Link } from 'lucide-react';
-import { useTaskStore } from '@/zustand/store/useTaskStore';
+import { ArrowLeft, PenLine, Users, MapPin, Calendar, FileText } from 'lucide-react';
 import { CreateTaskFormProps } from './types';
+import {useTaskOperations}  from '@/hooks/useTaskOperations';
 
 export function CreateTaskForm({ isOpen, onClose }: CreateTaskFormProps) {
     if (!isOpen) return null;
 
-    const { createTask } = useTaskStore();
+    const { createTask } = useTaskOperations();
     const [loading, setLoading] = useState(false);
     const [form, setForm] = useState({
         title: '',
@@ -21,37 +21,87 @@ export function CreateTaskForm({ isOpen, onClose }: CreateTaskFormProps) {
         currency: 'USD',
         deadline: '',
         requirements: '',
+        attachments: {
+            files: [],
+            links: []
+        }
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        const toastId = toast.loading('Creating task...');
 
-        try {
-            const taskData = {
-                title: form.title,
-                taskType: form.taskType,
-                description: form.description,
-                requirements: form.requirements,
-                location: form.location || 'remote',
-                compensation: {
-                    amount: Number(form.amount),
-                    currency: form.currency
-                },
-                deadline: form.deadline,
-                maxRespondents: Number(form.respondents.split('-')[1]) || 5
-            };
+        const taskData = {
+            title: form.title,
+            taskType: form.taskType,
+            description: form.description,
+            requirements: form.requirements,
+            location: form.location || 'remote',
+            compensation: {
+                amount: Number(form.amount),
+                currency: form.currency
+            },
+            deadline: form.deadline,
+            maxRespondents: Number(form.respondents.split('-')[1]) || 5,
+            attachments: {
+                files: form.attachments.files,
+                links: form.attachments.links
+            }
+        };
 
-            await createTask(taskData);
-            toast.success('Task created successfully');
-            onClose();
-        } catch (error) {
-            toast.error('Failed to create task');
-        } finally {
-            toast.dismiss(toastId);
-            setLoading(false);
+        await createTask(taskData);
+        onClose();
+        setLoading(false);
+    };
+
+    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const files = Array.from(e.target.files).map((file) => ({
+                url: URL.createObjectURL(file),
+                type: file.type,
+                size: file.size
+            }));
+            setForm((prevForm) => ({
+                ...prevForm,
+                attachments: {
+                    ...prevForm.attachments,
+                    files: [...prevForm.attachments.files, ...files]
+                }
+            }));
         }
+    };
+
+    const handleLinkAdd = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && e.currentTarget.value.trim() !== '') {
+            setForm((prevForm) => ({
+                ...prevForm,
+                attachments: {
+                    ...prevForm.attachments,
+                    links: [...prevForm.attachments.links, e.currentTarget.value.trim()]
+                }
+            }));
+            e.currentTarget.value = '';
+        }
+    };
+
+    const handleLinkRemove = (index: number) => {
+        setForm((prevForm) => ({
+            ...prevForm,
+            attachments: {
+                ...prevForm.attachments,
+                links: prevForm.attachments.links.filter((_, i) => i !== index)
+            }
+        }));
+    };
+
+    const handleFileRemove = (index: number) => {
+        setForm((prevForm) => ({
+            ...prevForm,
+            attachments: {
+                ...prevForm.attachments,
+                files: prevForm.attachments.files.filter((_, i) => i !== index)
+            }
+        }));
     };
 
     // Styles
@@ -209,6 +259,70 @@ export function CreateTaskForm({ isOpen, onClose }: CreateTaskFormProps) {
                             value={form.requirements}
                             onChange={(e) => setForm({ ...form, requirements: e.target.value })}
                         />
+                    </div>
+
+                    {/* Attachments */}
+                    <div className="space-y-2">
+                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                            <FileText className="w-4 h-4 text-indigo-500" />
+                            Attachments
+                        </label>
+                        <div className="space-y-2">
+                            <input
+                                type="file"
+                                className={inputStyle}
+                                multiple
+                                onChange={handleFileUpload}
+                            />
+                            {form.attachments.files.length > 0 && (
+                                <div className="space-y-2">
+                                    <p className="text-sm font-medium text-gray-700">Uploaded Files:</p>
+                                    <div className="flex flex-col gap-2">
+                                        {form.attachments.files.map((file, index) => (
+                                            <div key={index} className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <FileText className="w-4 h-4 text-indigo-500" />
+                                                    <span>{file.type.split('/')[1]}</span>
+                                                    <span className="text-gray-500">{(file.size / 1024).toFixed(2)} KB</span>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    className="text-red-500 hover:text-red-600 transition-colors"
+                                                    onClick={() => handleFileRemove(index)}
+                                                >
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                            {form.attachments.links.length > 0 && (
+                                <div className="space-y-2">
+                                    <p className="text-sm font-medium text-gray-700">Attached Links:</p>
+                                    <div className="flex flex-col gap-2">
+                                        {form.attachments.links.map((link, index) => (
+                                            <div key={index} className="flex items-center justify-between">
+                                                <span>{link}</span>
+                                                <button
+                                                    type="button"
+                                                    className="text-red-500 hover:text-red-600 transition-colors"
+                                                    onClick={() => handleLinkRemove(index)}
+                                                >
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                            <input
+                                type="text"
+                                className={`${inputStyle} px-4`}
+                                placeholder="Enter a link and press Enter to add"
+                                onKeyDown={handleLinkAdd}
+                            />
+                        </div>
                     </div>
 
                     {/* Submit Button */}

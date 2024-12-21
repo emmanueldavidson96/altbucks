@@ -1,122 +1,71 @@
-import { X, Clock } from 'lucide-react';
-import { useEffect, useState } from "react";
-import { taskService } from '@/services/api/tasks';
-import {Task} from './types'
+import { useEffect, useState } from 'react';
+import { FileSearch } from 'lucide-react';
+import { useTaskOperations } from '@/hooks/useTaskOperations';
+import FindTasksFilter from './FindTasksFilter';
+import TaskCard from './FindTasksCard';
 
-interface TaskDetailsModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    taskId: string;
-}
-
-
-
-export function StartTaskModal({ isOpen, onClose, taskId }: TaskDetailsModalProps) {
-    const [task, setTask] = useState<Task | null>(null);
-    const [loading, setLoading] = useState(false);
+const FindTasksList = () => {
+    const { fetchTasks, tasks, isLoading } = useTaskOperations();
+    const [filters, setFilters] = useState({
+        datePosted: '',
+        skills: [],
+        applications: '',
+        taskPay: '',
+    });
 
     useEffect(() => {
-        const fetchTaskDetails = async () => {
-            if (!taskId || !isOpen) return;
+        fetchTasks(filters);
+    }, [fetchTasks, filters]);
 
-            try {
-                setLoading(true);
-                const response = await taskService.getTaskById(taskId);
-                setTask(response.data);
-            } catch (error) {
-                console.error('Error fetching task:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const handleFilterChange = (newFilters) => {
+        setFilters(newFilters);
+    };
 
-        fetchTaskDetails();
-    }, [taskId, isOpen]);
-
-    if (!isOpen) return null;
+    if (isLoading) {
+        return (
+            <div className="max-w-7xl mx-auto px-4 flex gap-6">
+                <div className="w-72 max-h-screen overflow-y-auto rounded-xl border border-gray-200 shadow-sm animate-pulse">
+                    <div className="space-y-4 p-4">
+                        <div className="h-5 bg-gray-100 rounded w-1/2"></div>
+                        <div className="h-4 bg-gray-100 rounded"></div>
+                        <div className="h-4 bg-gray-100 rounded w-3/4"></div>
+                        <div className="h-4 bg-gray-100 rounded w-2/3"></div>
+                    </div>
+                </div>
+                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[1, 2, 3].map((n) => (
+                        <div
+                            key={n}
+                            className="bg-white rounded-xl border border-gray-200 p-5 animate-pulse"
+                        >
+                            {/* Skeleton loading elements */}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div className="fixed inset-0 bg-black/30 backdrop-blur-sm animate-in fade-in duration-200" onClick={onClose} />
-
-            <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden">
-                {loading ? (
-                    <div className="p-6 text-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto" />
-                    </div>
-                ) : task ? (
-                    <>
-                        <div className="bg-gradient-to-r from-blue-500/5 via-blue-500/10 to-blue-500/5 p-6">
-                            <div className="flex justify-between items-start">
-                                <div className="space-y-2">
-                                    <h2 className="text-2xl font-bold text-black ">{task.title}</h2>
-                                    <div className="flex items-center gap-2 text-gray-600">
-                                        <Clock className="w-4 h-4" />
-                                        <p className="text-sm text-black">{task.taskType}</p>
-                                    </div>
-                                </div>
-                                <button onClick={onClose} className="p-2 hover:bg-black/5 rounded-full">
-                                    <X className="w-5 h-5 text-gray-500" />
-                                </button>
-                            </div>
-                        </div>
-
-                        <div className="p-6 space-y-6">
-                            {/* Task Info */}
-                            <div className="grid grid-cols-3 gap-4">
-                                <div className="p-4 bg-gray-50 rounded-xl">
-                                    <p className="text-black text-sm mb-1">Location</p>
-                                    <p className="font-medium text-black">{task.location}</p>
-                                </div>
-                                <div className="p-4 bg-gray-50 rounded-xl">
-                                    <p className="text-black text-sm mb-1">Payment</p>
-                                    <p className="font-medium text-black">
-                                        ${task.compensation.amount} {task.compensation.currency}
-                                    </p>
-                                </div>
-                                <div className="p-4 bg-gray-50 rounded-xl">
-                                    <p className="text-black text-sm mb-1">Deadline</p>
-                                    <p className="font-medium text-red-500 text-black">
-                                        {new Date(task.deadline).toLocaleDateString()}
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* Description */}
-                            <div>
-                                <h3 className="font-medium mb-2 text-black">Description</h3>
-                                <p className="text-black">{task.description}</p>
-                            </div>
-
-                            {/* Requirements */}
-                            <div>
-                                <h3 className="font-medium mb-2 text-black">Requirements</h3>
-                                <p className="text-black whitespace-pre-line">{task.requirements}</p>
-                            </div>
-
-                            {/* Max Respondents */}
-                            <div>
-                                <h3 className="font-medium mb-2 text-black">Maximum Respondents</h3>
-                                <p className="text-black">{task.maxRespondents}</p>
-                            </div>
-                        </div>
-
-                        {/* Footer */}
-                        <div className="p-6 bg-gray-50 border-t">
-                            <button className="w-full bg-blue-600 text-white py-2.5 px-4 rounded-lg
-                                           hover:bg-blue-700 font-medium transition-colors">
-                                Start Task
-                            </button>
-                        </div>
-                    </>
-                ) : (
-                    <div className="p-6 text-center text-gray-500">
-                        No task data available
-                    </div>
-                )}
+        <div className="max-w-7xl mx-auto px-4 flex gap-6">
+            <div className="w-72 max-h-screen overflow-y-auto rounded-xl border border-gray-200 shadow-sm">
+                <FindTasksFilter onFilterChange={handleFilterChange} />
+            </div>
+            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {tasks && tasks.map((task) => (
+                    <TaskCard
+                        key={task._id}
+                        taskId={task._id}
+                        title={task.title}
+                        type={task.taskType}
+                        description={task.description}
+                        amount={task.compensation.amount}
+                        postedTime={new Date(task.postedDate).toLocaleDateString()}
+                    />
+                ))}
             </div>
         </div>
     );
-}
+};
 
-export default StartTaskModal;
+export default FindTasksList;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ArrowRight, Clock, DollarSign } from 'lucide-react';
-import {StartTaskModal} from './StartTaskModal';
+import StartTaskModal from './StartTaskModal';
 import {TaskCardProps}  from './types'
 
 

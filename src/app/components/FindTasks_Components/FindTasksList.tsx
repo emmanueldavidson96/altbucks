@@ -1,49 +1,74 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { FileSearch } from 'lucide-react';
-import { taskService } from '@/services/api/tasks';
+import { useTaskOperations } from '@/hooks/useTaskOperations';
 import TaskCard from './FindTasksCard';
 
-const FindTasksList = ({ filters }) => {
-    const [tasks, setTasks] = useState([]);
-    const [loading, setLoading] = useState(true);
+const FindTasksList = () => {
+    const { fetchAllTasks, tasks, isLoading } = useTaskOperations();
+    const [error, setError] = useState(false);
+    const [hasAttemptedLoad, setHasAttemptedLoad] = useState(false);
 
     useEffect(() => {
-        const fetchTasks = async () => {
+        const loadTasks = async () => {
             try {
-                const response = await taskService.getAllTasks();
-                setTasks(response.data);
-            } catch (error) {
-                console.error('Error fetching tasks:', error);
+                setError(false);
+                await fetchAllTasks();
+            } catch (err) {
+                console.error('Failed to load tasks:', err);
+                setError(true);
             } finally {
-                setLoading(false);
+                setHasAttemptedLoad(true);
             }
         };
 
-        fetchTasks();
-    }, [filters]);
+        if (!hasAttemptedLoad) {
+            loadTasks();
+        }
 
-    // Loading Skeleton
-    if (loading) {
+        // Cleanup function
+        return () => {
+            setHasAttemptedLoad(false);
+        };
+    }, [fetchAllTasks, hasAttemptedLoad]);
+
+    // Handle error state
+    if (error) {
         return (
-            <div className="max-w-7xl mx-auto px-4">
+            <div className="max-w-7xl mx-auto px-4 py-12">
+                <div className="text-center">
+                    <FileSearch className="w-12 h-12 text-red-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                        Unable to Load Tasks
+                    </h3>
+                    <p className="text-gray-500 mb-4">
+                        There was an error loading the tasks. Please try again.
+                    </p>
+                    <button
+                        onClick={() => setHasAttemptedLoad(false)}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    >
+                        Retry
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    // Handle loading state
+    if (isLoading || !hasAttemptedLoad) {
+        return (
+            <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {[1, 2, 3].map((n) => (
-                        <div key={n} className="bg-white rounded-xl border border-gray-200 p-5">
-                            <div className="animate-pulse space-y-4">
-                                <div className="flex justify-between">
-                                    <div className="h-5 bg-gray-100 rounded w-2/3"></div>
-                                    <div className="h-4 bg-gray-100 rounded w-1/4"></div>
-                                </div>
-                                <div className="h-4 bg-gray-100 rounded w-1/3"></div>
-                                <div className="space-y-2">
-                                    <div className="h-4 bg-gray-100 rounded"></div>
-                                    <div className="h-4 bg-gray-100 rounded w-5/6"></div>
-                                </div>
-                                <div className="flex justify-between pt-2">
-                                    <div className="h-5 bg-gray-100 rounded w-1/4"></div>
-                                    <div className="h-4 bg-gray-100 rounded w-1/3"></div>
-                                </div>
-                            </div>
+                    {[1, 2, 3].map((index) => (
+                        <div
+                            key={index}
+                            className="bg-white rounded-lg p-6 border animate-pulse"
+                        >
+                            <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+                            <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
+                            <div className="h-4 bg-gray-200 rounded w-full"></div>
                         </div>
                     ))}
                 </div>
@@ -51,28 +76,26 @@ const FindTasksList = ({ filters }) => {
         );
     }
 
-    // Empty State
-    if (tasks.length === 0) {
+    // Handle no tasks state
+    if (!tasks?.length) {
         return (
-            <div className="max-w-7xl mx-auto px-4">
-                <div className="flex flex-col items-center justify-center py-16">
-                    <div className="bg-gray-50 p-4 rounded-full mb-4">
-                        <FileSearch className="w-8 h-8 text-gray-400" />
-                    </div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-1">
+            <div className="max-w-7xl mx-auto px-4 py-12">
+                <div className="text-center">
+                    <FileSearch className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
                         No Tasks Found
                     </h3>
-                    <p className="text-gray-500 text-center">
-                        No tasks found matching your criteria. Try adjusting your filters.
+                    <p className="text-gray-500">
+                        No tasks are available at the moment.
                     </p>
                 </div>
             </div>
         );
     }
 
-    // Tasks List
+    // Render tasks
     return (
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 py-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {tasks.map((task) => (
                     <TaskCard
@@ -81,7 +104,7 @@ const FindTasksList = ({ filters }) => {
                         title={task.title}
                         type={task.taskType}
                         description={task.description}
-                        amount={task.compensation.amount}
+                        amount={task.compensation?.amount}
                         postedTime={new Date(task.postedDate).toLocaleDateString()}
                     />
                 ))}

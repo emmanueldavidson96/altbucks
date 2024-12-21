@@ -12,21 +12,26 @@ export interface Task {
     };
 }
 
-export interface TaskDetailsProps {
-    isOpen: boolean;
-    onClose: () => void;
-    taskId: string;
-    onDeleteTask: (taskId: string) => void;
-    onMarkComplete: (taskId: string) => void;
-    onMarkPending: (taskId: string) => void;
-}
+// export interface TaskDetailsProps {
+//     isOpen: boolean;
+//     onClose: () => void;
+//     taskId: string;
+//     onDeleteTask: (taskId: string) => Promise<boolean>;
+//     onMarkComplete?: (taskId: string) => Promise<boolean>;
+//     onMarkPending?: (taskId: string) => Promise<boolean>;
+// }
 
 export interface RecentTaskCardProps {
-    status: string;
-    task: Task;
-    onViewDetails: () => void;
+    task: {
+        _id: string;
+        title: string;
+        type: string;
+        description: string;
+        earnings: number;
+        deadline: string;
+        status: string;
+    };
 }
-
 
 export interface CreateTaskFormProps {
     isOpen: boolean;

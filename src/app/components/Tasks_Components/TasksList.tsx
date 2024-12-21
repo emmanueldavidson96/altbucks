@@ -3,16 +3,16 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Search, Loader2, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
 import { toast } from 'sonner';
-import { useTaskStore } from '@/zustand/store/useTaskStore';
+import { useTaskOperations } from '@/hooks/useTaskOperations';
 
 export function TasksList() {
     const [searchQuery, setSearchQuery] = useState('');
-    const { tasks, isLoading, fetchAllTasks } = useTaskStore();
+    const { tasks, isLoading, fetchAllTasks } = useTaskOperations();
 
     useEffect(() => {
         const loadTasks = async () => {
             try {
-                await fetchAllTasks();
+                await fetchAllTasks({});  // Passing empty filters object
             } catch (error) {
                 toast.error('Failed to load tasks');
             }
@@ -94,7 +94,7 @@ export function TasksList() {
                                     <div className="text-gray-500 space-y-1">
                                         <Search className="w-6 h-6 mx-auto mb-2 text-gray-400" />
                                         <p className="text-gray-600 font-medium">No tasks found</p>
-                                        <p className="text-gray-400 text-sm">Try adjusting your search terms</p>
+                                        <p className="text-gray-400 text-sm"></p>
                                     </div>
                                 </td>
                             </tr>
