@@ -1,32 +1,37 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
-import { Search, Loader2, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
+import { useEffect } from 'react';
+import { Loader2, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTaskOperations } from '@/hooks/useTaskOperations';
 
+// Define the Task interface
+interface Task {
+    _id: string;
+    title: string;
+    taskType: string;
+    status: string;
+    deadline: string;
+    compensation: {
+        currency: string;
+        amount: number;
+    };
+}
+
 export function TasksList() {
-    const [searchQuery, setSearchQuery] = useState('');
     const { tasks, isLoading, fetchAllTasks } = useTaskOperations();
 
     useEffect(() => {
         const loadTasks = async () => {
             try {
-                await fetchAllTasks({});  // Passing empty filters object
+                await fetchAllTasks();
             } catch (error) {
                 toast.error('Failed to load tasks');
+                console.error('Error loading tasks:', error);
             }
         };
         loadTasks();
     }, [fetchAllTasks]);
-
-    // Filter tasks based on search
-    const filteredTasks = useMemo(() => {
-        return tasks.filter(task =>
-            task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            task.taskType.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-    }, [tasks, searchQuery]);
 
     return (
         <div className="space-y-6">
@@ -36,18 +41,6 @@ export function TasksList() {
                     Task List
                 </h2>
                 <div className="flex items-center gap-4">
-                    {/* Search Input */}
-                    <div className="relative">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                        <input
-                            type="text"
-                            placeholder="Search tasks..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-64 pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm
-                                     focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all hover:border-gray-300"
-                        />
-                    </div>
                     {/* Filter Button */}
                     <button className="px-4 py-2.5 text-sm font-medium text-indigo-600 bg-indigo-50 border border-indigo-200
                                      rounded-lg hover:bg-indigo-100 transition-colors flex items-center gap-2">
@@ -88,18 +81,17 @@ export function TasksList() {
                                     </div>
                                 </td>
                             </tr>
-                        ) : filteredTasks.length === 0 ? (
+                        ) : !Array.isArray(tasks) || tasks.length === 0 ? (
                             <tr>
                                 <td colSpan={5} className="px-6 py-12 text-center">
                                     <div className="text-gray-500 space-y-1">
-                                        <Search className="w-6 h-6 mx-auto mb-2 text-gray-400" />
-                                        <p className="text-gray-600 font-medium">No tasks found</p>
-                                        <p className="text-gray-400 text-sm"></p>
+                                        <p className="text-gray-600 font-medium">No tasks available</p>
+                                        <p className="text-gray-400 text-sm">Tasks will appear here when available</p>
                                     </div>
                                 </td>
                             </tr>
                         ) : (
-                            filteredTasks.map((task) => (
+                            tasks.map((task: Task) => (
                                 <tr key={task._id} className="hover:bg-gray-50/50 transition-colors group">
                                     <td className="px-6 py-4">
                                             <span className="text-sm font-medium text-gray-900 group-hover:text-indigo-600 transition-colors">

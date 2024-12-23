@@ -1,113 +1,254 @@
 'use client';
 
-import { useEffect } from 'react';
-import { ArrowLeft, X, DollarSign, Calendar, MapPin } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowLeft, X, DollarSign, Calendar, MapPin, Loader2, Clock } from 'lucide-react';
 import { useTaskOperations } from '@/hooks/useTaskOperations';
+import { MoreActionsMenu } from './MoreActionsMenu';
+import { toast } from 'sonner';
 
 export function TaskDetailsModal({ isOpen, onClose, taskId }) {
-    const { selectedTask } = useTaskOperations();
+    const {
+        selectedTask,
+        handleViewDetails,
+        handleDeleteTask,
+        handleTaskComplete,
+        handleTaskPending,
+        isLoading
+    } = useTaskOperations();
+    const [isDataFetched, setIsDataFetched] = useState(false);
 
-    if (!isOpen || !selectedTask) return null;
+    // Load task details when modal opens
+    useEffect(() => {
+        async function loadTaskDetails() {
+            if (isOpen && taskId && !isDataFetched) {
+                try {
+                    await handleViewDetails(taskId);
+                    setIsDataFetched(true);
+                } catch (error) {
+                    console.error('Error loading task details:', error);
+                    toast.error('Failed to load task details');
+                    onClose();
+                }
+            }
+        }
+
+        loadTaskDetails();
+    }, [isOpen, taskId, handleViewDetails, isDataFetched]);
+
+    // Reset fetch flag when modal closes
+    useEffect(() => {
+        if (!isOpen) {
+            setIsDataFetched(false);
+        }
+    }, [isOpen]);
+
+    // Handle successful task deletion
+    const handleTaskDeleted = async () => {
+        try {
+            await handleDeleteTask(taskId);
+            onClose(); // Close modal after successful deletion
+            toast.success('Task deleted successfully');
+        } catch (error) {
+            toast.error('Failed to delete task');
+        }
+    };
+
+    if (!isOpen) return null;
+
+    if (isLoading || !selectedTask) {
+        return (
+            <div className="fixed inset-0 z-[9999] bg-zinc-900/50 backdrop-blur-sm">
+                <div className="min-h-screen flex items-center justify-center p-4">
+                    <div className="bg-white rounded-2xl p-8 flex items-center gap-3 shadow-xl">
+                        <Loader2 className="w-6 h-6 animate-spin text-violet-600" />
+                        <p className="text-zinc-600 font-medium">Loading task details...</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Format currency and date
+    const formattedAmount = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: selectedTask.compensation?.currency || 'USD'
+    }).format(selectedTask.compensation?.amount || 0);
+
+    const formattedDate = selectedTask.deadline ?
+        new Date(selectedTask.deadline).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }) : 'No deadline';
+
+    const getStatusColor = (status) => {
+        switch (status.toLowerCase()) {
+            case 'completed':
+                return 'bg-emerald-500/10 text-emerald-600 ring-1 ring-emerald-500/20';
+            case 'pending':
+                return 'bg-amber-500/10 text-amber-600 ring-1 ring-amber-500/20';
+            default:
+                return 'bg-violet-500/10 text-violet-600 ring-1 ring-violet-500/20';
+        }
+    };
 
     return (
         <div
-            className="fixed inset-0 z-[9999] overflow-y-auto bg-black/30 backdrop-blur-sm"
+            className="fixed inset-0 z-[9999] overflow-y-auto bg-zinc-900/50 backdrop-blur-sm"
             onClick={(e) => e.target === e.currentTarget && onClose()}
         >
             <div className="min-h-screen flex items-center justify-center p-4">
                 <div
-                    className="relative w-full max-w-2xl bg-white/95 backdrop-blur-md rounded-xl overflow-hidden shadow-2xl animate-slideIn"
+                    className="relative w-full max-w-3xl bg-white rounded-2xl overflow-hidden shadow-2xl"
                     onClick={e => e.stopPropagation()}
-                    style={{
-                        animation: 'slideIn 0.3s ease-out'
-                    }}
                 >
                     {/* Header */}
-                    <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6">
+                    <div className="bg-gradient-to-br from-violet-500 via-violet-600 to-fuchsia-600 p-6">
                         <div className="flex items-center justify-between mb-4">
-                            <button
-                                onClick={onClose}
-                                className="flex items-center text-white/90 hover:text-white gap-2 text-base font-medium transition-colors"
-                            >
-                                <ArrowLeft className="w-5 h-5" />
-                                Back
-                            </button>
-                            <button
-                                onClick={onClose}
-                                className="hover:rotate-90 transition-transform duration-300"
-                            >
-                                <X className="w-5 h-5 text-white" />
-                            </button>
+                            <div className="flex items-center gap-3">
+                                <button
+                                    onClick={onClose}
+                                    className="flex items-center text-white/90 hover:text-white gap-2
+                                             text-base font-medium transition-all hover:bg-white/10
+                                             px-3 py-1.5 rounded-lg"
+                                >
+                                    <ArrowLeft className="w-5 h-5" />
+                                    Back
+                                </button>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <MoreActionsMenu
+                                    taskId={taskId}
+                                    onDeleteTask={handleTaskDeleted}
+                                    onMarkComplete={handleTaskComplete}
+                                    onMarkPending={handleTaskPending}
+                                />
+                                <button
+                                    onClick={onClose}
+                                    className="p-2 hover:bg-white/10 rounded-lg transition-all
+                                             hover:rotate-90 duration-300"
+                                >
+                                    <X className="w-5 h-5 text-white" />
+                                </button>
+                            </div>
                         </div>
-                        <h2 className="text-2xl font-bold text-white mb-2">
-                            {selectedTask.title}
-                        </h2>
-                        <div className="flex gap-2">
-                            <span className="px-3 py-1 bg-white/20 text-white text-base font-medium rounded-full hover:bg-white/30 transition-colors">
-                                {selectedTask.taskType}
-                            </span>
-                            <span className="px-3 py-1 bg-white/20 text-white text-base font-medium rounded-full hover:bg-white/30 transition-colors">
-                                {selectedTask.status}
-                            </span>
+
+                        <div>
+                            <h2 className="text-2xl font-bold text-white mb-2">
+                                {selectedTask.title}
+                            </h2>
+                            <div className="flex flex-wrap gap-2">
+                                <span className="px-3 py-1.5 bg-white/10 text-white rounded-lg
+                                             font-medium border border-white/20">
+                                    {selectedTask.taskType}
+                                </span>
+                                <span className={`px-3 py-1.5 rounded-lg font-medium
+                                              ${getStatusColor(selectedTask.status)}`}>
+                                    {selectedTask.status}
+                                </span>
+                            </div>
                         </div>
                     </div>
 
                     {/* Content */}
-                    <div className="p-6 space-y-8">
-                        {/* Info Cards */}
-                        <div className="grid grid-cols-3 gap-4">
-                            {[
-                                { icon: DollarSign, label: 'Payment', value: `$${selectedTask.compensation?.amount}` },
-                                { icon: Calendar, label: 'Deadline', value: new Date(selectedTask.deadline).toLocaleDateString() },
-                                { icon: MapPin, label: 'Location', value: selectedTask.location }
-                            ].map((item, index) => (
-                                <div key={index} className="group bg-white rounded-lg border border-gray-200 p-4 hover:border-blue-300 hover:shadow-lg transition-all duration-300">
-                                    <div className="flex items-center gap-2 text-gray-700 mb-2 text-base font-medium">
-                                        <item.icon className="w-5 h-5 group-hover:text-blue-600 transition-colors" />
-                                        {item.label}
+                    <div className="p-6 bg-zinc-50/50 max-h-[calc(100vh-200px)] overflow-y-auto">
+                        <div className="space-y-8">
+                            {/* Info Cards */}
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                {[
+                                    {
+                                        icon: DollarSign,
+                                        label: 'Payment',
+                                        value: formattedAmount,
+                                        color: 'text-emerald-600 bg-emerald-50 ring-1 ring-emerald-100'
+                                    },
+                                    {
+                                        icon: Calendar,
+                                        label: 'Deadline',
+                                        value: formattedDate,
+                                        color: 'text-violet-600 bg-violet-50 ring-1 ring-violet-100'
+                                    },
+                                    {
+                                        icon: MapPin,
+                                        label: 'Location',
+                                        value: selectedTask.location || 'Remote',
+                                        color: 'text-fuchsia-600 bg-fuchsia-50 ring-1 ring-fuchsia-100'
+                                    }
+                                ].map((item, index) => (
+                                    <div key={index}
+                                         className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md
+                                                  transition-all duration-300">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <div className={`p-2 rounded-lg ${item.color}`}>
+                                                <item.icon className="w-5 h-5" />
+                                            </div>
+                                            <p className="text-sm font-medium text-zinc-600">
+                                                {item.label}
+                                            </p>
+                                        </div>
+                                        <p className="text-lg font-semibold text-zinc-900 line-clamp-1">
+                                            {item.value}
+                                        </p>
                                     </div>
-                                    <p className="text-xl font-bold text-gray-900">{item.value}</p>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Description & Requirements */}
-                        <div className="space-y-6">
-                            <div className="hover:bg-gray-50 p-4 rounded-lg transition-colors">
-                                <h3 className="text-lg font-bold text-gray-900 mb-3">Description</h3>
-                                <p className="text-base text-gray-700 leading-relaxed">{selectedTask.description}</p>
+                                ))}
                             </div>
 
-                            <div className="bg-blue-50/50 rounded-lg p-6 hover:bg-blue-50 transition-colors">
-                                <h3 className="text-lg font-bold text-gray-900 mb-3">Requirements</h3>
-                                <div className="space-y-4 text-base text-gray-700">
-                                    {typeof selectedTask.requirements === 'string' ? (
-                                        <p>{selectedTask.requirements}</p>
-                                    ) : selectedTask.requirements ? (
-                                        <div className="space-y-4">
-                                            {selectedTask.requirements.instructions && (
-                                                <div className="hover:translate-x-1 transition-transform">
-                                                    <p className="font-semibold mb-2">Instructions</p>
-                                                    <ul className="list-disc pl-5 space-y-1">
-                                                        {[selectedTask.requirements.instructions].flat().map((item, i) => (
-                                                            <li key={i}>{item}</li>
-                                                        ))}
-                                                    </ul>
-                                                </div>
-                                            )}
-                                            {selectedTask.requirements.criteria && (
-                                                <div className="hover:translate-x-1 transition-transform">
-                                                    <p className="font-semibold mb-2">Completion Criteria</p>
-                                                    <ul className="list-disc pl-5 space-y-1">
-                                                        {[selectedTask.requirements.criteria].flat().map((item, i) => (
-                                                            <li key={i}>{item}</li>
-                                                        ))}
-                                                    </ul>
+                            {/* Description & Requirements */}
+                            <div className="grid md:grid-cols-2 gap-6">
+                                {selectedTask.description && (
+                                    <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md
+                                                transition-all duration-300 border border-zinc-100">
+                                        <h3 className="text-lg font-bold text-zinc-900 mb-4">Description</h3>
+                                        <p className="text-zinc-600 leading-relaxed">
+                                            {selectedTask.description}
+                                        </p>
+                                    </div>
+                                )}
+
+                                {selectedTask.requirements && (
+                                    <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md
+                                                transition-all duration-300 border border-zinc-100">
+                                        <h3 className="text-lg font-bold text-zinc-900 mb-4">Requirements</h3>
+                                        <div className="space-y-4 text-zinc-600">
+                                            {typeof selectedTask.requirements === 'string' ? (
+                                                <p>{selectedTask.requirements}</p>
+                                            ) : (
+                                                <div className="space-y-6">
+                                                    {selectedTask.requirements.instructions && (
+                                                        <div className="group">
+                                                            <p className="font-semibold mb-2 text-zinc-900
+                                                                      group-hover:text-violet-600 transition-colors">
+                                                                Instructions
+                                                            </p>
+                                                            <ul className="list-disc pl-5 space-y-2 marker:text-violet-500">
+                                                                {[selectedTask.requirements.instructions].flat().map((item, i) => (
+                                                                    <li key={i} className="group-hover:text-zinc-900 transition-colors">
+                                                                        {item}
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                    )}
+                                                    {selectedTask.requirements.criteria && (
+                                                        <div className="group">
+                                                            <p className="font-semibold mb-2 text-zinc-900
+                                                                      group-hover:text-violet-600 transition-colors">
+                                                                Completion Criteria
+                                                            </p>
+                                                            <ul className="list-disc pl-5 space-y-2 marker:text-violet-500">
+                                                                {[selectedTask.requirements.criteria].flat().map((item, i) => (
+                                                                    <li key={i} className="group-hover:text-zinc-900 transition-colors">
+                                                                        {item}
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             )}
                                         </div>
-                                    ) : null}
-                                </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
