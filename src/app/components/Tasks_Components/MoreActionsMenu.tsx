@@ -1,20 +1,15 @@
-
 'use client';
 
 import { useState } from 'react';
 import { Trash2, CheckCircle, Clock, Loader2, MoreHorizontal, Eye } from 'lucide-react';
-import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { useTaskOperations } from '@/hooks/useTaskOperations';
 
-export function MoreActionsMenu({
-                                    taskId,
-                                    onDeleteTask,
-                                    onMarkComplete,
-                                    onMarkPending
-                                }) {
+export function MoreActionsMenu({ taskId }) {
     const [showActions, setShowActions] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
     const router = useRouter();
+    const { handleMarkComplete, handleMarkPending, handleDeleteTask } = useTaskOperations();
 
     const handleViewTask = () => {
         router.push(`/tasks/${taskId}`);
@@ -23,19 +18,14 @@ export function MoreActionsMenu({
 
     const handleStatusUpdate = async (action) => {
         setIsUpdating(true);
-        const toastId = toast.loading(`Marking task as ${action}...`);
-
         try {
             if (action === 'complete') {
-                await onMarkComplete(taskId);
-                toast.success('Task marked as complete', { id: toastId });
+                await handleMarkComplete(taskId);
             } else {
-                await onMarkPending(taskId);
-                toast.success('Task marked as pending', { id: toastId });
+                await handleMarkPending(taskId);
             }
             setShowActions(false);
         } catch (error) {
-            toast.error(`Failed to update task status`, { id: toastId });
             console.error(`Error updating status to ${action}:`, error);
         } finally {
             setIsUpdating(false);
@@ -44,14 +34,10 @@ export function MoreActionsMenu({
 
     const handleDelete = async () => {
         setIsUpdating(true);
-        const toastId = toast.loading('Deleting task...');
-
         try {
-            await onDeleteTask(taskId);
-            toast.success('Task deleted successfully', { id: toastId });
+            await handleDeleteTask(taskId);
             setShowActions(false);
         } catch (error) {
-            toast.error(`Failed to delete task`, { id: toastId });
             console.error('Error deleting task:', error);
         } finally {
             setIsUpdating(false);
