@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { memo, useCallback } from 'react';
 import { Calendar, DollarSign } from 'lucide-react';
-import { useTaskOperations } from '@/hooks/useTaskOperations';
 import { TaskDetailsModal } from './TaskDetailsModal';
-import { toast } from 'sonner';
+import { useState } from 'react';
+import { useTaskOperations } from '@/hooks/useTaskOperations';
 
 interface Task {
     _id: string;
@@ -16,40 +16,43 @@ interface Task {
         currency: string;
         amount: number;
     };
+    description?: string;
+    requirements?: {
+        instructions?: string[];
+        criteria?: string[];
+    };
+    location?: string;
 }
 
 interface RecentTaskCardProps {
     task: Task;
 }
 
-export function RecentTaskCard({ task }: RecentTaskCardProps) {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+export const RecentTaskCard = memo(function RecentTaskCard({ task }: RecentTaskCardProps) {
+    const [modalOpen, setModalOpen] = useState(false);
     const { handleViewDetails } = useTaskOperations();
 
-    const handleOpenModal = async () => {
-        try {
-            await handleViewDetails(task._id);
-            setIsModalOpen(true);
-        } catch (error) {
-            console.error('Error opening modal:', error);
-            toast.error('Failed to load task details');
-        }
-    };
 
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
+    const handleOpenModal = useCallback(() => {
+        setModalOpen(true);
+    }, []);
 
-    // Format amount
+
+    const handleCloseModal = useCallback(() => {
+        setModalOpen(false);
+    }, []);
+
     const formattedAmount = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: task.compensation?.currency || 'USD'
     }).format(task.compensation?.amount || 0);
 
-    // Format date
     const formattedDate = task.deadline ?
-        new Date(task.deadline).toLocaleDateString() :
-        'No deadline';
+        new Date(task.deadline).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        }) : 'No deadline';
 
     return (
         <>
@@ -60,20 +63,18 @@ export function RecentTaskCard({ task }: RecentTaskCardProps) {
                             {task.title}
                         </h3>
                         <span className="inline-block mt-2 px-2.5 py-1 text-xs font-medium bg-blue-50 text-blue-700 rounded-full capitalize">
-                            {task.taskType}
-                        </span>
+                           {task.taskType}
+                       </span>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex items-center gap-2">
-                            <div className="p-2 bg-blue-50 rounded-lg">
-                                <DollarSign className="w-4 h-4 text-blue-600" />
+                            <div className="p-2 bg-emerald-50 rounded-lg">
+                                <DollarSign className="w-4 h-4 text-emerald-600" />
                             </div>
                             <div>
-                                <p className="text-xs text-gray-500">Earnings</p>
-                                <p className="text-sm font-medium text-gray-900">
-                                    {formattedAmount}
-                                </p>
+                                <p className="text-xs text-gray-500">Payment</p>
+                                <p className="text-sm font-medium text-gray-900">{formattedAmount}</p>
                             </div>
                         </div>
 
@@ -83,28 +84,32 @@ export function RecentTaskCard({ task }: RecentTaskCardProps) {
                             </div>
                             <div>
                                 <p className="text-xs text-gray-500">Deadline</p>
-                                <p className="text-sm font-medium text-gray-900">
-                                    {formattedDate}
-                                </p>
+                                <p className="text-sm font-medium text-gray-900">{formattedDate}</p>
                             </div>
                         </div>
                     </div>
 
                     <button
                         onClick={handleOpenModal}
-                        className="w-full px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50
-                                hover:bg-blue-100 rounded-lg transition-colors"
+                        className="w-full px-4 py-2.5 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors flex items-center justify-center gap-2 group"
                     >
-                        View Details →
+                        View Details
+                        <span className="text-lg transition-transform group-hover:translate-x-0.5">→</span>
                     </button>
                 </div>
             </div>
 
-            <TaskDetailsModal
-                isOpen={isModalOpen}
-                onClose={handleCloseModal}
-                taskId={task._id}
-            />
+            {modalOpen && (
+                <div className="modal-container">
+                    <TaskDetailsModal
+                        isOpen={modalOpen}
+                        onClose={handleCloseModal}
+                        taskId={task._id}
+                    />
+                </div>
+            )}
         </>
     );
-}
+});
+
+RecentTaskCard.displayName = 'RecentTaskCard';

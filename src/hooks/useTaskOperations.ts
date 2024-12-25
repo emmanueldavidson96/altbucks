@@ -4,78 +4,79 @@ import { useCallback, useRef } from 'react';
 import { toast } from 'sonner';
 import useTaskStore from '@/zustand/store/useTaskStore';
 
-export const useTaskOperations = () => {
-    const {
-        tasks,
-        recentTasks,
-        selectedTask,
-        isLoading,
-        fetchAllTasks: fetchAllTasksFromStore,
-        fetchRecentTasks,
-        fetchTaskById,
-        deleteTask: deleteTaskFromStore,
-        markTaskComplete: markTaskCompleteFromStore,
-        markTaskPending: markTaskPendingFromStore,
-        setSelectedTask,
-        createTask: createTaskFromStore
-    } = useTaskStore();
+type FetchStatus = {
+    promise: Promise<any>;
+    controller: AbortController;
+};
 
-    // Use ref to track which tasks we've already fetched
-    const fetchedTasksRef = useRef(new Set());
+export const useTaskOperations = () => {
+    const store = useTaskStore();
+    const fetchMap = useRef<Map<string, FetchStatus>>(new Map());
 
     const createTask = useCallback(async (taskData) => {
         try {
-            const createdTask = await createTaskFromStore(taskData);
+            await  store.createTask(taskData);
             await fetchRecentTasks();
-            return createdTask;
         } catch (error) {
             console.error('Task creation error:', error);
             throw error;
         }
-    }, [createTaskFromStore, fetchRecentTasks]);
+    }, [store.createTask]);
 
-    const handleViewDetails = useCallback(async (taskId) => {
-        // If we're already viewing this task, don't fetch again
-        if (selectedTask?._id === taskId) {
-            return true;
+
+    const fetchAllTasks = useCallback(async () => {
+        try {
+            await store.fetchAllTasks();
+        } catch (error) {
+            toast.error('Failed to load tasks', {
+                description: error instanceof Error ? error.message : 'Unknown error'
+            });
+            throw error;
+        }
+    }, [store.fetchAllTasks]);
+
+    const fetchRecentTasks = useCallback(async () => {
+        try {
+            await store.fetchRecentTasks();
+            toast.success('Recent tasks loaded successfully');
+        } catch (error) {
+            toast.error('Failed to load recent tasks', {
+                description: error instanceof Error ? error.message : 'Unknown error'
+            });
+            throw error;
+        }
+    }, [store.fetchRecentTasks]);
+
+    const handleViewDetails = useCallback(async (taskId: string) => {
+        console.log("Starting view details for:", taskId);
+        if (fetchMap.current.has(taskId)) {
+            fetchMap.current.get(taskId)?.controller.abort();
+            fetchMap.current.delete(taskId);
         }
 
-        // If task is already in recent tasks or tasks list, use that data
-        const existingTask = recentTasks.find(task => task._id === taskId) ||
-            tasks.find(task => task._id === taskId);
+        const controller = new AbortController();
 
-        if (existingTask) {
-            setSelectedTask(existingTask);
+        try {
+            const promise = store.fetchTaskById(taskId);
+            fetchMap.current.set(taskId, { promise, controller });
+
+            await promise;
             return true;
-        }
-
-        // If we haven't fetched this task before, fetch it
-        if (!fetchedTasksRef.current.has(taskId)) {
-            const toastId = toast.loading('Loading task details...');
-            try {
-                await fetchTaskById(taskId);
-                fetchedTasksRef.current.add(taskId);
-                toast.success('Task details loaded', { id: toastId });
-                return true;
-            } catch (error) {
-                toast.error('Failed to load task details', {
-                    id: toastId,
-                    description: error instanceof Error ? error.message : 'Unknown error'
-                });
-                return false;
+        } catch (error) {
+            if (!controller.signal.aborted) {
+                console.error('Error viewing task details:', error);
+                toast.error('Failed to load task details');
             }
+            return false;
+        } finally {
+            fetchMap.current.delete(taskId);
         }
+    }, [store]);
 
-        return true;
-    }, [fetchTaskById, selectedTask?._id, recentTasks, tasks, setSelectedTask]);
-
-    const handleDeleteTask = useCallback(async (taskId) => {
+    const handleDeleteTask = useCallback(async (taskId: string) => {
         const toastId = toast.loading('Deleting task...');
         try {
-            await deleteTaskFromStore(taskId);
-            await fetchRecentTasks();
-            // Remove from fetched tasks cache
-            fetchedTasksRef.current.delete(taskId);
+            await store.deleteTask(taskId);
             toast.success('Task deleted successfully', { id: toastId });
             return true;
         } catch (error) {
@@ -85,66 +86,51 @@ export const useTaskOperations = () => {
             });
             return false;
         }
-    }, [deleteTaskFromStore, fetchRecentTasks]);
+    }, [store.deleteTask]);
 
-    const handleTaskComplete = useCallback(async (taskId) => {
+    const handleMarkComplete = useCallback(async (taskId: string) => {
         const toastId = toast.loading('Marking task as complete...');
         try {
-            const updatedTask = await markTaskCompleteFromStore(taskId);
-            await fetchRecentTasks();
-            // Update selected task if it's the one being modified
-            if (selectedTask?._id === taskId) {
-                setSelectedTask(updatedTask);
-            }
+            await store.markTaskComplete(taskId);
             toast.success('Task marked as complete', { id: toastId });
+            await fetchRecentTasks();
             return true;
         } catch (error) {
-            toast.error('Failed to update task', {
+            toast.error('Failed to mark task complete', {
                 id: toastId,
                 description: error instanceof Error ? error.message : 'Unknown error'
             });
             return false;
         }
-    }, [markTaskCompleteFromStore, fetchRecentTasks, selectedTask, setSelectedTask]);
+    }, [store.markTaskComplete, fetchRecentTasks]);
 
-    const handleTaskPending = useCallback(async (taskId) => {
+    const handleMarkPending = useCallback(async (taskId: string) => {
         const toastId = toast.loading('Marking task as pending...');
         try {
-            const updatedTask = await markTaskPendingFromStore(taskId);
-            await fetchRecentTasks();
-            // Update selected task if it's the one being modified
-            if (selectedTask?._id === taskId) {
-                setSelectedTask(updatedTask);
-            }
+            await store.markTaskPending(taskId);
             toast.success('Task marked as pending', { id: toastId });
+            await fetchRecentTasks();
             return true;
         } catch (error) {
-            toast.error('Failed to update task', {
+            toast.error('Failed to mark task pending', {
                 id: toastId,
                 description: error instanceof Error ? error.message : 'Unknown error'
             });
             return false;
         }
-    }, [markTaskPendingFromStore, fetchRecentTasks, selectedTask, setSelectedTask]);
-
-    const clearSelectedTask = useCallback(() => {
-        setSelectedTask(null);
-    }, [setSelectedTask]);
+    }, [store.markTaskPending, fetchRecentTasks]);
 
     return {
-        // State
-        tasks,
-        recentTasks,
-        selectedTask,
-        isLoading,
-        // Operations
+        tasks: store.tasks,
+        recentTasks: store.recentTasks,
+        selectedTask: store.selectedTask,
+        isLoading: store.isLoading,
         createTask,
-        fetchAllTasks: fetchAllTasksFromStore,
+        fetchAllTasks,
         fetchRecentTasks,
         handleViewDetails,
         handleDeleteTask,
-        handleTaskComplete,
-        handleTaskPending,
-        clearSelectedTask
+        handleMarkComplete,
+        handleMarkPending
     };
 };

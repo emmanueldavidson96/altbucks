@@ -1,58 +1,55 @@
-"use client";
-
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FileSearch } from 'lucide-react';
 import { useTaskOperations } from '@/hooks/useTaskOperations';
 import TaskCard from './FindTasksCard';
 
-interface Task {
-    _id: string;
-    title: string;
-    taskType: string;
-    description: string;
-    compensation: {
-        amount: number;
-    };
-    postedDate: string;
-}
-
-const FindTasksList = (): JSX.Element => {
-    const { handleFetchAllTasks, tasks, isLoading } = useTaskOperations();
+const FindTasksList = ({ filters }) => {
+    const [pageData, setPageData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const { tasks, fetchAllTasks } = useTaskOperations();
+    const PER_PAGE = 3;
 
     useEffect(() => {
-    }, [handleFetchAllTasks]);
+        let mounted = true;
 
-    if (isLoading) {
-        return (
-            <div className="max-w-7xl mx-auto px-4">
-                {/* Loading skeleton */}
-            </div>
-        );
+        const loadInitialData = async () => {
+            try {
+                setLoading(true);
+                await fetchAllTasks();
+
+                if (!mounted) return;
+
+                if (tasks?.length) {
+                    setPageData(tasks.slice(0, PER_PAGE));
+                }
+            } catch (error) {
+                console.error('Failed to load tasks:', error);
+            } finally {
+                if (mounted) setLoading(false);
+            }
+        };
+
+        loadInitialData();
+        return () => { mounted = false; };
+    }, [filters, fetchAllTasks]);
+
+    if (loading) {
+        return <div className="w-full h-32 bg-gray-100 animate-pulse rounded"/>;
     }
 
-    if (!tasks || tasks.length === 0) {
+    if (!pageData.length) {
         return (
-            <div className="max-w-7xl mx-auto px-4">
-                <div className="flex-1 flex flex-col items-center justify-center py-16">
-                    <div className="bg-gray-50 p-4 rounded-full mb-4">
-                        <FileSearch className="w-8 h-8 text-gray-400" />
-                    </div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-1">
-                        No Tasks Found
-                    </h3>
-                    <p className="text-gray-500 text-center">
-                        No tasks found matching your criteria. Try adjusting your
-                        filters.
-                    </p>
-                </div>
+            <div className="text-center py-8">
+                <FileSearch className="w-8 h-8 mx-auto text-gray-400"/>
+                <p>No tasks found</p>
             </div>
         );
     }
 
     return (
-        <div className="max-w-7xl mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {tasks.map((task: Task) => (
+        <div className="space-y-4">
+            <div className="grid gap-4">
+                {pageData.map(task => (
                     <TaskCard
                         key={task._id}
                         taskId={task._id}
@@ -60,7 +57,7 @@ const FindTasksList = (): JSX.Element => {
                         type={task.taskType}
                         description={task.description}
                         amount={task.compensation.amount}
-                        postedTime={new Date(task.postedDate).toLocaleDateString()}
+                        postedTime={new Date(task.createdAt).toLocaleDateString()}
                     />
                 ))}
             </div>

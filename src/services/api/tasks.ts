@@ -9,6 +9,7 @@ interface Task {
     taskType: string;
     status: string;
     deadline: string;
+    createdAt: string;
     compensation: {
         currency: string;
         amount: number;
@@ -120,11 +121,12 @@ export const taskService = {
     getRecentTasks: async (): Promise<ApiResponse<Task[]>> => {
         try {
             console.log('Fetching recent tasks');
-            const response = await fetch(`${API_BASE_URL}/api/tasks/recent`, {
+            // Change the endpoint to get all tasks sorted by creation date
+            const response = await fetch(`${API_BASE_URL}/api/tasks?sort=createdAt&limit=10`, {
                 headers: {
                     'Accept': 'application/json',
                 },
-                signal: AbortSignal.timeout(5000) // 5 second timeout
+                signal: AbortSignal.timeout(5000)
             });
 
             if (!response.ok) {
@@ -133,10 +135,16 @@ export const taskService = {
 
             const result = await response.json();
             const tasks = (Array.isArray(result) ? result : result.data || [])
-                .map(normalizeTask);
+                .map(normalizeTask)
+                // Sort by creation date if available, otherwise use ID as fallback
+                .sort((a, b) => {
+                    const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);
+                    const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0);
+                    return dateB.getTime() - dateA.getTime();
+                });
 
             console.log('Recent tasks fetched:', tasks);
-            return { data: tasks };
+            return { data: tasks.slice(0, 10) }; // Limit to 10 most recent tasks
         } catch (error) {
             console.error('Error fetching recent tasks:', error);
             throw error;
@@ -154,8 +162,7 @@ export const taskService = {
             const response = await fetch(`${API_BASE_URL}/api/tasks/${id}`, {
                 headers: {
                     'Accept': 'application/json',
-                },
-                signal: AbortSignal.timeout(5000)
+                }
             });
 
             if (!response.ok) {

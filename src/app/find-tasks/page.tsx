@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import Header from '../components/Dashboard_Components/Header'
+import { useState, useCallback } from 'react';
+import Header from '../components/Dashboard_Components/Header';
 import FindTasksHero from '../components/FindTasks_Components/FindTasksHero';
 import FindTasksFilter from '../components/FindTasks_Components/FindTasksFilter';
 import FindTasksList from '../components/FindTasks_Components/FindTasksList';
@@ -15,14 +15,22 @@ const TasksPage = () => {
         taskPay: ''
     });
 
+    const handleFilterChange = useCallback((newFilters: FilterState) => {
+        setFilters(newFilters);
+    }, []);
+
     return (
-        <div className="bg-white min-h-screen overflow-hidden">
-            <Header/>
+        <div className="bg-white min-h-screen">
+            <Header />
             <FindTasksHero />
             <div className="container mx-auto px-6 py-8">
-                <div className="flex gap-8">
-                    <FindTasksFilter onFilterChange={setFilters} />
-                    <FindTasksList filters={filters} />
+                <div className="flex flex-col md:flex-row gap-6">
+                    <aside className="w-full md:w-64 flex-shrink-0">
+                        <FindTasksFilter onFilterChange={handleFilterChange} />
+                    </aside>
+                    <main className="flex-1">
+                        <FindTasksList filters={filters} />
+                    </main>
                 </div>
             </div>
         </div>

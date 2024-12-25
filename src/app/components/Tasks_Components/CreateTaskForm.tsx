@@ -9,7 +9,7 @@ export function CreateTaskForm({ isOpen, onClose }) {
     // Early return with client-side check to prevent hydration mismatch
     if (typeof window === 'undefined' || !isOpen) return null;
 
-    const { createTask } = useTaskOperations();
+    const { createTask, fetchRecentTasks } = useTaskOperations();
     const [loading, setLoading] = useState(false);
     const [form, setForm] = useState({
         title: '',
@@ -31,8 +31,6 @@ export function CreateTaskForm({ isOpen, onClose }) {
         e.preventDefault();
         setLoading(true);
 
-        const toastId = toast.loading('Creating task...');
-
         try {
             const taskData = {
                 title: form.title,
@@ -50,10 +48,7 @@ export function CreateTaskForm({ isOpen, onClose }) {
             };
 
             await createTask(taskData);
-            toast.success('Task created successfully', {
-                id: toastId,
-                description: `${taskData.title} has been created.`
-            });
+            await fetchRecentTasks();
             onClose();
         } catch (error) {
             console.error('Error creating task:', error);
@@ -64,7 +59,7 @@ export function CreateTaskForm({ isOpen, onClose }) {
         } finally {
             setLoading(false);
         }
-    }, [form, createTask, onClose]);
+    }, [form, createTask,fetchRecentTasks, onClose]);
 
     const handleFileUpload = useCallback((e) => {
         if (e.target.files) {

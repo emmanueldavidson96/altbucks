@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
-import { Loader2, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Loader2, SlidersHorizontal, ArrowUpDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTaskOperations } from '@/hooks/useTaskOperations';
 
-// Define the Task interface
 interface Task {
     _id: string;
     title: string;
@@ -18,20 +17,50 @@ interface Task {
     };
 }
 
+interface PaginationInfo {
+    currentPage: number;
+    totalPages: number;
+    totalTasks: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+}
+
 export function TasksList() {
+    const [page, setPage] = useState(1);
+    const [pageSize] = useState(10);
+    const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
+        currentPage: 1,
+        totalPages: 1,
+        totalTasks: 0,
+        hasNextPage: false,
+        hasPrevPage: false
+    });
+
     const { tasks, isLoading, fetchAllTasks } = useTaskOperations();
 
     useEffect(() => {
         const loadTasks = async () => {
             try {
-                await fetchAllTasks();
+                await fetchAllTasks(page, pageSize);
             } catch (error) {
                 toast.error('Failed to load tasks');
                 console.error('Error loading tasks:', error);
             }
         };
         loadTasks();
-    }, [fetchAllTasks]);
+    }, [fetchAllTasks, page, pageSize]);
+
+    const handlePreviousPage = () => {
+        if (paginationInfo.hasPrevPage) {
+            setPage(current => current - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if (paginationInfo.hasNextPage) {
+            setPage(current => current + 1);
+        }
+    };
 
     return (
         <div className="space-y-6">
@@ -41,7 +70,6 @@ export function TasksList() {
                     Task List
                 </h2>
                 <div className="flex items-center gap-4">
-                    {/* Filter Button */}
                     <button className="px-4 py-2.5 text-sm font-medium text-indigo-600 bg-indigo-50 border border-indigo-200
                                      rounded-lg hover:bg-indigo-100 transition-colors flex items-center gap-2">
                         <SlidersHorizontal className="w-4 h-4" />
@@ -54,7 +82,6 @@ export function TasksList() {
             <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
                     <table className="w-full">
-                        {/* Table Header */}
                         <thead>
                         <tr className="border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
                             <th className="text-left px-6 py-4 text-xs font-medium text-gray-600 uppercase tracking-wider">
@@ -69,8 +96,6 @@ export function TasksList() {
                             <th className="text-left px-6 py-4 text-xs font-medium text-gray-600 uppercase tracking-wider">Payment</th>
                         </tr>
                         </thead>
-
-                        {/* Table Body */}
                         <tbody className="divide-y divide-gray-200">
                         {isLoading ? (
                             <tr>
@@ -81,7 +106,7 @@ export function TasksList() {
                                     </div>
                                 </td>
                             </tr>
-                        ) : !Array.isArray(tasks) || tasks.length === 0 ? (
+                        ) : !tasks || tasks.length === 0 ? (
                             <tr>
                                 <td colSpan={5} className="px-6 py-12 text-center">
                                     <div className="text-gray-500 space-y-1">
@@ -128,6 +153,35 @@ export function TasksList() {
                         </tbody>
                     </table>
                 </div>
+
+                {/* Pagination Controls */}
+                {!isLoading && tasks && tasks.length > 0 && (
+                    <div className="px-6 py-4 border-t border-gray-200 bg-gray-50/50">
+                        <div className="flex items-center justify-between">
+                            <p className="text-sm text-gray-600">
+                                Page {paginationInfo.currentPage} of {paginationInfo.totalPages} ({paginationInfo.totalTasks} total tasks)
+                            </p>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={handlePreviousPage}
+                                    disabled={!paginationInfo.hasPrevPage}
+                                    className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50
+                                             disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    <ChevronLeft className="w-4 h-4" />
+                                </button>
+                                <button
+                                    onClick={handleNextPage}
+                                    disabled={!paginationInfo.hasNextPage}
+                                    className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50
+                                             disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    <ChevronRight className="w-4 h-4" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

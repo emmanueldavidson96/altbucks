@@ -1,61 +1,27 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { ArrowLeft, X, DollarSign, Calendar, MapPin, Loader2, Clock } from 'lucide-react';
+import { ArrowLeft, X, DollarSign, Calendar, MapPin, Loader2 } from 'lucide-react';
 import { useTaskOperations } from '@/hooks/useTaskOperations';
 import { MoreActionsMenu } from './MoreActionsMenu';
-import { toast } from 'sonner';
+import { useEffect } from 'react';
 
-export function TaskDetailsModal({ isOpen, onClose, taskId }) {
-    const {
-        selectedTask,
-        handleViewDetails,
-        handleDeleteTask,
-        handleTaskComplete,
-        handleTaskPending,
-        isLoading
-    } = useTaskOperations();
-    const [isDataFetched, setIsDataFetched] = useState(false);
+interface TaskDetailsModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    taskId: string;
+}
 
-    // Load task details when modal opens
+export function TaskDetailsModal({ isOpen, onClose, taskId }: TaskDetailsModalProps) {
+    const { selectedTask, handleViewDetails } = useTaskOperations();
+
     useEffect(() => {
-        async function loadTaskDetails() {
-            if (isOpen && taskId && !isDataFetched) {
-                try {
-                    await handleViewDetails(taskId);
-                    setIsDataFetched(true);
-                } catch (error) {
-                    console.error('Error loading task details:', error);
-                    toast.error('Failed to load task details');
-                    onClose();
-                }
-            }
+        if (isOpen && taskId && !selectedTask) {
+            handleViewDetails(taskId);
         }
-
-        loadTaskDetails();
-    }, [isOpen, taskId, handleViewDetails, isDataFetched]);
-
-    // Reset fetch flag when modal closes
-    useEffect(() => {
-        if (!isOpen) {
-            setIsDataFetched(false);
-        }
-    }, [isOpen]);
-
-    // Handle successful task deletion
-    const handleTaskDeleted = async () => {
-        try {
-            await handleDeleteTask(taskId);
-            onClose(); // Close modal after successful deletion
-            toast.success('Task deleted successfully');
-        } catch (error) {
-            toast.error('Failed to delete task');
-        }
-    };
-
+    }, [isOpen, taskId, handleViewDetails, selectedTask]);
     if (!isOpen) return null;
 
-    if (isLoading || !selectedTask) {
+    if (!selectedTask) {
         return (
             <div className="fixed inset-0 z-[9999] bg-zinc-900/50 backdrop-blur-sm">
                 <div className="min-h-screen flex items-center justify-center p-4">
@@ -68,7 +34,6 @@ export function TaskDetailsModal({ isOpen, onClose, taskId }) {
         );
     }
 
-    // Format currency and date
     const formattedAmount = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: selectedTask.compensation?.currency || 'USD'
@@ -81,7 +46,7 @@ export function TaskDetailsModal({ isOpen, onClose, taskId }) {
             day: 'numeric'
         }) : 'No deadline';
 
-    const getStatusColor = (status) => {
+    const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
             case 'completed':
                 return 'bg-emerald-500/10 text-emerald-600 ring-1 ring-emerald-500/20';
@@ -91,7 +56,6 @@ export function TaskDetailsModal({ isOpen, onClose, taskId }) {
                 return 'bg-violet-500/10 text-violet-600 ring-1 ring-violet-500/20';
         }
     };
-
     return (
         <div
             className="fixed inset-0 z-[9999] overflow-y-auto bg-zinc-900/50 backdrop-blur-sm"
@@ -105,24 +69,17 @@ export function TaskDetailsModal({ isOpen, onClose, taskId }) {
                     {/* Header */}
                     <div className="bg-gradient-to-br from-violet-500 via-violet-600 to-fuchsia-600 p-6">
                         <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-3">
-                                <button
-                                    onClick={onClose}
-                                    className="flex items-center text-white/90 hover:text-white gap-2
-                                             text-base font-medium transition-all hover:bg-white/10
-                                             px-3 py-1.5 rounded-lg"
-                                >
-                                    <ArrowLeft className="w-5 h-5" />
-                                    Back
-                                </button>
-                            </div>
+                            <button
+                                onClick={onClose}
+                                className="flex items-center text-white/90 hover:text-white gap-2
+                                         text-base font-medium transition-all hover:bg-white/10
+                                         px-3 py-1.5 rounded-lg"
+                            >
+                                <ArrowLeft className="w-5 h-5" />
+                                Back
+                            </button>
                             <div className="flex items-center gap-2">
-                                <MoreActionsMenu
-                                    taskId={taskId}
-                                    onDeleteTask={handleTaskDeleted}
-                                    onMarkComplete={handleTaskComplete}
-                                    onMarkPending={handleTaskPending}
-                                />
+                                <MoreActionsMenu taskId={taskId} />
                                 <button
                                     onClick={onClose}
                                     className="p-2 hover:bg-white/10 rounded-lg transition-all
