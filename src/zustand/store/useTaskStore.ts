@@ -4,33 +4,31 @@ import { create } from 'zustand';
 import { taskService } from '@/services/api/tasks';
 
 const useTaskStore = create((set) => ({
-    // Initial state
     tasks: [],
     recentTasks: [],
     selectedTask: null,
     isLoading: false,
     error: null,
+    modalState: { isOpen: false, taskId: null },
 
-    // Basic state management actions
     setSelectedTask: (task) => set({ selectedTask: task }),
+    setModalState: (state) => set({ modalState: state }),
     clearError: () => set({ error: null }),
 
-    // Fetch all tasks
     fetchAllTasks: async () => {
-        set({ isLoading: true, error: null });
+        set({ isLoading: true });
         try {
             const response = await taskService.getAllTasks();
-            set({ tasks: response.data, isLoading: false });
-        } catch (error) {
             set({
-                error: error instanceof Error ? error.message : 'Failed to fetch tasks',
+                tasks: response.data || [],
                 isLoading: false
             });
+        } catch (error) {
+            set({ isLoading: false });
             throw error;
         }
     },
 
-    // Fetch recent tasks
     fetchRecentTasks: async () => {
         set({ isLoading: true, error: null });
         try {
@@ -45,12 +43,12 @@ const useTaskStore = create((set) => ({
         }
     },
 
-    // Fetch task by ID
     fetchTaskById: async (id) => {
         set({ isLoading: true, error: null });
         try {
             const response = await taskService.getTaskById(id);
             set({ selectedTask: response.data, isLoading: false });
+            return response.data;
         } catch (error) {
             set({
                 error: error instanceof Error ? error.message : 'Failed to fetch task',
@@ -60,20 +58,16 @@ const useTaskStore = create((set) => ({
         }
     },
 
-    // Create new task
     createTask: async (taskData) => {
         set({ isLoading: true, error: null });
         try {
             const response = await taskService.createTask(taskData);
             const newTask = response.data;
-
-            // Update both tasks lists optimistically
             set((state) => ({
                 tasks: [...state.tasks, newTask],
-                recentTasks: [newTask, ...state.recentTasks].slice(0, 10), // Keep most recent 10
+                recentTasks: [newTask, ...state.recentTasks].slice(0, 10),
                 isLoading: false
             }));
-
             return newTask;
         } catch (error) {
             set({
@@ -84,17 +78,15 @@ const useTaskStore = create((set) => ({
         }
     },
 
-    // Delete task
     deleteTask: async (id) => {
         set({ isLoading: true, error: null });
         try {
             await taskService.deleteTask(id);
-
-            // Remove task from all lists optimistically
             set((state) => ({
                 tasks: state.tasks.filter(task => task._id !== id),
                 recentTasks: state.recentTasks.filter(task => task._id !== id),
                 selectedTask: state.selectedTask?._id === id ? null : state.selectedTask,
+                modalState: { isOpen: false, taskId: null },
                 isLoading: false
             }));
         } catch (error) {
@@ -106,14 +98,11 @@ const useTaskStore = create((set) => ({
         }
     },
 
-    // Mark task as complete
     markTaskComplete: async (id) => {
         set({ isLoading: true, error: null });
         try {
             const response = await taskService.markTaskComplete(id);
             const updatedTask = response.data;
-
-            // Update task in all lists
             set((state) => ({
                 tasks: state.tasks.map(task =>
                     task._id === id ? { ...task, status: 'completed' } : task
@@ -125,7 +114,6 @@ const useTaskStore = create((set) => ({
                     { ...state.selectedTask, status: 'completed' } : state.selectedTask,
                 isLoading: false
             }));
-
             return updatedTask;
         } catch (error) {
             set({
@@ -136,14 +124,11 @@ const useTaskStore = create((set) => ({
         }
     },
 
-    // Mark task as pending
     markTaskPending: async (id) => {
         set({ isLoading: true, error: null });
         try {
             const response = await taskService.markTaskPending(id);
             const updatedTask = response.data;
-
-            // Update task in all lists
             set((state) => ({
                 tasks: state.tasks.map(task =>
                     task._id === id ? { ...task, status: 'pending' } : task
@@ -155,7 +140,6 @@ const useTaskStore = create((set) => ({
                     { ...state.selectedTask, status: 'pending' } : state.selectedTask,
                 isLoading: false
             }));
-
             return updatedTask;
         } catch (error) {
             set({
@@ -166,14 +150,14 @@ const useTaskStore = create((set) => ({
         }
     },
 
-    // Reset store
     resetStore: () => {
         set({
             tasks: [],
             recentTasks: [],
             selectedTask: null,
             isLoading: false,
-            error: null
+            error: null,
+            modalState: { isOpen: false, taskId: null }
         });
     }
 }));

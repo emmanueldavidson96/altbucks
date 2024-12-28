@@ -2,6 +2,14 @@ import Header from '../components/Dashboard_Components/Header';
 import { TasksHero } from '../components/Tasks_Components/TasksHero';
 import { RecentTasks } from '../components/Tasks_Components/TasksSection';
 import { TasksList } from '../components/Tasks_Components/TasksList';
+import { ErrorBoundary } from '../components/ErrorBoundary';
+import { Suspense } from 'react';
+
+const LoadingFallback = () => (
+    <div className="min-h-[200px] flex items-center justify-center">
+        <div className="text-gray-600">Loading...</div>
+    </div>
+);
 
 export default function TasksPage() {
     return (
@@ -9,12 +17,18 @@ export default function TasksPage() {
             <Header />
             <main className="max-w-[1400px] mx-auto px-6 pt-6 pb-12">
                 <TasksHero />
-                <div className="mt-8">
-                    <RecentTasks />
-                </div>
-                <div className="mt-12">
-                    <TasksList />
-                </div>
+                <ErrorBoundary>
+                    <div className="mt-8">
+                        <Suspense fallback={<LoadingFallback />}>
+                            <RecentTasks />
+                        </Suspense>
+                    </div>
+                    <div className="mt-12">
+                        <Suspense fallback={<LoadingFallback />}>
+                            <TasksList />
+                        </Suspense>
+                    </div>
+                </ErrorBoundary>
             </main>
         </div>
     );

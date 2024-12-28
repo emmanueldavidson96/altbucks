@@ -9,7 +9,7 @@ export function MoreActionsMenu({ taskId }) {
     const [showActions, setShowActions] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
     const router = useRouter();
-    const { handleMarkComplete, handleMarkPending, handleDeleteTask } = useTaskOperations();
+    const { handleMarkComplete, handleMarkPending, handleDeleteTask, fetchRecentTasks } = useTaskOperations();
 
     const handleViewTask = () => {
         router.push(`/tasks/${taskId}`);
@@ -21,8 +21,10 @@ export function MoreActionsMenu({ taskId }) {
         try {
             if (action === 'complete') {
                 await handleMarkComplete(taskId);
+                await fetchRecentTasks();
             } else {
                 await handleMarkPending(taskId);
+                await fetchRecentTasks()
             }
             setShowActions(false);
         } catch (error) {

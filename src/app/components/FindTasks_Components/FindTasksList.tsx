@@ -1,68 +1,48 @@
-import { useState, useEffect } from 'react';
-import { FileSearch } from 'lucide-react';
+'use client';
+
+import { useEffect } from 'react';
+import { FileSearch, Loader2 } from 'lucide-react';
 import { useTaskOperations } from '@/hooks/useTaskOperations';
 import TaskCard from './FindTasksCard';
 
-const FindTasksList = ({ filters }) => {
-    const [pageData, setPageData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const { tasks, fetchAllTasks } = useTaskOperations();
-    const PER_PAGE = 3;
+export function FindTasksList() {
+    const { tasks, isLoading, fetchAllTasks } = useTaskOperations();
 
     useEffect(() => {
-        let mounted = true;
+        fetchAllTasks();
+    }, []);
 
-        const loadInitialData = async () => {
-            try {
-                setLoading(true);
-                await fetchAllTasks();
-
-                if (!mounted) return;
-
-                if (tasks?.length) {
-                    setPageData(tasks.slice(0, PER_PAGE));
-                }
-            } catch (error) {
-                console.error('Failed to load tasks:', error);
-            } finally {
-                if (mounted) setLoading(false);
-            }
-        };
-
-        loadInitialData();
-        return () => { mounted = false; };
-    }, [filters, fetchAllTasks]);
-
-    if (loading) {
-        return <div className="w-full h-32 bg-gray-100 animate-pulse rounded"/>;
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-[200px]">
+                <Loader2 className="w-6 h-6 animate-spin text-violet-600" />
+                <span className="ml-2">Loading tasks...</span>
+            </div>
+        );
     }
 
-    if (!pageData.length) {
+    if (!tasks || tasks.length === 0) {
         return (
-            <div className="text-center py-8">
-                <FileSearch className="w-8 h-8 mx-auto text-gray-400"/>
-                <p>No tasks found</p>
+            <div className="text-center py-12 bg-white rounded-xl border border-gray-100">
+                <FileSearch className="w-12 h-12 mx-auto text-gray-400 mb-3"/>
+                <p className="font-medium text-gray-600">No tasks found</p>
+                <p className="text-gray-400 text-sm">Tasks will appear here when created</p>
             </div>
         );
     }
 
     return (
-        <div className="space-y-4">
-            <div className="grid gap-4">
-                {pageData.map(task => (
-                    <TaskCard
-                        key={task._id}
-                        taskId={task._id}
-                        title={task.title}
-                        type={task.taskType}
-                        description={task.description}
-                        amount={task.compensation.amount}
-                        postedTime={new Date(task.createdAt).toLocaleDateString()}
-                    />
+        <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {tasks.map(task => (
+                    task && task._id ? (
+                        <TaskCard
+                            key={task._id}
+                            task={task}
+                        />
+                    ) : null
                 ))}
             </div>
         </div>
     );
-};
-
-export default FindTasksList;
+}

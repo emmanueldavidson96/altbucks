@@ -1,124 +1,107 @@
 'use client';
-
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 import { toast } from 'sonner';
 import useTaskStore from '@/zustand/store/useTaskStore';
 
-type FetchStatus = {
-    promise: Promise<any>;
-    controller: AbortController;
-};
-
 export const useTaskOperations = () => {
     const store = useTaskStore();
-    const fetchMap = useRef<Map<string, FetchStatus>>(new Map());
 
     const createTask = useCallback(async (taskData) => {
         try {
-            await  store.createTask(taskData);
-            await fetchRecentTasks();
+            const newTask = await store.createTask(taskData);
+            await store.fetchRecentTasks();
+            toast.success('Task created successfully');
+            return newTask;
         } catch (error) {
-            console.error('Task creation error:', error);
+            console.error('Create task error:', error);
+            toast.error('Failed to create task');
             throw error;
         }
-    }, [store.createTask]);
-
+    }, [store]);
 
     const fetchAllTasks = useCallback(async () => {
         try {
             await store.fetchAllTasks();
+            toast.success('Tasks loaded successfully');
         } catch (error) {
-            toast.error('Failed to load tasks', {
-                description: error instanceof Error ? error.message : 'Unknown error'
-            });
-            throw error;
+            console.error('Error in fetchAllTasks:', error);
+            toast.error('Failed to fetch tasks');
         }
-    }, [store.fetchAllTasks]);
+    }, [store]);
 
     const fetchRecentTasks = useCallback(async () => {
         try {
             await store.fetchRecentTasks();
-            toast.success('Recent tasks loaded successfully');
+            toast.success('Recent tasks loaded');
         } catch (error) {
-            toast.error('Failed to load recent tasks', {
-                description: error instanceof Error ? error.message : 'Unknown error'
-            });
+            console.error('Fetch recent tasks error:', error);
+            toast.error('Failed to load recent tasks');
             throw error;
-        }
-    }, [store.fetchRecentTasks]);
-
-    const handleViewDetails = useCallback(async (taskId: string) => {
-        console.log("Starting view details for:", taskId);
-        if (fetchMap.current.has(taskId)) {
-            fetchMap.current.get(taskId)?.controller.abort();
-            fetchMap.current.delete(taskId);
-        }
-
-        const controller = new AbortController();
-
-        try {
-            const promise = store.fetchTaskById(taskId);
-            fetchMap.current.set(taskId, { promise, controller });
-
-            await promise;
-            return true;
-        } catch (error) {
-            if (!controller.signal.aborted) {
-                console.error('Error viewing task details:', error);
-                toast.error('Failed to load task details');
-            }
-            return false;
-        } finally {
-            fetchMap.current.delete(taskId);
         }
     }, [store]);
 
+
+    const handleViewDetails = useCallback(async (taskId: string) => {
+        if (!taskId) return null;
+
+        try {
+            store.setModalState({ isOpen: true, taskId });
+            const taskData = await store.fetchTaskById(taskId);
+            store.setSelectedTask(taskData);
+
+            return taskData;
+        } catch (error) {
+            console.error('View details error:', error);
+            toast.error('Failed to load task details');
+            store.setModalState({ isOpen: false, taskId: null });
+            return null;
+        }
+    }, [store]);
+
+
+
+
+
+
+
+
     const handleDeleteTask = useCallback(async (taskId: string) => {
-        const toastId = toast.loading('Deleting task...');
         try {
             await store.deleteTask(taskId);
-            toast.success('Task deleted successfully', { id: toastId });
+            toast.success('Task deleted successfully');
             return true;
         } catch (error) {
-            toast.error('Failed to delete task', {
-                id: toastId,
-                description: error instanceof Error ? error.message : 'Unknown error'
-            });
+            console.error('Delete task error:', error);
+            toast.error('Failed to delete task');
             return false;
         }
-    }, [store.deleteTask]);
+    }, [store]);
 
     const handleMarkComplete = useCallback(async (taskId: string) => {
-        const toastId = toast.loading('Marking task as complete...');
         try {
             await store.markTaskComplete(taskId);
-            toast.success('Task marked as complete', { id: toastId });
-            await fetchRecentTasks();
+            await store.fetchRecentTasks();
+            toast.success('Task marked as complete');
             return true;
         } catch (error) {
-            toast.error('Failed to mark task complete', {
-                id: toastId,
-                description: error instanceof Error ? error.message : 'Unknown error'
-            });
+            console.error('Mark complete error:', error);
+            toast.error('Failed to mark task complete');
             return false;
         }
-    }, [store.markTaskComplete, fetchRecentTasks]);
+    }, [store]);
 
     const handleMarkPending = useCallback(async (taskId: string) => {
-        const toastId = toast.loading('Marking task as pending...');
         try {
             await store.markTaskPending(taskId);
-            toast.success('Task marked as pending', { id: toastId });
-            await fetchRecentTasks();
+            await store.fetchRecentTasks();
+            toast.success('Task marked as pending');
             return true;
         } catch (error) {
-            toast.error('Failed to mark task pending', {
-                id: toastId,
-                description: error instanceof Error ? error.message : 'Unknown error'
-            });
+            console.error('Mark pending error:', error);
+            toast.error('Failed to mark task pending');
             return false;
         }
-    }, [store.markTaskPending, fetchRecentTasks]);
+    }, [store]);
 
     return {
         tasks: store.tasks,
