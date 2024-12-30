@@ -1,3 +1,4 @@
+
 import { API_BASE_URL } from './config';
 
 // Simple types for core functionality

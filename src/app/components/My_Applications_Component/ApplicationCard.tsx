@@ -1,109 +1,136 @@
-import { useState, useEffect } from 'react';
-import type { Application } from './types';
-import { applicationService } from '@/services/api/applications';
+'use client';
+
+import { useEffect, useRef } from 'react';
+import { useTaskOperations } from '@/hooks/useTaskOperations';
+import { Clock, DollarSign, Tag, Calendar, CheckCircle, Loader2, ArrowRight } from 'lucide-react';
+import useTaskStore from '@/zustand/store/useTaskStore';
 
 export function ApplicationCard() {
-    const [completedTasks, setCompletedTasks] = useState<Application[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    const fetchCompletedTasks = async () => {
-        try {
-            const response = await applicationService.getCompletedApplications();
-            console.log('Response:', response);
-            setCompletedTasks(response.data);
-        } catch (error) {
-            console.error('Error fetching completed tasks:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleMarkComplete = async (taskId: string) => {
-        try {
-            await applicationService.markTaskAsComplete(taskId);
-            await fetchCompletedTasks(); // Refresh the list after marking complete
-        } catch (error) {
-            console.error('Error marking task as complete:', error);
-        }
-    };
+    const { completedTasks, isLoading, fetchCompletedTasks } = useTaskOperations();
+    const { setSelectedTask, setModalState } = useTaskStore();
+    const hasFetched = useRef(false);
 
     useEffect(() => {
-        fetchCompletedTasks();
-    }, []);
+        if (!hasFetched.current) {
+            fetchCompletedTasks().catch(console.error);
+            hasFetched.current = true;
+        }
+    }, [fetchCompletedTasks]);
 
-    if (loading) {
+    const handleOpenModal = (task) => {
+        setModalState({ isOpen: true, taskId: task._id });
+        setSelectedTask(task);
+    };
+
+    if (isLoading) {
         return (
-            <div className="flex justify-center items-center h-48">
-                <div className="text-gray-500">Loading tasks...</div>
+            <div className="flex justify-center items-center h-96 bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl">
+                <div className="flex flex-col items-center gap-4">
+                    <Loader2 className="h-10 w-10 text-blue-500 animate-spin" />
+                    <div className="flex flex-col items-center">
+                        <div className="text-gray-700 font-semibold">Loading Tasks</div>
+                        <div className="text-gray-500 text-sm mt-1">Please wait a moment...</div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    const tasks = completedTasks?.data || [];
+
+    if (tasks.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center h-96 bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl p-8">
+                <div className="bg-white p-6 rounded-2xl shadow-sm max-w-md w-full text-center">
+                    <CheckCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">No Tasks Yet</h3>
+                    <p className="text-gray-600">Complete your first task to see it displayed here</p>
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="space-y-6">
-            {completedTasks.length === 0 ? (
-                <div className="text-center py-10 text-gray-500">
-                    No completed tasks found
-                </div>
-            ) : (
-                <div className="grid gap-6">
-                    {completedTasks.map(application => (
-                        <div key={application._id} className="bg-white rounded-2xl border border-gray-100 p-6
-                                  hover:shadow-lg hover:border-blue-100 hover:-translate-y-1
-                                  transition-all duration-500 ease-in-out">
-                            <div className="flex justify-between items-start group">
-                                <div className="space-y-1">
-                                    <h3 className="text-lg font-bold text-gray-800 group-hover:text-blue-600 transition-colors">
-                                        {application.brand}
-                                    </h3>
-                                    <p className="text-sm text-gray-500 tracking-wide">
-                                        {application.taskType}
+        <div className="grid md:grid-cols-2 gap-8">
+            {tasks.map((task) => (
+                <div
+                    key={task._id}
+                    className="group relative bg-white rounded-3xl border border-gray-200 p-8 hover:shadow-2xl transition-all duration-500 ease-in-out hover:-translate-y-1"
+                >
+                    {/* Status Badge */}
+                    <div className="absolute -top-3 right-6 px-4 py-1.5 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-full text-sm font-medium shadow-lg shadow-green-100">
+                        {task.status}
+                    </div>
+
+                    {/* Header Section */}
+                    <div className="mb-6">
+                        <div className="flex items-start gap-4">
+                            <div className="flex-1">
+                                <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-2">
+                                    {task.title}
+                                </h3>
+                                <div className="flex items-center gap-2">
+                                    <Tag className="h-4 w-4 text-blue-500" />
+                                    <span className="text-sm text-blue-600 font-medium">{task.taskType}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Description Section */}
+                    <div className="bg-gray-50 rounded-2xl p-4 mb-6">
+                        <p className="text-gray-700 leading-relaxed">
+                            {task.description}
+                        </p>
+                    </div>
+
+                    {/* Footer Section */}
+                    <div className="grid grid-cols-2 gap-6">
+                        {/* Compensation */}
+                        <div className="bg-blue-50 rounded-2xl p-4 transition-all group-hover:bg-blue-100">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-blue-100 rounded-xl group-hover:bg-blue-200 transition-colors">
+                                    <DollarSign className="h-5 w-5 text-blue-600" />
+                                </div>
+                                <div>
+                                    <p className="text-sm text-blue-600 font-medium">Compensation</p>
+                                    <p className="text-lg font-bold text-gray-900">
+                                        {task.compensation?.currency}{task.compensation?.amount}
                                     </p>
                                 </div>
-                                <span className="animate-fade-in px-3 py-1.5 rounded-full text-xs font-medium
-                                            bg-green-50 text-green-600 ring-1 ring-green-100">
-                                    {application.status}
-                                </span>
                             </div>
-
-                            <div className="flex justify-between items-center mt-6">
-                                <div className="flex flex-col">
-                                    <span className="text-xs text-gray-500 mb-1">Earning</span>
-                                    <span className="text-lg font-bold text-gray-800">
-                                        ${application.earnings}
-                                    </span>
-                                </div>
-                                <div className="text-sm flex flex-col items-end">
-                                    <span className="text-gray-400 text-xs mb-1">Timeline</span>
-                                    <div className="space-x-2">
-                                        <span className="text-gray-600">
-                                            {new Date(application.appliedOn).toLocaleDateString()}
-                                        </span>
-                                        <span className="text-red-500 font-medium">
-                                            {new Date(application.deadline).toLocaleDateString()}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <p className="text-sm text-gray-600 mt-4 leading-relaxed line-clamp-2
-                                        hover:line-clamp-none transition-all duration-300">
-                                {application.description}
-                            </p>
-
-                            {application.status !== 'Completed' && (
-                                <button
-                                    onClick={() => handleMarkComplete(application._id)}
-                                    className="mt-4 w-full px-4 py-2 bg-green-500 text-white rounded-lg
-                                             hover:bg-green-600 transition-colors"
-                                >
-                                    Mark as Complete
-                                </button>
-                            )}
                         </div>
-                    ))}
+
+                        {/* Deadline */}
+                        <div className="bg-red-50 rounded-2xl p-4 transition-all group-hover:bg-red-100">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-red-100 rounded-xl group-hover:bg-red-200 transition-colors">
+                                    <Calendar className="h-5 w-5 text-red-600" />
+                                </div>
+                                <div>
+                                    <p className="text-sm text-red-600 font-medium">Deadline</p>
+                                    <p className="text-lg font-bold text-gray-900">
+                                        {new Date(task.deadline).toLocaleDateString(undefined, {
+                                            month: 'short',
+                                            day: 'numeric',
+                                            year: 'numeric'
+                                        })}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* View Details Button */}
+                    <button
+                        onClick={() => handleOpenModal(task)}
+                        className="w-full mt-6 px-4 py-2.5 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors flex items-center justify-center gap-2 group"
+                    >
+                        View Details
+                        <span className="text-lg transition-transform group-hover:translate-x-0.5">→</span>
+                    </button>
                 </div>
-            )}
+            ))}
         </div>
     );
 }

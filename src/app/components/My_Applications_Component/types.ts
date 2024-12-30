@@ -1,13 +1,16 @@
 export interface Application {
     _id: string;
-    userId: string;
     brand: string;
     taskType: string;
+    status: string;
     earnings: number;
     appliedOn: string;
     deadline: string;
-    status: string;
     description: string;
+}
+
+export interface ApplicationsListProps {
+    applications: Application[];
 }
 
 export type FilterState = {

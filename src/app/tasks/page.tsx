@@ -1,3 +1,5 @@
+'use client';
+
 import Header from '../components/Dashboard_Components/Header';
 import { TasksHero } from '../components/Tasks_Components/TasksHero';
 import { RecentTasks } from '../components/Tasks_Components/TasksSection';
@@ -23,7 +25,12 @@ export default function TasksPage() {
                             <RecentTasks />
                         </Suspense>
                     </div>
+
                     <div className="mt-12">
+                        <div className="flex items-center gap-2 border-b border-gray-200 pb-4">
+                            <div className="w-1.5 h-12 bg-blue-500 rounded-full"/>
+                            <h2 className="text-3xl font-bold text-gray-900">All Tasks</h2>
+                        </div>
                         <Suspense fallback={<LoadingFallback />}>
                             <TasksList />
                         </Suspense>

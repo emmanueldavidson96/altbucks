@@ -2,10 +2,12 @@
 
 import { create } from 'zustand';
 import { taskService } from '@/services/api/tasks';
+import { applicationService } from '@/services/api/applications';
 
 const useTaskStore = create((set) => ({
     tasks: [],
     recentTasks: [],
+    completedTasks: [], // Add this
     selectedTask: null,
     isLoading: false,
     error: null,
@@ -14,6 +16,28 @@ const useTaskStore = create((set) => ({
     setSelectedTask: (task) => set({ selectedTask: task }),
     setModalState: (state) => set({ modalState: state }),
     clearError: () => set({ error: null }),
+
+
+    createTask: async (taskData) => {
+        set({ isLoading: true, error: null });
+        try {
+            const response = await taskService.createTask(taskData);
+            const newTask = response.data;
+            set((state) => ({
+                tasks: [...state.tasks, newTask],
+                recentTasks: [newTask, ...state.recentTasks].slice(0, 10),
+                isLoading: false
+            }));
+            return newTask;
+        } catch (error) {
+            set({
+                error: error instanceof Error ? error.message : 'Failed to create task',
+                isLoading: false
+            });
+            throw error;
+        }
+    },
+
 
     fetchAllTasks: async () => {
         set({ isLoading: true });
@@ -28,6 +52,7 @@ const useTaskStore = create((set) => ({
             throw error;
         }
     },
+
 
     fetchRecentTasks: async () => {
         set({ isLoading: true, error: null });
@@ -58,25 +83,6 @@ const useTaskStore = create((set) => ({
         }
     },
 
-    createTask: async (taskData) => {
-        set({ isLoading: true, error: null });
-        try {
-            const response = await taskService.createTask(taskData);
-            const newTask = response.data;
-            set((state) => ({
-                tasks: [...state.tasks, newTask],
-                recentTasks: [newTask, ...state.recentTasks].slice(0, 10),
-                isLoading: false
-            }));
-            return newTask;
-        } catch (error) {
-            set({
-                error: error instanceof Error ? error.message : 'Failed to create task',
-                isLoading: false
-            });
-            throw error;
-        }
-    },
 
     deleteTask: async (id) => {
         set({ isLoading: true, error: null });
@@ -85,6 +91,7 @@ const useTaskStore = create((set) => ({
             set((state) => ({
                 tasks: state.tasks.filter(task => task._id !== id),
                 recentTasks: state.recentTasks.filter(task => task._id !== id),
+                completedTasks: state.completedTasks.filter(task => task._id !== id),
                 selectedTask: state.selectedTask?._id === id ? null : state.selectedTask,
                 modalState: { isOpen: false, taskId: null },
                 isLoading: false
@@ -110,6 +117,7 @@ const useTaskStore = create((set) => ({
                 recentTasks: state.recentTasks.map(task =>
                     task._id === id ? { ...task, status: 'completed' } : task
                 ),
+                completedTasks: [...state.completedTasks, updatedTask],
                 selectedTask: state.selectedTask?._id === id ?
                     { ...state.selectedTask, status: 'completed' } : state.selectedTask,
                 isLoading: false
@@ -136,6 +144,7 @@ const useTaskStore = create((set) => ({
                 recentTasks: state.recentTasks.map(task =>
                     task._id === id ? { ...task, status: 'pending' } : task
                 ),
+                completedTasks: state.completedTasks.filter(task => task._id !== id),
                 selectedTask: state.selectedTask?._id === id ?
                     { ...state.selectedTask, status: 'pending' } : state.selectedTask,
                 isLoading: false
@@ -150,10 +159,25 @@ const useTaskStore = create((set) => ({
         }
     },
 
+
+
+    fetchCompletedTasks: async () => {
+        try {
+            const response = await applicationService.getCompletedApplications();
+            // Access the data array from the response
+            set({ completedTasks: response.data || [] });
+        } catch (error) {
+            console.error('Error fetching completed tasks:', error);
+            set({ error: error.message });
+            throw error;
+        }
+    },
+
     resetStore: () => {
         set({
             tasks: [],
             recentTasks: [],
+            completedTasks: [],
             selectedTask: null,
             isLoading: false,
             error: null,
