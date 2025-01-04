@@ -7,7 +7,7 @@ import { applicationService } from '@/services/api/applications';
 const useTaskStore = create((set) => ({
     tasks: [],
     recentTasks: [],
-    completedTasks: [], // Add this
+    completedTasks: [],
     selectedTask: null,
     isLoading: false,
     error: null,
@@ -25,7 +25,7 @@ const useTaskStore = create((set) => ({
             const newTask = response.data;
             set((state) => ({
                 tasks: [...state.tasks, newTask],
-                recentTasks: [newTask, ...state.recentTasks].slice(0, 10),
+                recentTasks: [newTask, ...state.recentTasks],
                 isLoading: false
             }));
             return newTask;

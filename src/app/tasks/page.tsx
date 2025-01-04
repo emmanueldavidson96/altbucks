@@ -29,7 +29,7 @@ export default function TasksPage() {
                     <div className="mt-12">
                         <div className="flex items-center gap-2 border-b border-gray-200 pb-4">
                             <div className="w-1.5 h-12 bg-blue-500 rounded-full"/>
-                            <h2 className="text-3xl font-bold text-gray-900">All Tasks</h2>
+                            <h2 className="text-3xl font-bold text-gray-900"> TasksList</h2>
                         </div>
                         <Suspense fallback={<LoadingFallback />}>
                             <TasksList />
