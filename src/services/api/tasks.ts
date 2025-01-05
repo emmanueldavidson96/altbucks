@@ -1,4 +1,3 @@
-
 import { API_BASE_URL } from './config';
 
 // Simple types for core functionality
@@ -57,7 +56,7 @@ export const taskService = {
         return { data: normalizeTask(result.data || result) };
     },
 
-    getAllTasks: async () => {
+    async getAllTasks(): Promise<ApiResponse<Task[]>> {
         try {
             const response = await fetch(`${API_BASE_URL}/api/tasks`);
             const result = await response.json();
@@ -139,4 +138,4 @@ export const taskService = {
 
         return { data: undefined };
     }
-};
+}
