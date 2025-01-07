@@ -1,3 +1,4 @@
+import React from "react";
 import Image from "next/image";
 
 const About = () => {
@@ -72,69 +73,73 @@ const About = () => {
                     <h2 className="text-2xl font-semibold text-center mb-16 text-black">
                         Reviewed by the community
                     </h2>
-
                     {/* Card Container */}
                     <div className="max-w-2xl mx-auto px-6 relative">
-                        {/* Floating reviewer images */}
+                        {/* Top left */}
                         <img
-                            src=""
-                            alt="Reviewer"
-                            className="absolute -left-20 top-1/3 w-12 h-12 rounded-full border-2 border-white"
-                        />
-                        <img
-                            src=""
-                            alt="Reviewer"
-                            className="absolute -right-20 top-1/3 w-12 h-12 rounded-full border-2 border-white"
-                        />
-                        <img
-                            src=""
+                            src="/image6.jpeg"
                             alt="Reviewer"
                             className="absolute -left-12 top-0 w-12 h-12 rounded-full border-2 border-white"
                         />
                         <img
-                            src=""
+                            src="/image5.jpeg"
                             alt="Reviewer"
-                            className="absolute -right-12 -bottom-6 w-12 h-12 rounded-full border-2 border-white"
+                            className="absolute -left-20 top-1/3 w-12 h-12 rounded-full border-2 border-white"
                         />
                         <img
-                            src=""
+                            src="/image4.jpeg"
                             alt="Reviewer"
-                            className="absolute -left-16 bottom-0 w-12 h-12 rounded-full border-2 border-white"
+                            className="absolute -left-16 bottom-20 w-12 h-12 rounded-full border-2 border-white"
+                        />
+
+                        {/* Top right */}
+                        <img
+                            src="/image1.jpeg"
+                            alt="Reviewer"
+                            className="absolute -right-12 top-0 w-12 h-12 rounded-full border-2 border-white"
+                        />
+                        <img
+                            src="/image2.jpeg"
+                            alt="Reviewer"
+                            className="absolute -right-20 top-1/3 w-12 h-12 rounded-full border-2 border-white"
+                        />
+                        <img
+                            src="/image3.jpeg"
+                            alt="Reviewer"
+                            className="absolute -right-16 bottom-20 w-12 h-12 rounded-full border-2 border-white"
                         />
 
                         {/* Quote mark and review card */}
                         <div className="relative">
                             <div className="absolute left-1/2 -top-8 -translate-x-1/2 w-16 h-16 rounded-full bg-[#4285F4] flex items-center justify-center z-10">
-                                <svg
-                                    className="w-6 h-6"
-                                    viewBox="0 0 25 23"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path d="M10.5 0C4.7 0 0 4.7 0 10.5c0 5.8 4.7 10.5 10.5 10.5V23C4.7 23 0 18.3 0 12.5V0h10.5zm14.5 0C19.2 0 14.5 4.7 14.5 10.5c0 5.8 4.7 10.5 10.5 10.5V23c-5.8 0-10.5-4.7-10.5-10.5V0H25z" fill="currentColor"/>
+                                <svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6.5 0C10.5 0 13.5 3 13.5 7C13.5 18.5 4.5 23 0 23C2.5 20.5 5.5 16.5 5.5 14C2.5 14.5 0 12 0 8.5C0 4 3 0 6.5 0Z" fill="white"/>
+                                    <path d="M18.5 0C22.5 0 25.5 3 25.5 7C25.5 18.5 16.5 23 12 23C14.5 20.5 17.5 16.5 17.5 14C14.5 14.5 12 12 12 8.5C12 4 15 0 18.5 0Z" fill="white"/>
                                 </svg>
                             </div>
+
+                            {/* Review Card */}
                             <div className="bg-white rounded-2xl px-12 py-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
                                 <div className="space-y-2 text-center">
-                                    <p className="text-gray-600 leading-relaxed">
+                                    <p className="text-gray-600">
                                         I've been using Altbucks for a few months now,
                                     </p>
-                                    <p className="text-gray-600 leading-relaxed">
+                                    <p className="text-gray-600">
                                         and it's been a great way to earn some extra cash in my spare time.
                                     </p>
-                                    <p className="text-gray-600 leading-relaxed">
+                                    <p className="text-gray-600">
                                         Whether I'm taking surveys or watching videos,
                                     </p>
-                                    <p className="text-gray-600 leading-relaxed">
+                                    <p className="text-gray-600">
                                         the tasks are easy, and the payouts are reliable.
                                     </p>
-                                    <p className="text-gray-600 leading-relaxed">
+                                    <p className="text-gray-600">
                                         I love how simple it is to cash out,
                                     </p>
-                                    <p className="text-gray-600 leading-relaxed">
+                                    <p className="text-gray-600">
                                         and the referral program is a nice bonus too!
                                     </p>
-                                    <p className="text-gray-600 leading-relaxed">
+                                    <p className="text-gray-600">
                                         Highly recommend it to anyone looking to earn online.
                                     </p>
                                     <p className="font-medium text-gray-900 mt-6">
@@ -154,7 +159,6 @@ const About = () => {
                         </div>
                     </div>
                 </section>
-
                 {/* Rewards Section */}
                 <section className="container mx-auto px-6 mb-16">
                     <div className="max-w-4xl mx-auto">
