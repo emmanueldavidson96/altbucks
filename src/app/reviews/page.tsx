@@ -1,6 +1,22 @@
+import React from "react";
 import Image from "next/image";
 
-const  Reviews = () => {
+const QuoteIcon = () => (
+    <svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6.5 0C10.5 0 13.5 3 13.5 7C13.5 18.5 4.5 23 0 23C2.5 20.5 5.5 16.5 5.5 14C2.5 14.5 0 12 0 8.5C0 4 3 0 6.5 0Z" fill="white"/>
+        <path d="M18.5 0C22.5 0 25.5 3 25.5 7C25.5 18.5 16.5 23 12 23C14.5 20.5 17.5 16.5 17.5 14C14.5 14.5 12 12 12 8.5C12 4 15 0 18.5 0Z" fill="white"/>
+    </svg>
+);
+
+const LogoIcon = () => (
+    <div className="relative w-6 h-6 rounded-full bg-white flex items-center justify-center">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4">
+            <div className="absolute right-0 top-0 w-2 h-2 bg-black rounded-full" />
+        </div>
+    </div>
+);
+
+const Reviews = () => {
     return (
         <div className="min-h-screen flex flex-col bg-white">
             {/* Hero Section */}
@@ -31,18 +47,16 @@ const  Reviews = () => {
                             className="absolute w-[400px] h-[300px] -translate-x-[380px] bg-[#4285F4] rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
                             <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                                 <div
-                                    className="w-8 h-8 bg-[#4285F4] rounded-full flex items-center justify-center shadow-md ring-2 ring-white">
-                                    <span className="text-white text-2xl font-serif leading-none mt-0.5">„</span>
+                                    className="w-10 h-9 bg-[#4285F4] rounded-full flex items-center justify-center shadow-md ">
+                                    <QuoteIcon />
                                 </div>
                             </div>
 
-                            {/* Card Content - Same structure */}
+                            {/* Card Content */}
                             <div className="p-8">
                                 <div className="flex items-center gap-2 mb-6">
-                                    <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center">
-                                        <span className="text-sm text-white">A</span>
-                                    </div>
-                                    <span className="text-white text-lg">Al Bucks</span>
+                                    <LogoIcon />
+                                    <span className="text-white text-lg">Alt Bucks</span>
                                 </div>
 
                                 <div className="mb-8">
@@ -55,7 +69,7 @@ const  Reviews = () => {
 
                                 <div className="flex items-center gap-4">
                                     <img
-                                        src=""
+                                        src="/david.png"
                                         alt="David Beckham"
                                         className="w-12 h-12 rounded-full object-cover"
                                     />
@@ -70,16 +84,14 @@ const  Reviews = () => {
                             className="absolute w-[400px] h-[360px] translate-x-0  bg-[#4285F4] rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.15)] z-10">
                             <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                                 <div
-                                    className="w-8 h-8 bg-[#4285F4] rounded-full flex items-center justify-center shadow-md ring-2 ring-white">
-                                    <span className="text-white text-2xl font-serif leading-none mt-0.5">„</span>
+                                    className="w-10 h-9 bg-[#4285F4] rounded-full flex items-center justify-center shadow-md ">
+                                    <QuoteIcon />
                                 </div>
                             </div>
 
                             <div className="p-8">
                                 <div className="flex items-center gap-2 mb-8">
-                                    <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center">
-                                        <span className="text-sm text-white">A</span>
-                                    </div>
+                                    <LogoIcon />
                                     <span className="text-white text-lg">AltBucks</span>
                                 </div>
 
@@ -93,7 +105,7 @@ const  Reviews = () => {
 
                                 <div className="flex items-center gap-4">
                                     <img
-                                        src=""
+                                        src="/david.png"
                                         alt="David Beckham"
                                         className="w-12 h-12 rounded-full object-cover"
                                     />
@@ -109,15 +121,13 @@ const  Reviews = () => {
                             className="absolute w-[400px] h-[300px] translate-x-[380px] bg-[#4285F4] rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
                             <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                                 <div
-                                    className="w-8 h-8 bg-[#4285F4] rounded-full flex items-center justify-center shadow-md ring-2 ring-white">
-                                    <span className="text-white text-2xl font-serif leading-none mt-0.5">„</span>
+                                    className="w-10 h-9 bg-[#4285F4] rounded-full flex items-center justify-center shadow-md ">
+                                    <QuoteIcon />
                                 </div>
                             </div>
                             <div className="p-8">
                                 <div className="flex items-center gap-2 mb-6">
-                                    <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center">
-                                        <span className="text-sm text-white">A</span>
-                                    </div>
+                                    <LogoIcon />
                                     <span className="text-white text-lg">AltBucks</span>
                                 </div>
                                 <div className="mb-8">
@@ -128,7 +138,7 @@ const  Reviews = () => {
                                 <div className="w-full h-px bg-white/10 mb-8"/>
                                 <div className="flex items-center gap-4">
                                     <img
-                                        src=""
+                                        src="/david.png"
                                         alt="David Beckham"
                                         className="w-12 h-12 rounded-full object-cover"
                                     />
@@ -194,4 +204,5 @@ const  Reviews = () => {
         </div>
     );
 }
+
 export default Reviews;
