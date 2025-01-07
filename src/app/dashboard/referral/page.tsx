@@ -10,16 +10,16 @@ const Task: React.FC = () => {
     <>
       <Header />
       <div className="flex gap-2">
-      <div className='w-[90%]'>
-      <ReferAndEarn />
-      <RecentTasks />
+        <div className='w-[90%]'>
+          <ReferAndEarn />
+          <RecentTasks />
+        </div>
+        <div className="w-[40%] min-h-screen bg-gray-50 p-6 space-y-6">
+          <CardSection />
+          <SearchByDate />
+          <ReferralCards />
+        </div>
       </div>
-      <div className="w-[40%] min-h-screen bg-gray-50 p-6 space-y-6">
-      <CardSection />
-      <SearchByDate />
-      <ReferralCards />
-    </div>
-    </div>
     </>
   )
 }

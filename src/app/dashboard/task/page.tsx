@@ -37,7 +37,6 @@ const Task: React.FC = () => {
     </div>
         <p className='text-xl w-full font-medium pt-8 pl-8'>Task List</p>
         <TaskTable />
-
               {/* Conditional rendering for modal */}
       {isFormOpen && (
         <div>
