@@ -16,9 +16,9 @@ export default function Header() {
     <nav className='w-full h-[80px] flex items-center font-Satoshi'>
         <div className='h-fit w-[90%] mx-auto flex items-center justify-between '>
             
-            <div className='w-fit h-fit'>
+            <Link href={"/"} className='w-fit h-fit cursor-pointer'>
                 <Image src={logoImg} alt='' className='w-[100px] aspect-auto'/>
-            </div>
+            </Link>
             <div className="relative z-50 w-1/2">
             {/* Toggle Button for Small Screens */}
             <button

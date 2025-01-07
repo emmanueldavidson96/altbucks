@@ -9,9 +9,9 @@ export default function Header() {
   return (
     <nav className='w-screen h-[80px] flex items-center'>
       <div className='h-fit w-[90%] mx-auto flex items-center justify-between '>
-        <div className='w-fit h-fit'>
+        <Link href={"/"} className='w-fit h-fit cursor-pointer'>
           <Image src={logoImg} alt='' className='w-[100px] aspect-auto' />
-        </div>
+        </Link>
 
         <div className='flex gap-4 items-center h-full'>
           <p className='text-sm text-gray-600 tracking-wide'>
