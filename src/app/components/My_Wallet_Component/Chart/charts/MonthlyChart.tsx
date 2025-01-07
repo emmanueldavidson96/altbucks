@@ -24,7 +24,7 @@ const YearChart = () => {
             },
           ],
         }}
-        labels='weeks'
+        
         options={{
           plugins: {
             legend: {

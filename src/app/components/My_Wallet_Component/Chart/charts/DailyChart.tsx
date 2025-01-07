@@ -23,7 +23,7 @@ const YearChart = () => {
             },
           ],
         }}
-        labels='days'
+        
         options={{
           plugins: {
             legend: {

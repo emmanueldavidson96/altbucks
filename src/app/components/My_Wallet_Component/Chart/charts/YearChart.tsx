@@ -26,7 +26,6 @@ const YearChart = () => {
             },
           ],
         }}
-        labels='months'
         options={{
           plugins: {
             legend: {

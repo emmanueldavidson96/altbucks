@@ -17,7 +17,7 @@ const YearChart = () => {
             },
           ],
         }}
-        labels='hours'
+        
         options={{
           plugins: {
             legend: {
