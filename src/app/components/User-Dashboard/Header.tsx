@@ -36,20 +36,20 @@ export default function Header() {
                 <div className="flex flex-col gap-8 md:flex-row items-center h-full p-4 md:p-0 md:p-0">
                 <div className="flex flex-col md:flex-row gap-3  items-start md:items-center">
                 <p className="h-fit w-fit text-gray-800  md:bg-blue-600 md:p-2 rounded-lg md:text-white tracking-wide">
-                    <Link href="/dashboard" className="text-sm tracking-wide">
+                    <Link href="/user-dashboard" className="text-sm tracking-wide">
                     Dashboard
                     </Link>
                 </p>
-                <p className="text-sm text-gray-800 md:text-gray-600">
+                <p className="text-sm text-gray-800 md:text-gray-600 hover:bg-blue-600 md:p-2 rounded-lg hover:text-white tracking-wide">
                     <Link href="/dashboard/tasks" className="flex gap-2 items-center">
                     Tasks <FaAngleDown />
                     </Link>
                 </p>
                 <p className="text-sm text-gray-800 md:text-gray-600 tracking-wide">
-                    <Link href="/my_wallet">My Wallet</Link>
+                    <Link href="/dashboard/my_wallet">My Wallet</Link>
                 </p>
                 <p className="text-sm text-gray-800 md:text-gray-600 tracking-wide">
-                    <Link href="/referral">Referral</Link>
+                    <Link href="/dashboard/referral">Referral</Link>
                 </p>
                 </div>
                 </div>

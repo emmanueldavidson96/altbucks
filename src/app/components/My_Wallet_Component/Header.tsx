@@ -14,19 +14,19 @@ export default function Header() {
         </div>
 
         <div className='flex gap-4 items-center h-full'>
-          <p className='h-fit w-fit p-2 bg-blue-600 rounded-lg text-white'>
-            <Link href={'/dashboard'} className='text-sm tracking-wide'>
+          <p className='text-sm text-gray-600 tracking-wide'>
+            <Link href={'/user-dashboard'} className='text-sm tracking-wide'>
               Dashboard
             </Link>
           </p>
           <p className='text-sm text-gray-600 tracking-wide'>
-            <Link href={'/dashboard'}>Tasks</Link>
+            <Link href={'/dashboard/tasks'}>Tasks</Link>
+          </p>
+          <p className='h-fit w-fit p-2 bg-blue-600 rounded-lg text-white'>
+            <Link href={'/dashboard/my_wallet'}>My Wallet</Link>
           </p>
           <p className='text-sm text-gray-600 tracking-wide'>
-            <Link href={'/my_wallet'}>My Wallet</Link>
-          </p>
-          <p className='text-sm text-gray-600 tracking-wide'>
-            <Link href={'/referral'}>Referral</Link>
+            <Link href={'/dashboard/referral'}>Referral</Link>
           </p>
         </div>
 
