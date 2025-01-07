@@ -44,7 +44,11 @@ export default function page() {
 
                 </div>
 
-                <button className='bg-[#2877EA] rounded-2xl text-sm tracking-wide w-full h-[40px] text-white'>Continue</button>
+                <button className='bg-[#2877EA] rounded-2xl text-sm tracking-wide w-full h-[40px] text-white'>
+                    <Link href={"/user-dashboard"}>
+                        Continue
+                    </Link>
+                </button>
                 <p className='text-sm tracking-wide text-black'>Already have an account? <span className='text-[#2877EA] font-semibold'>
                     <Link href={"/sign-in"}>
                         Log In
