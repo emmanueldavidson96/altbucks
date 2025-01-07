@@ -8,7 +8,7 @@ import HourlyChart from './charts/HourlyChart';
 const Chart = () => {
   const [activeTab, setActiveTab] = useState('1 Year');
 
-  const handleTabChange = (tab) => {
+  const handleTabChange = (tab:string) => {
     setActiveTab(tab);
   };
 
