@@ -2,6 +2,8 @@ import React from 'react';
 import { CiBookmark } from "react-icons/ci";
 import { PiWalletDuotone } from "react-icons/pi";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { FaCircle } from "react-icons/fa";
+
 
 const ReferAndEarn: React.FC = () => {
   const userName = "Smith";
@@ -52,21 +54,21 @@ const ReferAndEarn: React.FC = () => {
       {/* Stats Section */}
 
       <div className="flex flex-col gap-3 md:flex-row justify-around items-center space-y-6 md:space-y-0">
-        <div className="bg-white flex gap-2 items-center text-gray-800 rounded-lg px-6 py-4 shadow-md text-center w-64">
+        <div className="bg-[#F5F5F5] flex gap-2 items-center text-gray-800 rounded-lg px-6 py-4 text-center w-full md:w-64">
         <div className="p-1 bg-[#D4FEE5]">
         <CiBookmark className='text-[#0F8152]'/>
         </div> 
-        <p className="text-4xl font-bold text-gray-500">{totalReferrals}</p>
+        <p className="text-3xl font-bold text-gray-500">{totalReferrals}</p>
           <p className="text-sm text-gray-600">Total Referrals</p>
         </div>
-        <div className="bg-white flex gap-2 items-center text-gray-800 rounded-lg px-6 py-4 shadow-md text-center w-64">
+        <div className="bg-[#F5F5F5] flex gap-2 items-center text-gray-800 rounded-lg px-6 py-4 text-center w-full md:w-64">
         <div className="p-1 bg-[#D2E1FE]">
         <PiWalletDuotone className='text-[#2877EA]'/>
         </div> 
         <p className="flex gap-1 items-end text-4xl font-bold text-gray-500"><span className='text-2xl text-gray-500'> £ </span>{pendingRewards}</p>
-          <p className="text-sm text-gray-600">Pending Rewards</p>
+          <p className="text-sm text-gray-600 w-full">Pending Rewards</p>
         </div>
-        <div className="bg-white flex gap-2 items-center text-gray-800 rounded-lg px-6 py-4 shadow-md text-center w-64">
+        <div className="bg-[#F5F5F5] flex gap-2 items-center text-gray-800 rounded-lg px-6 py-4 text-center w-full md:w-64">
         <div className="p-1 bg-[#D2E1FE]">
         <PiWalletDuotone className='text-[#2877EA]'/>
         </div> 
@@ -77,7 +79,7 @@ const ReferAndEarn: React.FC = () => {
 
       {/* Withdraw Button */}
       <div className="flex justify-center">
-      <div className="flex justify-between w-2/3 mt-6 gap-8">
+      <div className="flex flex-col md:flex-row justify-between w-2/3 mt-6 gap-8">
         <div className="flex flex-col gap-2">
             <p className='text-black flex gap-1 items-center'>
                 <div className="p-1 bg-[#D2E1FE]">
@@ -102,6 +104,7 @@ export const RecentTasks: React.FC = () => {
     const tasks = [
       {
         status: "Completed",
+        icon: <FaCircle className='w-2 h-2 text-xs text-green-400'/>,
         statusColor: "bg-green-100 text-green-800",
         title: "Follow on Facebook",
         subtitle: "5 minutes",
@@ -111,6 +114,7 @@ export const RecentTasks: React.FC = () => {
       },
       {
         status: "Pending",
+        icon: <FaCircle className='w-2 h-2 text-yellow-400'/>,
         statusColor: "bg-yellow-100 text-yellow-800",
         title: "Mastercard ****6442",
         subtitle: "Card payment",
@@ -120,6 +124,7 @@ export const RecentTasks: React.FC = () => {
       },
       {
         status: "Pending",
+        icon: <FaCircle className='w-2 h-2 text-xs text-yellow-400'/>,
         statusColor: "bg-yellow-100 text-yellow-800",
         title: "Account ****882",
         subtitle: "Bank payment",
@@ -129,6 +134,7 @@ export const RecentTasks: React.FC = () => {
       },
       {
         status: "Canceled",
+        icon: <FaCircle className='w-2 h-2 text-xs text-red-400'/>,
         statusColor: "bg-red-100 text-red-800",
         title: "Amex card ****5666",
         subtitle: "Card payment",
@@ -156,23 +162,23 @@ export const RecentTasks: React.FC = () => {
         </div>
         <div className="divide-y divide-gray-200">
           {tasks.map((task, index) => (
-            <div key={index} className="flex items-center justify-between py-4">
-              <div className="flex items-center space-x-4">
+            <div key={index} className="flex flex-cols-5 space-x-4 items-start justify-between py-4">
+              <div className="flex items-center w-[80%]">
                 <span
-                  className={`flex items-center justify-center w-24 px-2 py-1 text-sm font-medium rounded-full ${task.statusColor}`}
+                  className={`flex items-center gap-2 justify-center px-2 py-1 text-sm font-medium rounded-full ${task.statusColor}`}
                 >
-                  {task.status}
+                 {task.icon} {task.status}
                 </span>
-                <div>
+                </div>
+                <div className='flex flex-col items-start w-[140%]'>
                   <h3 className="font-medium">{task.title}</h3>
                   <p className="text-sm text-gray-500">{task.subtitle}</p>
                 </div>
-              </div>
-              <div className="text-right">
+              <div className="text-right flex flex-col items-start w-[80%]">
                 <p className="font-medium">{task.amount}</p>
                 <p className="text-sm text-gray-500">{task.date}</p>
               </div>
-              <div className="hidden sm:block text-gray-500">{task.provider}</div>
+              <div className="hidden sm:block text-gray-500 flex items-start w-full">{task.provider}</div>
               <button className="ml-4 text-gray-500 hover:text-gray-700">
                 <span className="sr-only">Options</span>
                 ...

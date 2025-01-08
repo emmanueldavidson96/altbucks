@@ -9,15 +9,19 @@ const Task: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="flex gap-2">
-      <div className='w-[90%]'>
+      <div className="flex flex-col lg:flex-row gap-2">
+      <div className='w-full lg:w-[90%]'>
       <ReferAndEarn />
       <RecentTasks />
       </div>
-      <div className="w-[40%] min-h-screen bg-gray-50 p-6 space-y-6">
+      <div className="w-full flex flex-row lg:flex-col lg:w-[40%] lg:min-h-screen lg:space-y-6">
+        <div className="flex flex-col">
+        <div>
       <CardSection />
       <SearchByDate />
+      </div>
       <ReferralCards />
+      </div>
     </div>
     </div>
     </>

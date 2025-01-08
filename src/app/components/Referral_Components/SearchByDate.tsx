@@ -2,7 +2,7 @@ import React from "react";
 
 const SearchByDate: React.FC = () => {
   return (
-    <div className="max-w-full bg-white rounded-lg shadow p-6 space-y-4">
+    <div className="max-w-full bg-[#F5F5F5] rounded-lg shadow p-6 space-y-4">
       <h2 className="text-lg font-semibold">Search by Date</h2>
       <div  className="flex gap-2 items-center justify-between">
         <label className="text-sm text-gray-800 font-bold w-full">Date Range:</label>
