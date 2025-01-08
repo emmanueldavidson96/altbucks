@@ -45,10 +45,10 @@ const SearchByDate: React.FC = () => {
         </div>
       </div>
       <div className="flex justify-between space-x-4">
-        <button className="px-8 py-2 w-full text-sm border border-gray-300 rounded-md text-gray-600">
+        <button className="px-4 py-2 w-full text-sm border border-gray-300 rounded-md text-gray-600">
           Cancel
         </button>
-        <button className="px-8 py-2 w-full text-sm bg-blue-600 text-white rounded-md">
+        <button className="px-4 py-2 w-full text-sm bg-blue-600 text-white rounded-md">
           Apply
         </button>
       </div>

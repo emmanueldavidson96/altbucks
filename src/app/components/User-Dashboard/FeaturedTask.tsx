@@ -58,7 +58,7 @@ const TaskActivities = () => {
         {tasks.map((task, index) => (
           <div
             key={index}
-            className="flex items-center justify-between py-4 border-b last:border-0"
+            className="flex items-centre justify-between py-4 border-b last:border-0"
           >
             {/* Status Badge */}
             <div className="flex items-center gap-2">
@@ -79,18 +79,18 @@ const TaskActivities = () => {
             </div>
 
             {/* Task Description */}
-            <div className="flex-1 ml-4 max-w-xs">
+            <div className="flex-1 ml-28 max-w-xs">
               <p className="text-sm font-medium text-gray-900 truncate">{task.description}</p>
               <p className="text-xs text-gray-500">{task.date}</p>
             </div>
 
             {/* Task Amount */}
-            <div className="text-sm font-medium text-gray-900 flex-shrink-0">
+            <div className="text-sm font-medium text-gray-900 flex-shrink-0 ml-0 mr-60">
               {task.amount}
             </div>
 
             {/* Task Platform */}
-            <div className="text-sm text-gray-500">{task.platform}</div>
+            <div className="text-sm text-gray-500 mr-20">{task.platform}</div>
 
             {/* Actions */}
             <button className="text-gray-400 hover:text-gray-700">
