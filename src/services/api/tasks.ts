@@ -84,8 +84,6 @@ export const taskService = {
         const tasks = (Array.isArray(result) ? result : result.data || [])
             .map(normalizeTask)
             .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-            .slice(0, 10);
-
         return { data: tasks };
     },
 
@@ -99,6 +97,7 @@ export const taskService = {
 
         return { data: normalizeTask(result.data || result) };
     },
+
 
     async markTaskComplete(id: string): Promise<ApiResponse<Task>> {
         const response = await fetch(`${API_BASE_URL}/api/tasks/${id}/complete`, {
