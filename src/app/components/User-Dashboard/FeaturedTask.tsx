@@ -63,7 +63,7 @@ const TaskActivities: React.FC = () => {
         </div>
 
         {/* Description Column */}
-        <div className="col-span-2 ml-24 sm:ml-4">
+        <div className="col-span-2 ml-24">
           {tasks.map((task, index) => (
             <div key={index} className="h-16 flex flex-col justify-center">
               <p className="text-sm font-medium text-gray-900 truncate">{task.description}</p>
@@ -73,7 +73,7 @@ const TaskActivities: React.FC = () => {
         </div>
 
         {/* Amount Column */}
-        <div className="col-span-1 ml-0 mr-10 sm:mr-2">
+        <div className="col-span-1 ml-0 mr-10">
           {tasks.map((task, index) => (
             <div key={index} className="h-16 flex items-center">
               <p className="text-sm font-medium text-gray-900">{task.amount}</p>
