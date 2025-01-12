@@ -3,7 +3,7 @@ import React from 'react';
 const TaskSummaryCard = () => {
   return (
     <div className="bg-white rounded-lg p-4 lg:w-[450px] md:w-[900px] 
-    lg:h-[500px] font-mulish mx-6 border border-blue-600 hover:border-2
+    lg:h-[450px] font-mulish mx-6 border border-blue-600 hover:border-2
      hover:border-blue-600 transition-all">
       {/* Encapsulated Task Total and Chart */}
       <div className="flex flex-col h-full justify-between relative">

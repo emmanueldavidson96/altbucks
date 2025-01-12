@@ -1,0 +1,63 @@
+{
+  "userCards": [
+    {
+      "title": "Amount Spent",
+      "value": "$20,000",
+      "icon": "/assets/card1.png"
+    },
+    {
+      "title": "Work In Progress",
+      "value": "59",
+      "icon": "/assets/card2.png"
+    },
+    {
+      "title": "Task Completed",
+      "value": "170",
+      "icon": "/assets/card3.png"
+    }
+  ],
+  "taskActivities": [
+    {
+      "status": "Cancelled",
+      "description": "Survey",
+      "date": "Oct 15, 2024",
+      "amount": "$10.04",
+      "platform": "Facebook"
+    },
+    {
+      "status": "Pending",
+      "description": "Writing",
+      "date": "Jan 17, 2022",
+      "amount": "$99.00",
+      "platform": "Facebook"
+    },
+    {
+      "status": "Pending",
+      "description": "Video review",
+      "date": "Jan 17, 2022",
+      "amount": "$249.94",
+      "platform": "Netflix"
+    },
+    {
+      "status": "Cancelled",
+      "description": "Writing",
+      "date": "Jan 17, 2022",
+      "amount": "$199.24",
+      "platform": "Amazon Prime"
+    }
+  ],
+  "lineGraphData": [
+    { "name": "Feb", "uv": 4000, "pv": 2400 },
+    { "name": "Mar", "uv": 3000, "pv": 1398 },
+    { "name": "Apr", "uv": 2000, "pv": 9800 },
+    { "name": "May", "uv": 2780, "pv": 3908 },
+    { "name": "Jun", "uv": 4500, "pv": 5000 },
+    { "name": "Jul", "uv": 3490, "pv": 4300 },
+    { "name": "Aug", "uv": 4000, "pv": 4700 },
+    { "name": "Sep", "uv": 3000, "pv": 3500 },
+    { "name": "Oct", "uv": 2000, "pv": 4200 },
+    { "name": "Nov", "uv": 3900, "pv": 4800 },
+    { "name": "Dec", "uv": 5000, "pv": 5200 },
+    { "name": "Jan", "uv": 4500, "pv": 4900 }
+  ]
+}

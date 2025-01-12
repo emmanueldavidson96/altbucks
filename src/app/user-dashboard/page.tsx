@@ -1,4 +1,4 @@
-"use client"; // Ensure this is treated as a Client Component
+"use client"; 
 
 import React from "react";
 import Header from "../components/User-Dashboard/Header";
@@ -10,10 +10,8 @@ import PersonalProfile from "../components/User-Dashboard/PersonalProfile";
 import TaskSummaryCard from "../components/User-Dashboard/TaskSummaryCard";
 import ReferralCard from "../components/User-Dashboard/ReferralCard";
 import "../globals.css";
-import Navbar from "../components/User-Dashboard/Navbar";
 
 export default function Dashboard() {
-  // Define the event handler
   const handleButtonClick = () => {
     console.log("Post a Task button clicked!");
   };
@@ -34,7 +32,7 @@ export default function Dashboard() {
             title="Build a hands-on team to work on your project faster and easier with"
             subtitle="We’ve got a whole new pack of updates coming soon, you’ll love them."
             buttonText="Post a Task"
-            onButtonClick={handleButtonClick} // Pass the event handler
+            onButtonClick={handleButtonClick}
             imageSrc="/assets/Arrows(2).png"
             imageAlt="Illustration of arrows"
           />

@@ -1,42 +1,27 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import mockData from './mockData.json';
 
-const TaskActivities = () => {
-  const tasks = [
-    {
-      status: "Cancelled",
-      description: "Survey",
-      date: "Oct 15, 2024",
-      amount: "$10.04",
-      platform: "Facebook",
-    },
-    {
-      status: "Pending",
-      description: "Writing",
-      date: "Jan 17, 2022",
-      amount: "$99.00",
-      platform: "Facebook",
-    },
-    {
-      status: "Pending",
-      description: "Video review",
-      date: "Jan 17, 2022",
-      amount: "$249.94",
-      platform: "Netflix",
-    },
-    {
-      status: "Cancelled",
-      description: "Writing",
-      date: "Jan 17, 2022",
-      amount: "$199.24",
-      platform: "Amazon Prime",
-    },
-  ];
+interface Task {
+  status: string;
+  description: string;
+  date: string;
+  amount: string;
+  platform: string;
+}
+
+const TaskActivities: React.FC = () => {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  
+  useEffect(() => {
+    // Fetch data from the mock JSON file
+    setTasks(mockData.taskActivities);
+  }, []);
 
   return (
     <div className="bg-white rounded-lg shadow p-6 border 
-      border-transparent hover:border-4 hover:border-blue-600 font-mulish">
+      border-transparent hover:border-4 hover:border-blue-600 font-mulish mx-4">
       {/* Title Section */}
       <div className="mb-6">
         <h1 className="text-xl font-bold text-black mb-2">Featured Task</h1>
@@ -58,7 +43,7 @@ const TaskActivities = () => {
         {tasks.map((task, index) => (
           <div
             key={index}
-            className="flex items-centre justify-between py-4 border-b last:border-0"
+            className="flex items-center justify-between py-4 border-b last:border-0"
           >
             {/* Status Badge */}
             <div className="flex items-center gap-2">
@@ -79,18 +64,18 @@ const TaskActivities = () => {
             </div>
 
             {/* Task Description */}
-            <div className="flex-1 ml-28 max-w-xs">
+            <div className="flex-1 ml-4 max-w-xs">
               <p className="text-sm font-medium text-gray-900 truncate">{task.description}</p>
               <p className="text-xs text-gray-500">{task.date}</p>
             </div>
 
             {/* Task Amount */}
-            <div className="text-sm font-medium text-gray-900 flex-shrink-0 ml-0 mr-60">
+            <div className="text-sm font-medium text-gray-900 flex-shrink-0">
               {task.amount}
             </div>
 
             {/* Task Platform */}
-            <div className="text-sm text-gray-500 mr-20">{task.platform}</div>
+            <div className="text-sm text-gray-500">{task.platform}</div>
 
             {/* Actions */}
             <button className="text-gray-400 hover:text-gray-700">
