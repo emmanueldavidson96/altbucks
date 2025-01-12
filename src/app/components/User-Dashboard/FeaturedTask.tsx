@@ -39,14 +39,11 @@ const TaskActivities: React.FC = () => {
       </p>
 
       {/* Task List */}
-      <div>
-        {tasks.map((task, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-between py-4 border-b last:border-0"
-          >
-            {/* Status Badge */}
-            <div className="flex items-center gap-2">
+      <div className="grid grid-cols-5 gap-4 items-start">
+        {/* Status Column */}
+        <div className="col-span-1">
+          {tasks.map((task, index) => (
+            <div key={index} className="flex items-center gap-2 h-16">
               <span
                 className={`inline-block w-2.5 h-2.5 rounded-full ${
                   task.status === "Cancelled" ? "bg-red-500" : "bg-yellow-500"
@@ -62,27 +59,36 @@ const TaskActivities: React.FC = () => {
                 {task.status}
               </span>
             </div>
+          ))}
+        </div>
 
-            {/* Task Description */}
-            <div className="flex-1 ml-4 max-w-xs">
+        {/* Description Column */}
+        <div className="col-span-2 ml-24">
+          {tasks.map((task, index) => (
+            <div key={index} className="h-16 flex flex-col justify-center">
               <p className="text-sm font-medium text-gray-900 truncate">{task.description}</p>
               <p className="text-xs text-gray-500">{task.date}</p>
             </div>
+          ))}
+        </div>
 
-            {/* Task Amount */}
-            <div className="text-sm font-medium text-gray-900 flex-shrink-0">
-              {task.amount}
+        {/* Amount Column */}
+        <div className="col-span-1 ml-0 mr-10">
+          {tasks.map((task, index) => (
+            <div key={index} className="h-16 flex items-center">
+              <p className="text-sm font-medium text-gray-900">{task.amount}</p>
             </div>
+          ))}
+        </div>
 
-            {/* Task Platform */}
-            <div className="text-sm text-gray-500">{task.platform}</div>
-
-            {/* Actions */}
-            <button className="text-gray-400 hover:text-gray-700">
-              ...
-            </button>
-          </div>
-        ))}
+        {/* Platform Column */}
+        <div className="col-span-1">
+          {tasks.map((task, index) => (
+            <div key={index} className="h-16 flex items-center">
+              <p className="text-sm text-gray-500">{task.platform}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
