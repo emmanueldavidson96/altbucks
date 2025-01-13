@@ -3,6 +3,8 @@
 import { create } from 'zustand';
 import { taskService } from '@/services/api/tasks';
 import { applicationService } from '@/services/api/applications';
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
 
 const useTaskStore = create((set) => ({
     tasks: [],
@@ -104,6 +106,33 @@ const useTaskStore = create((set) => ({
             throw error;
         }
     },
+
+
+    updateTask: async (id, taskData) => {
+        set({ isLoading: true, error: null });
+        try {
+            const response = await taskService.updateTask(id, taskData);
+            const updatedTask = response.data;
+            set((state) => ({
+                tasks: state.tasks.map(task =>
+                    task._id === id ? updatedTask : task
+                ),
+                recentTasks: state.recentTasks.map(task =>
+                    task._id === id ? updatedTask : task
+                ),
+                selectedTask: state.selectedTask?._id === id ? updatedTask : state.selectedTask,
+                isLoading: false
+            }));
+            return updatedTask;
+        } catch (error) {
+            set({
+                error: error instanceof Error ? error.message : 'Failed to update task',
+                isLoading: false
+            });
+            throw error;
+        }
+    },
+
 
     markTaskComplete: async (id) => {
         set({ isLoading: true, error: null });

@@ -77,6 +77,18 @@ export const useTaskOperations = () => {
     }, [store]);
 
 
+    const handleUpdateTask = useCallback(async (taskId: string, taskData) => {
+        try {
+            const updatedTask = await store.updateTask(taskId, taskData);
+            await store.fetchRecentTasks(); // Refresh the recent tasks list
+            toast.success('Task updated successfully');
+            return updatedTask;
+        } catch (error) {
+            console.error('Update task error:', error);
+            toast.error('Failed to update task');
+            throw error;
+        }
+    }, [store]);
 
 
     const handleMarkComplete = useCallback(async (taskId: string) => {
@@ -133,6 +145,7 @@ export const useTaskOperations = () => {
         fetchCompletedTasks,
         handleViewDetails,
         handleDeleteTask,
+        handleUpdateTask,
         handleMarkComplete,
         handleMarkPending
     };

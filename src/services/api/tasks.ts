@@ -1,4 +1,6 @@
 import { API_BASE_URL } from './config';
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
 
 // Simple types for core functionality
 interface Task {
@@ -56,6 +58,9 @@ export const taskService = {
         return { data: normalizeTask(result.data || result) };
     },
 
+
+
+
     async getAllTasks(): Promise<ApiResponse<Task[]>> {
         try {
             const response = await fetch(`${API_BASE_URL}/api/tasks`);
@@ -73,6 +78,7 @@ export const taskService = {
         }
     },
 
+
     async getRecentTasks(): Promise<ApiResponse<Task[]>> {
         const response = await fetch(`${API_BASE_URL}/api/tasks/recent`);
         const result = await response.json();
@@ -86,6 +92,9 @@ export const taskService = {
             .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
         return { data: tasks };
     },
+
+
+
 
     async getTaskById(id: string): Promise<ApiResponse<Task>> {
         const response = await fetch(`${API_BASE_URL}/api/tasks/${id}`);
@@ -136,5 +145,25 @@ export const taskService = {
         }
 
         return { data: undefined };
-    }
+    },
+
+    async updateTask(id: string, taskData: Partial<Task>): Promise<ApiResponse<Task>> {
+        const response = await fetch(`${API_BASE_URL}/api/tasks/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(taskData)
+        });
+
+        const result = await response.json();
+        if (!response.ok) {
+            throw new Error(result.message || 'Failed to update task');
+        }
+
+        return { data: normalizeTask(result.data || result) };
+    },
+
+
+
 }
