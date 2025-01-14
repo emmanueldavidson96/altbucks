@@ -1,9 +1,9 @@
 'use client';
 
-import Header from '../components/Dashboard_Components/Header';
-import { ApplicationHero } from '../components/My_Applications_Component/ApplicationHero';
-import { ApplicationsList } from '../components/My_Applications_Component/ApplicationsList';
-import { ErrorBoundary } from '../components/ErrorBoundary';
+import Header from '../../components/Dashboard_Components/Header';
+import { ApplicationHero } from '../../components/My_Applications_Component/ApplicationHero';
+import { ApplicationsList } from '../../components/My_Applications_Component/ApplicationsList';
+import { ErrorBoundary } from '../../components/ErrorBoundary';
 
 export default function MyApplicationsPage() {
     return (

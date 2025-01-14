@@ -1,10 +1,10 @@
 'use client';
 
-import Header from '../components/Dashboard_Components/Header';
-import { TasksHero } from '../components/Tasks_Components/TasksHero';
-import { RecentTasks } from '../components/Tasks_Components/TasksSection';
-import { TasksList } from '../components/Tasks_Components/TasksList';
-import { ErrorBoundary } from '../components/ErrorBoundary';
+import Header from '../../components/Dashboard_Components/Header';
+import { TasksHero } from '../../components/Tasks_Components/TasksHero';
+import { RecentTasks } from '../../components/Tasks_Components/TasksSection';
+import { TasksList } from '../../components/Tasks_Components/TasksList';
+import { ErrorBoundary } from '../../components/ErrorBoundary';
 import { Suspense } from 'react';
 
 const LoadingFallback = () => (

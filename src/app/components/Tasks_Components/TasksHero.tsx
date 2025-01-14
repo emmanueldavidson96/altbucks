@@ -24,7 +24,7 @@ export function TasksHero() {
                     </div>
 
                     <Link
-                        href="/find-tasks"
+                        href="/dashboard/find-tasks"
                         className="relative overflow-hidden px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600
                                  text-white font-medium tracking-wide
                                  shadow-lg shadow-blue-500/30

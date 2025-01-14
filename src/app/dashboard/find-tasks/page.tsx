@@ -1,11 +1,11 @@
 'use client';
 
-import Header from '../components/Dashboard_Components/Header';
-import FindTasksHero from '../components/FindTasks_Components/FindTasksHero';
-import FindTasksFilter from '../components/FindTasks_Components/FindTasksFilter';
-import { FindTasksList } from '../components/FindTasks_Components/FindTasksList';
-import { TaskDetailsModal } from '../components/Tasks_Components/TaskDetailsModal';
-import { ErrorBoundary } from '../components/ErrorBoundary';
+import Header from '../../components/Dashboard_Components/Header';
+import FindTasksHero from '../../components/FindTasks_Components/FindTasksHero';
+import FindTasksFilter from '../../components/FindTasks_Components/FindTasksFilter';
+import { FindTasksList } from '../../components/FindTasks_Components/FindTasksList';
+import { TaskDetailsModal } from '../../components/Tasks_Components/TaskDetailsModal';
+import { ErrorBoundary } from '../../components/ErrorBoundary';
 
 export default function FindTasksPage() {
     return (
