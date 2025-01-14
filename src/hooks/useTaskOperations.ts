@@ -110,7 +110,7 @@ export const useTaskOperations = () => {
         try {
             await store.markTaskPending(taskId);
             await store.fetchRecentTasks();
-            await store.fetchCompletedTasks(); // Add this to refresh completed tasks
+            await store.fetchCompletedTasks();
             toast.success('Task marked as pending');
             return true;
         } catch (error) {
