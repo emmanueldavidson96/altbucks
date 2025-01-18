@@ -5,5 +5,5 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const API_URL="http://localhost:8080/api/v1"
-// export const API_URL="https://altbucks-server.onrender.com"
+// export const API_URL="http://localhost:8080/api/v1"
+export const API_URL="https://altbucks-server.onrender.com"
