@@ -42,9 +42,9 @@ const PersonalProfile: React.FC<UserCardProps> = ({user}) => {
 
           {/* Name and ID */}
           <div className="absolute top-[106px] text-center mt-5">
-            <p className="text-2xl font-bold text-[#18181B] mt-5 font-mulish">{user.firstName} {user.lastName}</p>
+            <p className="text-2xl font-bold text-[#18181B] mt-5 font-mulish">{user?.firstName} {user?.lastName}</p>
             <span>
-              <p className="text-base font-medium text-[#949396] font-mulish">ID: {user._id}</p>
+              <p className="text-base font-medium text-[#949396] font-mulish">ID: {user?._id}</p>
             </span>
           </div>
         </div>

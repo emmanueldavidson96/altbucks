@@ -24,7 +24,7 @@ export default function Dashboard() {
   useEffect(() => {
     profileAuth()
   }, [])
-  console.log("isAuthenticated: ", isAuthenticated, "user: ", user);
+ 
 
   return (
     <div className="w-screen h-screen flex flex-col bg-white font-mulish">
