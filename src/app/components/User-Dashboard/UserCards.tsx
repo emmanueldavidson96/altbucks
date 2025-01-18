@@ -1,6 +1,18 @@
 import React from 'react';
 
-const UserCards: React.FC = () => {
+interface User{
+  _id:number,
+  firstName:string,
+  email:string,
+  lastName:string,
+  phoneNumber:string,  
+}
+
+interface UserCardProps{
+  user:User
+}
+
+const UserCards: React.FC<UserCardProps> = ({user}) => {
   return (
     <div
       className="bg-white w-full flex flex-col sm:flex-row justify-between gap-4 sm:gap-6 rounded-lg 

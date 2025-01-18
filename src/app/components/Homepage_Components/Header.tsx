@@ -61,12 +61,12 @@ export default function Header() {
             {/* User Authentication */}
             <div className='flex items-center gap-3'>
                 <button className='border border-gray-400 w-fit h-fit px-4 py-2 text-gray-400 rounded-md hover:bg-[#2877EA] hover:text-white transition-all duration-300'>
-                    <Link href={"/sign-in"}>
+                    <Link href={"/log-in"}>
                         Log In
                     </Link>
                 </button>
                 <button className='w-fit h-fit px-4 py-2 bg-[#2877EA] text-white rounded-md hover:bg-blue-700 duration-300 transition-all '>
-                    <Link href={"/sign-up"}>
+                    <Link href={"/signup"}>
                         Sign Up
                     </Link>
                 </button>

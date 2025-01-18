@@ -4,6 +4,7 @@ import Image from 'next/image'
 import illustrationImg from "../../../public/assets/Illustration.png";
 import Link from 'next/link';
 
+
 export default function page() {
   return (
     <div className='bg-[#2877EA] w-screen h-fit'>

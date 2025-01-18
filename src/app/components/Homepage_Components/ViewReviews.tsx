@@ -13,6 +13,7 @@ import imgFour from "../../../../public/assets/Ellipse 1960.png";
 import imgFive from "../../../../public/assets/Image (3).png"
 import imgSix from "../../../../public/assets/Image (2).png"
 
+
 function ViewReviews() {
   return (
     <div className='bg-[#F1F2F4] h-[600px] w-full flex flex-col items-center justify-center gap-16 relative'>

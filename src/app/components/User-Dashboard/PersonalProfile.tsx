@@ -2,7 +2,19 @@ import React from 'react';
 import Image from 'next/image';
 import profileImg from "../../../../public/assets/Ellipse68.png";  // Import the image
 
-const PersonalProfile: React.FC = () => {
+interface User{
+  _id:number,
+  firstName:string,
+  email:string,
+  lastName:string,
+  phoneNumber:string,  
+}
+
+interface UserCardProps{
+  user:User
+}
+
+const PersonalProfile: React.FC<UserCardProps> = ({user}) => {
   return (
     <div className="lg:w-[448px] md:w-[900px] lg:h-[440px] bg-white border border-blue-600 hover:border-2
         hover:border-blue-600 transition-all rounded-lg p-6 flex flex-col items-center ml-6 sm:mr-2">
@@ -30,9 +42,9 @@ const PersonalProfile: React.FC = () => {
 
           {/* Name and ID */}
           <div className="absolute top-[106px] text-center mt-5">
-            <p className="text-2xl font-bold text-[#18181B] mt-5 font-mulish">Adam Smith</p>
+            <p className="text-2xl font-bold text-[#18181B] mt-5 font-mulish">{user.firstName} {user.lastName}</p>
             <span>
-              <p className="text-base font-medium text-[#949396] font-mulish">ID: 20AB-C210-00SA</p>
+              <p className="text-base font-medium text-[#949396] font-mulish">ID: {user._id}</p>
             </span>
           </div>
         </div>
