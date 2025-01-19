@@ -8,7 +8,7 @@ interface CardProps {
   title: string;
   category: string;
   description: string;
-  earnings: number;
+  earnings: string;
   deadline: string;
   posted: string;
 }
@@ -57,7 +57,7 @@ const Card: React.FC<CardProps> = ({
               onClick={handleModalOpen}
               className="flex gap-2 justify-center text-blue-500 text-sm hover:underline self-start"
             >
-              View Details <FaAngleRight />
+              View Details <FaAngleRight className="mt-1"/>
             </button>
           </div>
         </div>

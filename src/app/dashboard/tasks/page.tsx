@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "@/app/components/Tasks_Components/Card";
 import { CardsData } from "@/app/components/Tasks_Components/CardsData";
 import Filter from "@/app/components/Tasks_Components/Filter";
@@ -8,8 +8,26 @@ import { IoClose, IoSearchOutline } from "react-icons/io5";
 import { MdFilterList } from "react-icons/md";
 import Header from "@/app/components/Tasks_Components/Header";
 
+interface CardProps {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  earnings: string;
+  deadline: string;
+  posted: string;
+}
+
 const Tasks: React.FC = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [tasks, setTasks] = useState<CardProps[]>([]);
+
+  useEffect(() => {
+    fetch("/Tasks-static-Data.json")
+    .then((response) => response.json())
+    .then((data) => setTasks(data.tasks))
+    .catch((error) => console.error("Error fetching data:", error));
+  }, []);
 
   return (
     <>
@@ -93,8 +111,8 @@ const Tasks: React.FC = () => {
           {/* Cards Section */}
           <div className="bg-white">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {CardsData.map((card, index) => (
-                <Card key={index} {...card} />
+              {tasks.map((task ) => (
+                <Card key={task.id} {...task} />
               ))}
             </div>
           </div>
