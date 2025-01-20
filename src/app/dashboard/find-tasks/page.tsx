@@ -18,9 +18,9 @@ export default function FindTasksPage() {
                         <FindTasksFilter />
                     </aside>
                     <main className="flex-1">
-                        <ErrorBoundary>
-                            <FindTasksList />
-                        </ErrorBoundary>
+                        {/*/!*<ErrorBoundary>*!/*/}
+                        {/*    <FindTasksList />*/}
+                        {/*/!*</ErrorBoundary>*!/*/}
                     </main>
                 </div>
             </div>

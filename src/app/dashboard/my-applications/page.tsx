@@ -19,9 +19,9 @@ export default function MyApplicationsPage() {
                     <ApplicationHero />
 
                     {/* Applications List Section */}
-                    <ErrorBoundary>
-                        <ApplicationsList />
-                    </ErrorBoundary>
+                    {/*/!*<ErrorBoundary>*!/*/}
+                    {/*    <ApplicationsList />*/}
+                    {/*/!*</ErrorBoundary>*!/*/}
                 </div>
             </main>
         </div>
