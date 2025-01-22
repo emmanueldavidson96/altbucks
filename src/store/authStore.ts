@@ -6,6 +6,7 @@ axios.defaults.withCredentials = true
 
 interface AuthStore {
     signup:(email:string, password:string, firstName:string, lastName:string, phoneNumber:string, confirmPassword:string) => Promise<void>;
+    signuptaskcreator:(email:string, password:string, firstName:string, lastName:string, phoneNumber:string, confirmPassword:string) => Promise<void>;
     login:(email:string, password:string) => Promise<void>;
     profileAuth:() => Promise<void>;
     isLoading:boolean;
@@ -27,6 +28,25 @@ export const useAuthStore = create<AuthStore>((set) => ({
         set({isLoading:true,error:null});
         try{
             const response = await axios.post(`${API_URL}/users/create-task-earner`, {
+                email, password, firstName, lastName, phoneNumber, confirmPassword
+            })
+            set({
+                user:response.data.newUser, 
+                isAuthenticated:true,
+                isLoading:false
+            })
+        }catch(error:any){
+            set({
+                error:error || "Error signing up",
+                isLoading:false
+            })
+            throw error
+        }
+    },
+    signuptaskcreator: async (email, password, firstName, lastName, phoneNumber, confirmPassword) => {
+        set({isLoading:true,error:null});
+        try{
+            const response = await axios.post(`${API_URL}/users/create-task-creator`, {
                 email, password, firstName, lastName, phoneNumber, confirmPassword
             })
             set({

@@ -6,6 +6,7 @@ import illustrationImg from "../../../public/assets/Illustration.png";
 import Link from 'next/link';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export default function page() {
     const [userData, setUserData] = useState({
@@ -17,12 +18,13 @@ export default function page() {
         confirmPassword:""
     })
     const router = useRouter();
-    const {user, isLoading, signup} = useAuthStore();
+    const {user, isLoading, signuptaskcreator} = useAuthStore();
 
     const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try{
-            await signup(userData.email, userData.password, userData.firstName, userData.lastName, userData.phoneNumber, userData.confirmPassword);
+            await signuptaskcreator(userData.email, userData.password, userData.firstName, userData.lastName, userData.phoneNumber, userData.confirmPassword);
+            toast.success("Successfully logged in!")
             router.push("/dashboard");
         }catch(error){
             console.log(error)

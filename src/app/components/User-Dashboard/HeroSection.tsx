@@ -39,7 +39,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           {subtitle}
         </p>
         <button
-          className="bg-blue-600 text-white px-6 md:px-10 py-2 md:py-3 rounded-lg font-mulish font-medium text-sm md:text-base"
+          className="bg-blue-500 text-white hover:bg-blue-800 transition-all duration-500 px-6 md:px-10 py-2 md:py-3 rounded-lg font-mulish font-medium text-sm md:text-base"
           onClick={onButtonClick}
         >
           {buttonText}

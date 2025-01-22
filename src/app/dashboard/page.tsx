@@ -34,7 +34,7 @@ export default function Dashboard() {
       </div>
 
       {/* Main Content Section */}
-      <div className="flex flex-grow mt-6 flex-col lg:flex-row">
+      <div className="mx-auto w-[95%] flex flex-grow mt-6 flex-col lg:flex-row">
         {/* LEFT */}
         <div className="w-full lg:w-4/6 bg-white flex flex-col p-4 gap-6">
           {/* HeroSection */}

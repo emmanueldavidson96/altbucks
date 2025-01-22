@@ -58,7 +58,11 @@ export default function Header() {
                     <p className='text-sm text-black tracking-wide'>English (United States)</p>
                     <IoMdArrowDropdown size={20} color='black'/>
                 </div>
-                <button className='w-fit h-fit text-sm tracking-wide px-6 py-2 bg-[#2877EA] text-white rounded-md hover:bg-blue-700 duration-300 transition-all '>Log in</button>
+                <button className='w-fit h-fit text-sm tracking-wide px-6 py-2 bg-[#2877EA] text-white rounded-md hover:bg-blue-700 duration-300 transition-all '>
+                    <Link href="/log-in">
+                        Login
+                    </Link>
+                </button>
             </div>
         </nav>
     </div>

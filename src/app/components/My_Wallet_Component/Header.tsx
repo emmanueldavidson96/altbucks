@@ -15,7 +15,7 @@ export default function Header() {
 
         <div className='flex gap-4 items-center h-full'>
           <p className='text-sm text-gray-600 tracking-wide'>
-            <Link href={'/user-dashboard'} className='text-sm tracking-wide'>
+            <Link href={'/dashboard'} className='text-sm tracking-wide'>
               Dashboard
             </Link>
           </p>
