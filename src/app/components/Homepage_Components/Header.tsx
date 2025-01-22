@@ -1,7 +1,9 @@
+"use client";
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import logo from "../../../../public/assets/Group 39230.png";
 import Link from 'next/link';
+import { useAuthStore } from '@/store/authStore';
 
 export const site_links = [
     {
@@ -33,6 +35,11 @@ export const site_links = [
 
 
 export default function Header() {
+    const {isAuthenticated, user, profileAuth} = useAuthStore();
+
+    useEffect(() => {
+        profileAuth()
+    }, [])
   return (
     <div className='w-screen h-fit flex items-center py-5 bg-[#F1F2F4]'>
         <nav className='flex justify-between w-[90%] mx-auto '>            
@@ -57,20 +64,25 @@ export default function Header() {
                     })
                 }
             </div>
-            
+
             {/* User Authentication */}
-            <div className='flex items-center gap-3'>
-                <button className='border border-gray-400 w-fit h-fit px-4 py-2 text-gray-400 rounded-md hover:bg-[#2877EA] hover:text-white transition-all duration-300'>
-                    <Link href={"/log-in"}>
-                        Log In
-                    </Link>
-                </button>
-                <button className='w-fit h-fit px-4 py-2 bg-[#2877EA] text-white rounded-md hover:bg-blue-700 duration-300 transition-all '>
-                    <Link href={"/signup"}>
-                        Sign Up
-                    </Link>
-                </button>
-            </div>
+            {
+                isAuthenticated ? 
+                <p>Welcome, {user?.firstName}</p>          
+                : 
+                <div className='flex items-center gap-3'>
+                    <button className='border border-gray-400 w-fit h-fit px-4 py-2 text-gray-400 rounded-md hover:bg-[#2877EA] hover:text-white transition-all duration-300'>
+                        <Link href={"/log-in"}>
+                            Log In
+                        </Link>
+                    </button>
+                    <button className='w-fit h-fit px-4 py-2 bg-[#2877EA] text-white rounded-md hover:bg-blue-700 duration-300 transition-all '>
+                        <Link href={"/signup"}>
+                            Sign Up
+                        </Link>
+                    </button>
+                </div>
+            }
         </nav>
     </div>
   )
