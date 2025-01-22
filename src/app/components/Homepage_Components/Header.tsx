@@ -68,7 +68,9 @@ export default function Header() {
             {/* User Authentication */}
             {
                 isAuthenticated ? 
-                <p className='flex gap-3 items-center'>Welcome, <span className='text-blue-500 w-fit fit bg-blue-100 px-5 py-2'>{user?.firstName}</span></p>          
+                <p className='flex gap-3 items-center'>Welcome, <span className='text-blue-500 w-fit fit bg-blue-100 px-5 py-2'>
+                    <Link href="/dashboard">{user?.firstName}</Link></span>
+                </p>          
                 : 
                 <div className='flex items-center gap-3'>
                     <button className='border border-gray-400 w-fit h-fit px-4 py-2 text-gray-400 rounded-md hover:bg-[#2877EA] hover:text-white transition-all duration-300'>
