@@ -47,14 +47,14 @@ export default function page() {
                     
                     <div className='flex items-center justify-between w-full'>
                         <div className='w-[45%] h-fit flex flex-col gap-2 '>
-                            <label htmlFor="firstName" className='text-sm text-[#666666]'>First name</label>
+                            <label htmlFor="firstName" className='text-sm text-[#666666]'>First Name</label>
                             <input type="text" 
                                 onChange={(e) => setUserData({...userData, firstName:e.target.value})}
                                 className='w-full p-3 rounded-md border border-gray-300 text-black text-sm' 
                             />
                         </div>
                         <div className='w-[45%] h-fit flex flex-col gap-2'>
-                            <label htmlFor="firstName" className='text-sm text-[#666666]'>Last name</label>
+                            <label htmlFor="firstName" className='text-sm text-[#666666]'>Last Name</label>
                             <input type="text" 
                                 onChange={(e) => setUserData({...userData, lastName:e.target.value})}
                                 className='w-full p-3 border rounded-md border-gray-300 text-black text-sm' 
