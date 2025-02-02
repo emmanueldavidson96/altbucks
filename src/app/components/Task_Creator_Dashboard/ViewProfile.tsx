@@ -5,9 +5,22 @@ import profileImage from "../../../../public/assets/52c8f0d76821a360324586d8bc58
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 
-export default function ViewProfile({user}) {
+// Define the user type
+interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  profileImage?: string; // Optional field
+}
+
+interface ViewProfileProps {
+  user: User;
+}
+
+
+export default function ViewProfile({user}: ViewProfileProps) {
   // const {user} = useAuthStore();
-  // const router = useRouter();
+  const router = useRouter();
   return (
     <div className='w-full h-fit flex flex-col gap-5 border border-gray-300 rounded-lg items-center justify-center py-8 px-6'>
         <Image src={profileImage} alt='' className='w-[80px] h-[80px] rounded-full '/>
