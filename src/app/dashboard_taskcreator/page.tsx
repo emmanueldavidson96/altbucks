@@ -9,13 +9,19 @@ import ViewProfile from '../components/Task_Creator_Dashboard/ViewProfile'
 import TaskTotal from '../components/Task_Creator_Dashboard/TaskTotal'
 import WithdrawNow from '../components/Task_Creator_Dashboard/WithdrawNow'
 import { useAuthStore } from '@/store/authStore'
+import { useRouter } from 'next/navigation'
 
 export default function page() {
   const {isAuthenticated, user, profileAuth} = useAuthStore();
+  const router = useRouter();
 
   useEffect(() => {
     profileAuth()
+    if(user?.isTaskEarner === "true"){
+      router.push("/dashboard")
+    }
   }, [])
+
   return (
     <>
         <Header />

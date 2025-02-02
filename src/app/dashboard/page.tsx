@@ -25,11 +25,12 @@ export default function Dashboard() {
 
   useEffect(() => {
     profileAuth()
+    if(user?.isTaskCreator === "true"){
+      router.push("/dashboard_taskcreator")
+    }
   }, [])
 
-  if(user?.isTaskCreator === true){
-    router.push("/dashboard_taskcreator")
-  }else{
+  
     return (
       <div className="w-screen h-screen flex flex-col bg-white font-mulish">
         {/* Navbar Section with Border */}
@@ -79,4 +80,3 @@ export default function Dashboard() {
       </div>
     );
   }
-}
