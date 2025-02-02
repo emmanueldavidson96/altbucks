@@ -19,7 +19,7 @@ export default function TasksCreatorTasksRecentPosts({newTaskModal, setNewTaskMo
 
     const handleUserTasks = async ()=> {
         setLoading(true)
-        const response = await axios.get(`${API_URL}/tasks/tasks/user`)
+        const response = await axios.get(`${API_URL}/tasks/tasks/user`, {withCredentials:true})
         setUserTasks(response.data.userTasks);
         setLoading(false)
     }

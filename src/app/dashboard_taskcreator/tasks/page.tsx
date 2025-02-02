@@ -34,7 +34,7 @@ export default function page() {
     // Do something with the files
     console.log(acceptedFiles)
   }, [])
-  
+
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})  
   const [newTask, setNewTask] = useState({
     taskTitle:"",
@@ -55,7 +55,7 @@ export default function page() {
   const handleSubmit = async (e:any) => {
     e.preventDefault()
     try{
-      const response = await axios.post(`${API_URL}/tasks/create-task`, newTask, {headers: { "Content-Type": "multipart/form-data" }});
+      const response = await axios.post(`${API_URL}/tasks/create-task`, newTask, {withCredentials:true, headers: { "Content-Type": "multipart/form-data" }});
       console.log(response.data);
       toast.success("Task successfully created!")
       window.location.reload();
