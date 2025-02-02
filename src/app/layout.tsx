@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import {Inter} from "next/font/google"
+import {Mulish} from "next/font/google"
 import {ToastContainer} from "react-toastify"
 
-const inter = Inter({subsets:["latin"]});
+const mulish = Mulish({subsets:["latin"]});
 
 export const metadata: Metadata = {
   title: "Altbucks",
@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} antialiased`}
+        className={`${mulish.className} antialiased`}
       >
         {children}
         <ToastContainer 

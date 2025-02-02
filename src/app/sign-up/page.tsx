@@ -79,7 +79,7 @@ export default function page() {
 
                     <div className='flex flex-col gap-3 w-full'>
                         <label htmlFor="firstName" className='text-sm text-[#666666]'>Password</label>
-                        <input type="text" 
+                        <input type="password" 
                             onChange={(e) => setUserData({...userData, password:e.target.value})}
                             className='w-full p-3 border rounded-md border-gray-300 text-black text-sm' />
                         <p className='text-xs text-[#666666]'>Use 8 or more characters with a mix of letters, numbers & symbols</p>
@@ -87,7 +87,7 @@ export default function page() {
 
                     <div className='flex flex-col gap-3 w-full'>
                         <label htmlFor="firstName" className='text-sm text-[#666666]'>Confirm Password</label>
-                        <input type="text" 
+                        <input type="password" 
                             onChange={(e) => setUserData({...userData, confirmPassword:e.target.value})}
                             className='w-full p-3 border rounded-md border-gray-300 text-black text-sm' />
                         <p className='text-xs text-[#666666]'>Use 8 or more characters with a mix of letters, numbers & symbols</p>

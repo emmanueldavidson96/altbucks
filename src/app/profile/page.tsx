@@ -41,7 +41,7 @@ export default function page() {
                         <div className='flex bg-gray-300 rounded-md h-[10px] w-full'>
                             <div className='bg-orange-500 h-full w-[200px] rounded-md'></div>
                         </div>
-                        <p className='text-blue-500 text-sm'>Your Profile is 80% complete</p>
+                        <p className='text-blue-500 text-sm'>Your Profile is <span >80%</span> complete</p>
                     </div>
                 </div>
 

@@ -51,7 +51,7 @@ export default function page() {
                         <label htmlFor="firstName" className='text-sm text-[#666666]'>Password</label>
                         <input 
                             onChange={(e) => setUserData({...userData, password:e.target.value})}
-                            type="text" className='w-full p-3 border rounded-md border-gray-300 text-black text-sm shadow-md' />
+                            type="password" className='w-full p-3 border rounded-md border-gray-300 text-black text-sm shadow-md' />
                     </div>
 
                     <button 
