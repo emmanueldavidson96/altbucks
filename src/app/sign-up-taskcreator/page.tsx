@@ -25,7 +25,7 @@ export default function page() {
         try{
             await signuptaskcreator(userData.email, userData.password, userData.firstName, userData.lastName, userData.phoneNumber, userData.confirmPassword);
             toast.success("Successfully logged in!")
-            router.push("/dashboard");
+            router.push("/dashboard_taskcreator");
         }catch(error){
             console.log(error)
         }
