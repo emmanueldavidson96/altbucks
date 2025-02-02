@@ -30,9 +30,11 @@ export default function page() {
   const [newTaskModal, setNewTaskModal] = useState(false);
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
   const [taskDetails, setTaskDetails ] = useState(false) ;
-  const onDrop = useCallback(acceptedFiles => {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
     // Do something with the files
+    console.log(acceptedFiles)
   }, [])
+  
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})  
   const [newTask, setNewTask] = useState({
     taskTitle:"",
