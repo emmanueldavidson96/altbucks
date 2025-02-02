@@ -1,6 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Import Swiper's CSS */
+@import 'swiper/css';
+@import 'swiper/css/pagination';
 
 body {
   color: var(--foreground);
@@ -17,14 +20,14 @@ body {
   
 }
 
-.swiper-slide{
+/* .swiper-slide{
   position: relative;
   height: 520px;
   display: flex;
   flex-direction: column; 
   overflow: visible; 
   width: 250px;
-}
+} */
 
 /* .swiper-slide-active{
   border: 3px solid #fff;
@@ -110,6 +113,3 @@ body {
   }
 }
 
-/* Import Swiper's CSS */
-@import 'swiper/css';
-@import 'swiper/css/pagination';

@@ -29,7 +29,7 @@ export default function Testimonial() {
                 dynamicBullets:true,
                 clickable:true
             }}
-            spaceBetween={1}
+            spaceBetween={10}
             // breakpoints={{
             //     320:{spaceBetween:5},
             //     430:{spaceBetween:5},
@@ -39,7 +39,7 @@ export default function Testimonial() {
         >
             
             {/* First testimonial */}
-            <SwiperSlide className='swiper-slide slide-1 '>
+            <SwiperSlide className='swiper-slide-review slide-1 '>
                 <div className='w-full h-[300px] bg-[#2877EA] rounded-2xl flex flex-col items-center justify-between shadow-xl relative py-4'>                          
                     <div className='flex gap-8 w-[90%] h-full flex-col items-center justify-center'>
                       <h3 className='text-white text-2xl font-semibold tracking-wide mt-4'>AltBucks</h3>
@@ -58,7 +58,7 @@ export default function Testimonial() {
             </SwiperSlide>
 
             {/* Second testimonial */}
-            <SwiperSlide className='swiper-slide slide-1 '>
+            <SwiperSlide className='swiper-slide-review slide-1 '>
                 <div className='w-full h-[300px] bg-[#2877EA] rounded-2xl flex flex-col items-center justify-between shadow-xl relative py-4'>                          
                     <div className='flex gap-8 w-[90%] h-full flex-col items-center justify-center'>
                       <h3 className='text-white text-2xl font-semibold tracking-wide mt-4'>AltBucks</h3>
@@ -77,7 +77,7 @@ export default function Testimonial() {
             </SwiperSlide>
 
             {/* Third testimonial */}
-            <SwiperSlide className='swiper-slide slide-1 '>
+            <SwiperSlide className='swiper-slide-review slide-1 '>
                 <div className='w-full h-[300px] bg-[#2877EA] rounded-2xl flex flex-col items-center justify-between shadow-xl relative py-4'>                          
                     <div className='flex gap-8 w-[90%] h-full flex-col items-center justify-center'>
                       <h3 className='text-white text-2xl font-semibold tracking-wide mt-4'>AltBucks</h3>
@@ -96,7 +96,7 @@ export default function Testimonial() {
             </SwiperSlide>
 
             {/* Fourth testimonial */}
-            <SwiperSlide className='swiper-slide slide-1 '>
+            <SwiperSlide className='swiper-slide-review slide-1 '>
                 <div className='w-full h-[300px] bg-[#2877EA] rounded-2xl flex flex-col items-center justify-between shadow-xl relative py-4'>                          
                     <div className='flex gap-8 w-[90%] h-full flex-col items-center justify-center'>
                       <h3 className='text-white text-2xl font-semibold tracking-wide mt-4'>AltBucks</h3>
