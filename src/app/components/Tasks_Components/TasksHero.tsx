@@ -1,10 +1,12 @@
 'use client';
 
-import React from 'react';
-import { Sparkles } from 'lucide-react';
-import Link from 'next/link';
+import React, { useState } from 'react';
+import { Sparkles, PlusCircle } from 'lucide-react';
+import { CreateTaskForm } from './CreateTaskForm';
 
 export function TasksHero() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
         <div className="relative">
             {/* Decorative gradient backgrounds */}
@@ -23,22 +25,33 @@ export function TasksHero() {
                         </h1>
                     </div>
 
-                    <Link
-                        href="/dashboard/find-tasks"
-                        className="relative overflow-hidden px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="group relative flex items-center gap-2 px-6 py-2.5 rounded-full
+                                 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600
                                  text-white font-medium tracking-wide
                                  shadow-lg shadow-blue-500/30
-                                 hover:shadow-blue-500/50 hover:-translate-y-0.5
+                                 hover:shadow-blue-500/50 hover:scale-[1.02]
+                                 active:scale-[0.98]
                                  before:absolute before:inset-0
-                                 before:bg-gradient-to-r before:from-white/20 before:to-transparent
+                                 before:bg-gradient-to-r before:from-white/20 before:via-white/20 before:to-transparent
                                  before:translate-x-[-100%] before:transition-transform before:duration-500
                                  hover:before:translate-x-[100%]
-                                 transition-all duration-300 ease-out"
+                                 transition-all duration-300 ease-out
+                                 overflow-hidden"
                     >
-                        Explore More
-                    </Link>
+                        <PlusCircle className="w-5 h-5 transition-transform group-hover:rotate-180 duration-500" />
+                        <span>Create Task</span>
+                        <div className="absolute inset-0 ring-2 ring-white/20 rounded-full"></div>
+                    </button>
                 </div>
             </div>
+
+            {/* Create Task Form Modal */}
+            <CreateTaskForm
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
         </div>
     );
 }
