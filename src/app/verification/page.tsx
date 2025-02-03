@@ -8,13 +8,43 @@ import Link from 'next/link';
 
 
 export default function page() {
+    const [timeLeft, setTimeLeft] = useState(120); // 2 minutes (120 seconds)
 
-    const [email, setEmail] = useState('');
-
-    const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault();
-      console.log('Email:', email);
+    useEffect(() => {
+      if (timeLeft > 0) {
+        const timer = setInterval(() => {
+          setTimeLeft((prevTime) => prevTime - 1);
+        }, 1000);
+        return () => clearInterval(timer); // Cleanup on unmount
+      }
+    }, [timeLeft]);
+  
+    // Format time in MM:SS format
+    const formatTime = (seconds: number) => {
+      const minutes = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${minutes}:${secs < 10 ? `0${secs}` : secs}`;
     };
+  
+    const [code, setCode] = useState(["", "", "", "", ""]);
+    const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+  
+    const handleChange = (index: number, value: string) => {
+      if (!/^\d*$/.test(value)) return;
+      const newCode = [...code];
+      newCode[index] = value;
+      setCode(newCode);
+  
+      if (value && index < 4) {
+        inputRefs.current[index + 1]?.focus();
+      }
+    };
+
+    const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
+        if (e.key === "Backspace" && !code[index] && index > 0) {
+          inputRefs.current[index - 1]?.focus();
+        }
+      };
 
   return (
     <div className='bg-[#2877EA] w-screen h-fit'>
@@ -28,27 +58,47 @@ export default function page() {
 
             {/* Authentication Section */}
 
-        <div className="w-1/2 flex items-center justify-center bg-white rounded-2xl">
-            <div className=" p-8 w-96">
-                <h2 className="text-2xl font-semibold text-gray-800 mb-4">Forgot Password?</h2>
-                <form onSubmit={handleSubmit}>
-                <label className="block text-gray-600 text-sm mb-2">Email address</label>
-                <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                />
+            <div className="flex items-center justify-center bg-white rounded-3xl w-1/2">
+            <div className="p-8 w-2/3">
+                <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                Forgot Password?
+                </h2>
+                <p className="text-gray-600 mb-2">Enter verification code</p>
+                
+                <div className="flex justify-between mb-4">
+                {code.map((digit, index) => (
+                    <input
+                    key={index}
+                    ref={(el) => {
+                        inputRefs.current[index] = el;
+                      }}
+                    type="text"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleChange(index, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(index, e)}
+                    className="w-12 h-12 border rounded-lg text-center text-xl font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                ))}
+                </div>
+
+                <div className="flex justify-between items-center">
+                <p className="text-sm text-gray-600">
+                Resend code in{" "}
+                <span className="text-blue-600 font-semibold">{formatTime(timeLeft)}</span>
+                </p>
                 <button
-                    type="submit"
-                    className="w-full bg-blue-500 text-white py-2 mt-4 rounded-full hover:bg-blue-600 transition"
+                className="bg-gray-200 text-gray-400 text-xs py-3 px-4 rounded-lg mt-2 cursor-not-allowed"
+                disabled
                 >
-                    Reset Password
+                Resend code
                 </button>
-                </form>
+                </div>
+                <button className="w-full bg-[#2877EA] text-white py-4 rounded-full mt-4 hover:bg-blue-600 transition">
+                Verify
+                </button>
             </div>
-        </div>    
+            </div>
         </div>
 
     </div>
