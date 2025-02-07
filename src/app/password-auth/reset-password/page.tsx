@@ -45,6 +45,18 @@ export default function ResetPasswordPage() {
                         <h2 className="mb-6 text-center text-2xl font-semibold">Reset Password</h2>
 
                         <form onSubmit={handleSubmit} className="space-y-4">
+                        <div>
+                                <label className="mb-1 block text-gray-700">Email</label>
+                                <input
+                                    type="password"
+                                    className="w-full rounded-lg border border-gray-300 p-3
+                                             focus:border-blue-500 focus:outline-none"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            
                             <div>
                                 <label className="mb-1 block text-gray-700">New Password</label>
                                 <input
