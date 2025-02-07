@@ -6,6 +6,8 @@ import Image from 'next/image'
 import { toast } from 'react-toastify';
 
 export default function ResetPasswordPage() {
+
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const router = useRouter()
@@ -60,12 +62,13 @@ export default function ResetPasswordPage() {
                             <div>
                                 <label className="mb-1 block text-gray-700">New Password</label>
                                 <input
-                                    type="password"
                                     className="w-full rounded-lg border border-gray-300 p-3
                                              focus:border-blue-500 focus:outline-none"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     required
+                                    placeholder="Enter your email"
                                 />
                             </div>
 
