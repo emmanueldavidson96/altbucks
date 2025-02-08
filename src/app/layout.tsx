@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
-import {Mulish} from "next/font/google"
-import {ToastContainer} from "react-toastify"
+import { Mulish } from "next/font/google"
+import { ToastContainer } from "react-toastify"
+import { AppWrapper } from "@/context";
 
-const mulish = Mulish({subsets:["latin"]});
+const mulish = Mulish({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Altbucks",
@@ -21,12 +21,14 @@ export default function RootLayout({
       <body
         className={`${mulish.className} antialiased`}
       >
-        {children}
-        <ToastContainer 
-          position="top-right"
-          autoClose={5000}
-          theme="light"
-        />
+        <AppWrapper>
+          {children}
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            theme="light"
+          />
+        </AppWrapper>
       </body>
     </html>
   );

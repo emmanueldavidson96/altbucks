@@ -1,89 +1,105 @@
-import Image from 'next/image';
-import React, {useState} from 'react';
+"use client";
 
-const CardSlider = () => {
-    const cards = [
-        {
-          id: 1,
-          image: "https://i.pinimg.com/736x/3b/4b/3e/3b4b3edf97517ba3866dd479bcd1fb5a.jpg", // Replace this with the path to your uploaded image
-        },
-        {
-          id: 2,
-          image: "https://i.pinimg.com/736x/a4/7d/34/a47d34c8fa9de8f86aefc250fd3902d8.jpg", // Placeholder for demonstration
-        },
-        {
-          id: 3,
-          image: "https://i.pinimg.com/736x/d6/38/dd/d638dd510d7b8eb318cd3cfa731114aa.jpg", // Placeholder for demonstration
-        },
-      ];
+import Image from "next/image";
+import PaymentMethodIcon from "../../../../public/assets/my_wallet/PaymentMethodIcon.png";
+import Lines from "../../../../public/assets/my_wallet/Lines.png";
+import PayPassIcon from "../../../../public/assets/my_wallet/PayPassIcon.png";
 
-      const [activeIndex, setActiveIndex] = useState(0);
-
-  // Handle slide changes
-  const handlePrev = () => {
-    setActiveIndex((prevIndex) => (prevIndex === 0 ? cards.length - 1 : prevIndex - 1));
-  };
-
-  const handleNext = () => {
-    setActiveIndex((prevIndex) => (prevIndex === cards.length - 1 ? 0 : prevIndex + 1));
-  };
-
-  
-
+const CardSlider: React.FC = () => {
   return (
-    <div className="flex flex-col items-center py-9">
-    {/* Scroll Indicator - Up */}
-    <button
-      onClick={handlePrev}
-      className="text-gray-500 animate-bounce mb-4 cursor-pointer"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth="2"
-        stroke="currentColor"
-        className="w-8 h-8"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
-      </svg>
-    </button>
-
-    {/* Card Slider */}
-    <div className="relative w-96 h-60">
-        {cards.map((card, index) => (
-          <div
-            key={card.id}
-            className={`absolute inset-0 bg-cover bg-center rounded-xl shadow-lg transform transition-transform duration-500 ${
-              index === activeIndex ? "translate-y-0 scale-100" : "translate-y-8 scale-95 opacity-0"
-            }`}
-            style={{
-              zIndex: index === activeIndex ? 10 : 0,
-              opacity: index === activeIndex ? 1 : 0,
-              backgroundImage: `url(${card.image})`,
-            }}
-          ></div>
-        ))}
+    <div className="relative w-full h-[220px] bg-gradient-to-br from-[#42307D] to-[#7F56D9] rounded-2xl shadow-lg p-6 overflow-hidden">
+      {/* Background Lines */}
+      <div className="absolute inset-0 z-40 top-12 right-0">
+        <Image src={Lines} alt="Lines" width={100} height={100} layout="responsive" objectFit="cover" className="z-50" />
       </div>
 
-    {/* Scroll Indicator - Down */}
-    <button
-      onClick={handleNext}
-      className="text-gray-500 animate-bounce mt-4 cursor-pointer"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth="2"
-        stroke="currentColor"
-        className="w-8 h-8"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-      </svg>
-    </button>
-  </div>
+      {/* card bottom */}
+      <div className="flex justify-between gap-5 items-center absolute bottom-4 right-3">
+        {/* Card Details */}
+        <div className=" z-10 text-white ">
+          {/* Name and Expiry Date */}
+          <div className="flex justify-between items-center">
+            <h2 className="text-sm font-medium tracking-widest">ADAM SMITH</h2>
+            <span className="text-sm tracking-wider">06/24</span>
+          </div>
+
+          {/* Card Number */}
+          <div className="text-xl tracking-[0.15em] font-semibold mt-1">
+            1234 1234 1234 1234
+          </div>
+        </div>
+        <Image
+          src={PaymentMethodIcon}
+          alt="Mastercard"
+          width={50}
+          height={30}
+        />
+      </div>
+
+      {/* Contactless Icon */}
+      <div className="absolute top-5 right-5">
+        <Image src={PayPassIcon} alt="PayPassIcon" width={20} height={20} />
+      </div>
+
+      {/* Mastercard Logo */}
+      {/* <div className="absolute bottom-4 right-5">
+        <Image
+          src={PaymentMethodIcon}
+          alt="Mastercard"
+          width={50}
+          height={30}
+        />
+      </div> */}
+    </div>
   );
 };
 
 export default CardSlider;
+// "use client";
+
+// import Image from "next/image";
+// import PaymentMethodIcon from "../../../../public/assets/my_wallet/PaymentMethodIcon.png";
+// import Lines from "../../../../public/assets/my_wallet/Lines.png";
+// import PayPassIcon from "../../../../public/assets/my_wallet/PayPassIcon.png";
+
+// const CardSlider: React.FC = () => {
+//   return (
+//     <div className="relative w-full h-[220px] bg-gradient-to-br from-[#42307D] to-[#7F56D9] rounded-2xl shadow-lg p-6 overflow-hidden">
+//       {/* Background Lines */}
+//       <div className="absolute inset-0 z-40 top-12 right-0">
+//         <Image src={Lines} alt="Lines" width={100} height={100} layout="responsive" objectFit="cover" className="z-50" />
+//       </div>
+
+// {/* Card Details */}
+// <div className="relative z-10 text-white">
+//   {/* Name and Expiry Date */}
+//   <div className="flex justify-between items-center mt-16">
+//     <h2 className="text-lg font-medium tracking-widest">ADAM SMITH</h2>
+//     <span className="text-md tracking-wider">06/24</span>
+//   </div>
+
+//   {/* Card Number */}
+//   <div className="mt-4 text-2xl tracking-widest font-semibold">
+//     1234 1234 1234 1234
+//   </div>
+// </div>
+
+//       {/* Contactless Icon */}
+//       <div className="absolute top-5 right-5">
+//         <Image src={PayPassIcon} alt="PayPassIcon" width={20} height={20} />
+//       </div>
+
+//       {/* Mastercard Logo */}
+//       <div className="absolute bottom-4 right-5">
+//         <Image
+//           src={PaymentMethodIcon}
+//           alt="Mastercard"
+//           width={50}
+//           height={30}
+//         />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default CardSlider;
