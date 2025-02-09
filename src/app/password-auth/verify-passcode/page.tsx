@@ -38,7 +38,7 @@ export default function VerificationPage() {
         setLoading(true);
 
         try {
-            const response = await fetch("https://altbucks-server-u8rj.onrender.com", {
+            const response = await fetch("https://altbucks-server-u8rj.onrender.com/api/v1/users/verify-token", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

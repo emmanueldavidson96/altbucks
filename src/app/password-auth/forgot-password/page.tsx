@@ -21,7 +21,7 @@ export default function ForgotPasswordPage() {
         setLoading(true);
 
         try {
-            const response = await fetch("https://altbucks-server-u8rj.onrender.com", {
+            const response = await fetch("https://altbucks-server-u8rj.onrender.com/api/v1/users/forgot-password", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
