@@ -49,7 +49,7 @@ const TableContent = () => {
       </div>
 
       {/* Payment History Table */}
-      <div className="bg-white shadow rounded-lg overflow-hidden">
+      <div className="bg-white shadow rounded-lg overflow-x-auto">
         <table className="w-full border-collapse text-[#667085]">
           <thead>
             <tr className="">
