@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "../../components/Forgot-Password-Components/Header";
 import Image from "next/image";
@@ -8,26 +8,10 @@ import { toast } from "react-toastify";
 export default function ResetPasswordPage() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [apiData, setApiData] = useState(null); // Store API response
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch("https://altbucks-server-u8rj.onrender.com");
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data = await response.json();
-                setApiData(data); // Store API data
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-        fetchData();
-    }, []);
-
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
@@ -40,8 +24,43 @@ export default function ResetPasswordPage() {
             return;
         }
 
-        toast.success("Password reset successfully");
-        router.push("/login");
+        const email = sessionStorage.getItem("resetEmail");
+        const token = sessionStorage.getItem("resetToken");
+
+        if (!email || !token) {
+            toast.error("Missing verification details. Please restart the process.");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const response = await fetch("https://altbucks-server-u8rj.onrender.com", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    token,
+                    newPassword: password,
+                    confirmPassword,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                toast.success(data.message || "Password reset successful");
+                router.push("/login");
+            } else {
+                throw new Error(data.message || "Failed to reset password. Please try again.");
+            }
+        } catch (error: any) {
+            toast.error(error.message || "Something went wrong. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     const illustrationImg = "/assets/Illustration.png";
@@ -94,23 +113,14 @@ export default function ResetPasswordPage() {
                             <button
                                 type="submit"
                                 className="mt-4 w-full rounded-full bg-blue-600 p-3
-                                         text-white hover:bg-blue-700 transition"
+                                         text-white hover:bg-blue-700 transition disabled:bg-gray-400"
+                                disabled={loading}
                             >
-                                Reset Password
+                                {loading ? "Resetting..." : "Reset Password"}
                             </button>
                         </form>
                     </div>
                 </div>
-            </div>
-
-            {/* Display Fetched API Data for Debugging */}
-            <div className="text-white w-[90%] mx-auto mt-8 p-4 bg-gray-800 rounded-lg">
-                <h3 className="text-lg font-bold">API Response:</h3>
-                {apiData ? (
-                    <pre className="overflow-x-auto">{JSON.stringify(apiData, null, 2)}</pre>
-                ) : (
-                    <p>Loading API data...</p>
-                )}
             </div>
         </div>
     );
