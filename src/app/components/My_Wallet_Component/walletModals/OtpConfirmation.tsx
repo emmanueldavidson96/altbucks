@@ -7,7 +7,7 @@ import { IoMdCloseCircleOutline, IoMdCheckmarkCircleOutline } from "react-icons/
 
 
 const OtpConfirmation: React.FC = () => {
-      const {setIsOtpConfirmation, setIsHurrayOpen } = useMyContext()
+  const { setIsOtpConfirmation, setIsHurrayOpen } = useMyContext()
   const [otp, setOtp] = useState<string[]>(Array(6).fill("")); // Initialize an array for 6 OTP digits
 
   const handleOtpChange = (index: number, value: string) => {
@@ -26,13 +26,13 @@ const OtpConfirmation: React.FC = () => {
 
   const onClose = () => {
     setIsOtpConfirmation(false)
-   }
+  }
   const handleSubmit = () => {
     console.log("OTP Submitted:", otp.join(""))
     setIsHurrayOpen(true)
     setIsOtpConfirmation(false)
 
-   }
+  }
 
   return (
     <div className="fixed inset-0 bg-[#00000098] flex items-center justify-center px-4 z-20">
