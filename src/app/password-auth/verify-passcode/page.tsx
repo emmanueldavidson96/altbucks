@@ -47,7 +47,7 @@ export default function VerificationPage() {
             return;
         }
         toast.success("Code verified successfully");
-        router.push("/login");
+        router.push("/password-auth/verify-passcode");
     };
 
     return (

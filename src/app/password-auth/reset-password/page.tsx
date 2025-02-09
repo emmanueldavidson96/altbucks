@@ -41,7 +41,7 @@ export default function ResetPasswordPage() {
         }
 
         toast.success("Password reset successfully");
-        router.push("/password-auth/verify-passcode");
+        router.push("/login");
     };
 
     const illustrationImg = "/assets/Illustration.png";
