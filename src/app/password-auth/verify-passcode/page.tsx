@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 export default function VerificationPage() {
     const [otp, setOtp] = useState(["", "", "", "", ""]);
     const [timeLeft, setTimeLeft] = useState(120);
-    const [apiData, setApiData] = useState(null); // Store API response
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const handleOtpChange = (index: number, value: string) => {
@@ -23,32 +23,48 @@ export default function VerificationPage() {
         }
     };
 
-    const illustrationImg = "/assets/Illustration.png";
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch("https://altbucks-server-u8rj.onrender.com");
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data = await response.json();
-                setApiData(data); // Store API data
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-        fetchData();
-    }, []);
-
-    const handleVerify = () => {
+    const handleVerify = async () => {
         if (otp.includes("")) {
             toast.error("Please enter the complete code");
             return;
         }
-        toast.success("Code verified successfully");
-        router.push("/password-auth/verify-passcode");
+
+        const email = sessionStorage.getItem("resetEmail");
+        if (!email) {
+            toast.error("Email not found. Please request a new verification code.");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const response = await fetch("https://altbucks-server-u8rj.onrender.com", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    token: otp.join(""), // Combine OTP digits into a string
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                toast.success(data.message || "Token verified successfully");
+                router.push("/password-auth/reset-password");
+            } else {
+                throw new Error(data.message || "Invalid token. Please try again.");
+            }
+        } catch (error: any) {
+            toast.error(error.message || "Something went wrong. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     };
+
+    const illustrationImg = "/assets/Illustration.png";
 
     return (
         <div className="bg-[#2877EA] min-h-screen">
@@ -101,22 +117,13 @@ export default function VerificationPage() {
                         {/* Verify Button */}
                         <button
                             onClick={handleVerify}
-                            className="w-full bg-[#2877EA] text-white py-3 rounded-full hover:bg-blue-600 transition"
+                            className="w-full bg-[#2877EA] text-white py-3 rounded-full hover:bg-blue-600 transition disabled:bg-gray-400"
+                            disabled={loading}
                         >
-                            Verify
+                            {loading ? "Verifying..." : "Verify"}
                         </button>
                     </div>
                 </div>
-            </div>
-
-            {/* Display Fetched API Data for Debugging */}
-            <div className="text-white w-[90%] mx-auto mt-8 p-4 bg-gray-800 rounded-lg">
-                <h3 className="text-lg font-bold">API Response:</h3>
-                {apiData ? (
-                    <pre className="overflow-x-auto">{JSON.stringify(apiData, null, 2)}</pre>
-                ) : (
-                    <p>Loading API data...</p>
-                )}
             </div>
         </div>
     );
