@@ -34,7 +34,7 @@ const TableContent = () => {
   return (
     <div>
       {/* Search & Filter */}
-      <div className="flex justify-between items-center bg-white p-4 rounded-lg shadow">
+      <div className="flex justify-between items-center bg-white p-4 rounded-lg shadow gap-2 lg:gap-0">
         <div className="flex items-center border p-2 rounded-lg w-full max-w-md ">
           <FaSearch className="text-gray-500 mr-2" />
           <input
