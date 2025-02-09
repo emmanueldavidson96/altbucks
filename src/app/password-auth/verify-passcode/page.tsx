@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from 'next/navigation'
 import Header from '../../components/Forgot-Password-Components/Header'
 import Image from 'next/image'
@@ -25,13 +25,26 @@ export default function VerificationPage() {
 
     const illustrationImg = "/assets/Illustration.png";
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('https://altbucks-server.onrender.com/api/v1');
+                const data = await response.json();
+                console.log(data); // Handle the fetched data as needed
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        fetchData();
+    }, []);
+
     const handleVerify = () => {
         if (otp.includes('')) {
             toast.error("Please enter complete code")
             return
         }
         toast.success("Code verified successfully")
-        router.push('/reset-password')
+        router.push('/login')
     }
 
     return (

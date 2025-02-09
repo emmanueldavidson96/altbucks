@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from 'next/navigation'
 import Header from '../../components/Forgot-Password-Components/Header'
 import Image from 'next/image'
@@ -10,6 +10,19 @@ export default function ForgotPasswordPage() {
     const [email, setEmail] = useState("")
     const router = useRouter()
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('https://altbucks-server.onrender.com/api/v1');
+                const data = await response.json();
+                console.log(data); // Handle the fetched data as needed
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        fetchData();
+    }, []);
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         if (!email) {
@@ -19,7 +32,7 @@ export default function ForgotPasswordPage() {
         // Store email for next page
         sessionStorage.setItem('resetEmail', email)
         toast.success("Verification code has been sent")
-        router.push('/verification')
+        router.push('/password-auth/reset-password')
     }
     const illustrationImg = "/assets/Illustration.png";
 

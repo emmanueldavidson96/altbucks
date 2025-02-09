@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from 'next/navigation'
 import Header from '../../components/Forgot-Password-Components/Header'
 import Image from 'next/image'
@@ -7,10 +7,22 @@ import { toast } from 'react-toastify';
 
 export default function ResetPasswordPage() {
 
-    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const router = useRouter()
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('https://altbucks-server.onrender.com/api/v1');
+                const data = await response.json();
+                console.log(data); // Handle the fetched data as needed
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        fetchData();
+    }, []);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
@@ -26,7 +38,7 @@ export default function ResetPasswordPage() {
         }
 
         toast.success("Password reset successfully")
-        router.push('/login')
+        router.push('/password-auth/verify-passcode')
     }
     const illustrationImg = "/assets/Illustration.png";
 
@@ -47,26 +59,14 @@ export default function ResetPasswordPage() {
                         <h2 className="mb-6 text-center text-2xl font-semibold">Reset Password</h2>
 
                         <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
-                                <label className="mb-1 block text-gray-700">Email</label>
-                                <input
-                                    type="password"
-                                    className="w-full rounded-lg border border-gray-300 p-3
-                                             focus:border-blue-500 focus:outline-none"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            
                             <div>
                                 <label className="mb-1 block text-gray-700">New Password</label>
                                 <input
                                     className="w-full rounded-lg border border-gray-300 p-3
                                              focus:border-blue-500 focus:outline-none"
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    type="text"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     required
                                     placeholder="Enter your email"
                                 />
