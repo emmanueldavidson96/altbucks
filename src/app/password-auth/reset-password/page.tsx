@@ -52,7 +52,7 @@ export default function ResetPasswordPage() {
 
             if (response.ok && data.success) {
                 toast.success(data.message || "Password reset successful");
-                router.push("/login");
+                router.push("/sign-in");
             } else {
                 throw new Error(data.message || "Failed to reset password. Please try again.");
             }
