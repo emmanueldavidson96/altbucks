@@ -23,9 +23,30 @@ export default function Page() {
         setLoading(true);
 
         try {
+
             await login(email, password);
             toast.success("Successfully logged in!");
             router.push("/dashboard");
+
+            const response = await fetch("https://authentication-1-bqvg.onrender.com/users/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password, rememberMe }),
+            });
+
+            const data = await response.json();
+
+
+            if (response.ok) {
+                toast.success("User Logged-in Successfully");
+                setTimeout(() => {
+                    router.push("/dashboard");
+                }, 500);
+            } else {
+                throw new Error("User failed to login. Please try again");
+            }
         } catch (error: any) {
             toast.error(error.response?.data?.message || "Failed to login. Please try again.");
         } finally {

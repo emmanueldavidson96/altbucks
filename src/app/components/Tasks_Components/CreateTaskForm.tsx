@@ -1,5 +1,6 @@
 "use client"
 
+import { log } from "console";
 import { useState } from "react";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { toast } from 'react-toastify';
@@ -16,12 +17,13 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
     const [taskType, setTaskType] = useState("");
     const [description, setDescription] = useState("");
     const [location, setLocation] = useState("");
-    const [compensation, setCompensation] = useState("");
     const [deadline, setDeadline] = useState("");
     const [requirements, setRequirements] = useState("");
     const [additionalInfo, setAdditionalInfo] = useState<File | null>(null);
     const [link1, setLink1] = useState("");
     const [link2, setLink2] = useState("");
+    const [amount, setAmount] = useState<string>(""); // Store as string initially
+    const [currency, setCurrency] = useState<string>("USD");
     const [loading, setLoading] = useState(false);
   
     // const handleModalOpen = () => setModalOpen(true);
@@ -29,13 +31,26 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setFile(e.target.files[0]);
+      setAdditionalInfo(e.target.files[0]);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true); // Ensure loading state is set before making the request
+    setLoading(true); 
+
+        // Ensure amount is a valid number
+        if (isNaN(Number(amount)) || Number(amount) <= 0) {
+          alert("Please enter a valid compensation amount.");
+          return;
+        }
+
+    const payload = {
+      compensation: {
+        currency,
+        amount: Number(amount), // Convert to number before sending
+      },
+    };
 
     try {
         const response = await fetch("https://authentication-1-bqvg.onrender.com/tasks/create", {
@@ -48,7 +63,10 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
               taskType,
               description,
               location,
-              compensation,
+              compensation: {
+                currency,
+                amount: Number(amount),
+              },
               deadline,
               requirements,
               additionalInfo,
@@ -57,15 +75,17 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
             }),
         });
 
-        const data = await response.json(); // Move this outside of the fetch call
+        const data = await response.json();
+        console.log(data);
+        
 
         if (response.ok) {
             toast.success("Task created successfully");
         } else {
-            throw new Error(data.message || "Task creation failed. Please try again.");
+            throw new Error("Task creation failed. Please try again.");
         }
     } catch (error: any) {
-        toast.error(error.message || "Something went wrong. Please try again.");
+        toast.error("Something went wrong. Please try again.");
     } finally {
         setLoading(false);
     }
@@ -180,11 +200,13 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
                 id="compensation"
                 placeholder="Enter Amount"
                 className="p-2 border-t border-b border-r border-gray-300 rounded-r-md w-full focus:ring-blue-500 focus:border-blue-500"
-                value={compensation}
-                onChange={(e) => setCompensation(e.target.value)}
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
               />
               <select
                 className="ml-2 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value)}
               >
                 <option>USD</option>
                 <option>EUR</option>
@@ -222,14 +244,14 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
         </div>
 
         {/* File Upload */}
-        <div>
+        {/* <div>
           <label className="block text-sm font-medium text-gray-700">
             Additional Information Upload (Optional)
           </label>
           <div className="mt-2 border-dashed border-2 border-gray-300 p-4 rounded-md text-center">
             <input
               type="file"
-              // id="fileUpload"
+              id="fileUpload"
               onChange={handleFileChange}
               className="hidden"
             />
@@ -241,7 +263,43 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
             </label>
             <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 5MB</p>
           </div>
+        </div> */}
+
+
+        <div>
+      <label className="block text-sm font-medium text-gray-700">
+        Additional Information Upload (Optional)
+      </label>
+
+      <div className="mt-2 border-dashed border-2 border-gray-300 p-4 rounded-md text-center">
+        {/* File Input (Hidden) */}
+        <input
+          type="file"
+          id="fileUpload"
+          className="hidden"
+          onChange={handleFileChange}
+          accept=".png, .jpg, .jpeg, .gif"
+        />
+
+        {/* Label for the File Input */}
+        <label
+          htmlFor="fileUpload"
+          className="cursor-pointer text-blue-500 hover:underline"
+        >
+          {additionalInfo ? additionalInfo.name : "Upload a file or drag and drop"}
+        </label>
+
+        <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 5MB</p>
+      </div>
+
+      {/* File Preview */}
+      {additionalInfo && (
+        <div className="mt-4">
+          <p className="text-sm text-gray-700">Selected File:</p>
+          <p className="text-sm font-medium text-gray-900">{additionalInfo.name}</p>
         </div>
+      )}
+    </div>
 
         {/* Link Uploads */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -254,6 +312,8 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
               id="link1"
               placeholder="Add file URL"
               className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:ring-blue-500 focus:border-blue-500"
+              value={link1}
+              onChange={(e) => setLink1(e.target.value)}
             />
           </div>
           <div>
@@ -265,6 +325,8 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
               id="link2"
               placeholder="Add file URL"
               className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:ring-blue-500 focus:border-blue-500"
+              value={link2}
+              onChange={(e) => setLink2(e.target.value)}
             />
           </div>
         </div>
