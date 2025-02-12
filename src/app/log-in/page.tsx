@@ -10,64 +10,29 @@ import { useAuthStore } from '@/store/authStore';
 import { toast } from "react-toastify";
 
 export default function Page() {
-    // const [userData, setUserData] = useState({
-    //     email: "",
-    //     password: "",
-    //     rememberMe: false
-    // })
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [rememberMe, setRememberMe] = useState(true)
 
     const router = useRouter();
-    // const { user, isLoading, login } = useAuthStore();
-
-    // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    //     e.preventDefault();
-    //     try {
-    //         await login(userData.email, userData.password);
-    //         toast.success("Successfully logged in!")
-    //         router.push("/dashboard");
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
+    const { login } = useAuthStore();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         setLoading(true);
 
         try {
-            const response = await fetch("https://authentication-1-bqvg.onrender.com/users/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
-            });
-
-            const data = await response.json();
-
-
-            if (response.ok) {
-                toast.success("User Logged-in Successfully");
-                setTimeout(() => {
-                    router.push("/dashboard");
-                }, 500);
-            } else {
-                throw new Error("User failed to login. Please try again");
-            }
+            await login(email, password);
+            toast.success("Successfully logged in!");
+            router.push("/dashboard");
         } catch (error: any) {
-            toast.error("Something went wrong. Please try again.");
+            toast.error(error.response?.data?.message || "Failed to login. Please try again.");
         } finally {
             setLoading(false);
         }
     };
 
-    
     const handleSocialLogin = (provider: string) => {
         console.log(`Logging in with ${provider}`);
     }
@@ -158,6 +123,7 @@ export default function Page() {
                                 {/* Login Button */}
                                 <button
                                     type='submit'
+                                    disabled={loading}
                                     className='w-full py-4 bg-[#2877EA] hover:bg-blue-600 text-white rounded-xl font-semibold text-lg tracking-wide transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-xl active:translate-y-[1px] disabled:opacity-70 disabled:cursor-not-allowed'
                                 >
                                     {loading ? (
