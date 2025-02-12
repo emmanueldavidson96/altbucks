@@ -10,25 +10,64 @@ import { useAuthStore } from '@/store/authStore';
 import { toast } from "react-toastify";
 
 export default function Page() {
-    const [userData, setUserData] = useState({
-        email: "",
-        password: "",
-        rememberMe: false
-    })
+    // const [userData, setUserData] = useState({
+    //     email: "",
+    //     password: "",
+    //     rememberMe: false
+    // })
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [rememberMe, setRememberMe] = useState(true)
+
     const router = useRouter();
-    const { user, isLoading, login } = useAuthStore();
+    // const { user, isLoading, login } = useAuthStore();
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
+    //     try {
+    //         await login(userData.email, userData.password);
+    //         toast.success("Successfully logged in!")
+    //         router.push("/dashboard");
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            await login(userData.email, userData.password);
-            toast.success("Successfully logged in!")
-            router.push("/dashboard");
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
+        setLoading(true);
+
+        try {
+            const response = await fetch("https://authentication-1-bqvg.onrender.com/users/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+
+
+            if (response.ok) {
+                toast.success("User Logged-in Successfully");
+                setTimeout(() => {
+                    router.push("/dashboard");
+                }, 500);
+            } else {
+                throw new Error("User failed to login. Please try again");
+            }
+        } catch (error: any) {
+            toast.error("Something went wrong. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    
     const handleSocialLogin = (provider: string) => {
         console.log(`Logging in with ${provider}`);
     }
@@ -71,11 +110,12 @@ export default function Page() {
                                         Email address
                                     </label>
                                     <input
-                                        onChange={(e) => setUserData({...userData, email: e.target.value})}
+                                        onChange={(e) => setEmail(e.target.value)}
                                         type="email"
-                                        id="email"
+                                        value={email}
                                         className='w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200'
                                         placeholder='Enter your email'
+                                        required
                                     />
                                 </div>
 
@@ -85,11 +125,12 @@ export default function Page() {
                                         Password
                                     </label>
                                     <input
-                                        onChange={(e) => setUserData({...userData, password: e.target.value})}
+                                        onChange={(e) => setPassword(e.target.value)}
                                         type="password"
-                                        id="password"
+                                        value={password}
                                         className='w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200'
                                         placeholder='Enter your password'
+                                        required
                                     />
                                 </div>
 
@@ -98,9 +139,8 @@ export default function Page() {
                                     <div className='flex items-center'>
                                         <input
                                             type="checkbox"
-                                            id="rememberMe"
-                                            checked={userData.rememberMe}
-                                            onChange={(e) => setUserData({...userData, rememberMe: e.target.checked})}
+                                            checked={rememberMe}
+                                            onChange={(e) => setRememberMe(e.target.checked)}
                                             className='w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
                                         />
                                         <label htmlFor="rememberMe" className='ml-2 text-sm text-gray-600'>
@@ -120,7 +160,7 @@ export default function Page() {
                                     type='submit'
                                     className='w-full py-4 bg-[#2877EA] hover:bg-blue-600 text-white rounded-xl font-semibold text-lg tracking-wide transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-xl active:translate-y-[1px] disabled:opacity-70 disabled:cursor-not-allowed'
                                 >
-                                    {isLoading ? (
+                                    {loading ? (
                                         <span className="flex items-center justify-center gap-2">
                                             <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
                                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>

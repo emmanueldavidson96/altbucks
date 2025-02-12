@@ -3,25 +3,54 @@ import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import Header from '../components/Authentication/Header'
 import Image from 'next/image'
-import illustrationImg from "../../../public/assets/Illustration.png"
 import { toast } from 'react-toastify';
+import illustrationImg from "../../../public/assets/Illustration.png"
 
 
 export default function ForgotPasswordPage() {
-    const [email, setEmail] = useState("")
-    const router = useRouter()
+    const [email, setEmail] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
+    const router = useRouter();
+    
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        
         if (!email) {
-            toast.error("Please enter your email")
-            return
+            toast.error("Please enter your email");
+            return;
         }
-        // Store email for next page
-        sessionStorage.setItem('resetEmail', email)
-        toast.success("Verification code has been sent")
-        router.push('/verification')
-    }
+
+        setLoading(true);
+
+        try {
+            const response = await fetch("https://authentication-1-bqvg.onrender.com/users/request", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            const data = await response.json();
+
+
+            if (response.ok && data.message.includes("Password reset code sent")) {
+                toast.success("Verification code has been sent");
+                sessionStorage.setItem("resetEmail", email);
+                setTimeout(() => {
+                    router.push("/verification");
+                }, 500);
+            } else {
+                throw new Error(data.message || "Failed to send verification code");
+            }
+        } catch (error: any) {
+            toast.error(error.message || "Something went wrong. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     return (
         <div className='bg-[#2877EA]'>

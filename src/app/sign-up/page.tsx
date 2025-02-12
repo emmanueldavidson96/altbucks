@@ -36,7 +36,7 @@ export default function page() {
     <div className='bg-[#2877EA] w-screen h-fit'>
         <Header />
         <div className='flex justify-around w-[90%] mx-auto mt-12 pb-24'>
-            <div className='flex flex-col gap-8 w-[30%]'>
+            <div className='text-white flex flex-col gap-8 w-[30%]'>
                 <h2 className='text-[48px] font-bold'>Grow with us</h2>
                 <p className='font-light text-lg tracking-wide'>Access to thousands to task project and clients</p>
                 <Image src={illustrationImg} className='w-full' alt=''/>

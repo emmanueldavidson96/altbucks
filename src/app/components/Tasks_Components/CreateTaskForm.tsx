@@ -1,13 +1,31 @@
 "use client"
 
 import { useState } from "react";
+import { IoArrowBackOutline } from "react-icons/io5";
+import { toast } from 'react-toastify';
 
 interface CreateTaskFormProps {
-    onClose: () => void; // Function to close the modal
+    onClose: () => void; 
   }
 
 const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
   const [file, setFile] = useState<File | null>(null);
+
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [title, setTitle] = useState("");
+    const [taskType, setTaskType] = useState("");
+    const [description, setDescription] = useState("");
+    const [location, setLocation] = useState("");
+    const [compensation, setCompensation] = useState("");
+    const [deadline, setDeadline] = useState("");
+    const [requirements, setRequirements] = useState("");
+    const [additionalInfo, setAdditionalInfo] = useState<File | null>(null);
+    const [link1, setLink1] = useState("");
+    const [link2, setLink2] = useState("");
+    const [loading, setLoading] = useState(false);
+  
+    // const handleModalOpen = () => setModalOpen(true);
+    const handleModalClose = () => setModalOpen(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -15,29 +33,72 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic
-    console.log("Form submitted");
-  };
+    setLoading(true); // Ensure loading state is set before making the request
+
+    try {
+        const response = await fetch("https://authentication-1-bqvg.onrender.com/tasks/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              title,
+              taskType,
+              description,
+              location,
+              compensation,
+              deadline,
+              requirements,
+              additionalInfo,
+              link1,
+              link2
+            }),
+        });
+
+        const data = await response.json(); // Move this outside of the fetch call
+
+        if (response.ok) {
+            toast.success("Task created successfully");
+        } else {
+            throw new Error(data.message || "Task creation failed. Please try again.");
+        }
+    } catch (error: any) {
+        toast.error(error.message || "Something went wrong. Please try again.");
+    } finally {
+        setLoading(false);
+    }
+};
+
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (e.target === e.currentTarget) {
-      onClose(); // Close the modal if the backdrop is clicked
+      onClose(); 
     }
   };
 
   return (
     <div
-    className="fixed inset-0 bg-black bg-opacity-50 font-Satoshi flex items-center justify-center z-50"
+    className="fixed inset-0 bg-black bg-opacity-50 font-Satoshi flex items-center justify-center z-50 px-4"
     onClick={handleBackdropClick}
   >
-    <div className="p-8 bg-gray-50 flex items-center justify-center max-h-[80vh] overflow-y-auto"
+    <div className="max-w-2xl max-h-[90%] mx-auto bg-white shadow-lg rounded-lg p-8 overflow-y-auto"
     onClick={(e) => e.stopPropagation()}
     >
+      {/* Back Button */}
+      <div className="mb-4">
+        <button
+          className="text-black text-xs flex gap-1 items-center"
+          onClick={handleModalClose}
+        >
+          <IoArrowBackOutline className="text-lg"/> Back
+        </button>
+      </div>
+
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-md w-full space-y-6 max-h-[80vh]"
+        className="max-w-2xl max-h-[90%] mx-auto bg-white rounded-lg overflow-auto space-y-6"
       >
         <h2 className="text-2xl font-semibold text-gray-800">Create a New Task</h2>
         <p className="text-sm text-gray-500">
@@ -55,6 +116,8 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
               id="taskTitle"
               placeholder="Enter a descriptive title for your task"
               className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:ring-blue-500 focus:border-blue-500"
+              onChange={(e) => setTitle(e.target.value)}
+              required
             />
           </div>
           <div>
@@ -64,11 +127,13 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
             <select
               id="taskType"
               className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:ring-blue-500 focus:border-blue-500"
+              value={taskType}
+              onChange={(e) => setTaskType(e.target.value)}
             >
-              <option>Choose Task Type</option>
-              <option>Writing</option>
-              <option>Review</option>
-              <option>Delivery</option>
+              <option value="">Choose Task Type</option>
+              <option value="writing">Writing</option>
+              <option value="review">Review</option>
+              <option value="delivery">Delivery</option>
             </select>
           </div>
         </div>
@@ -82,6 +147,8 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
             id="taskDescription"
             placeholder="Provide a detailed description of the task, including specific requirements..."
             className="mt-1 p-2 border border-gray-300 rounded-md w-full h-28 focus:ring-blue-500 focus:border-blue-500"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           ></textarea>
         </div>
 
@@ -94,6 +161,8 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
             <select
               id="location"
               className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:ring-blue-500 focus:border-blue-500"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
             >
               <option>Select Your Location</option>
               <option>Remote</option>
@@ -111,6 +180,8 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
                 id="compensation"
                 placeholder="Enter Amount"
                 className="p-2 border-t border-b border-r border-gray-300 rounded-r-md w-full focus:ring-blue-500 focus:border-blue-500"
+                value={compensation}
+                onChange={(e) => setCompensation(e.target.value)}
               />
               <select
                 className="ml-2 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
@@ -129,6 +200,8 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
                 type="date"
                 id="deadline"
                 className="p-2 border border-gray-300 rounded-md w-full focus:ring-blue-500 focus:border-blue-500"
+                value={deadline}
+                onChange={(e) => setDeadline(e.target.value)}
               />
             </div>
           </div>
@@ -143,6 +216,8 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
             id="requirements"
             placeholder="Provide detailed instructions and criteria for completion"
             className="mt-1 p-2 border border-gray-300 rounded-md w-full h-28 focus:ring-blue-500 focus:border-blue-500"
+            value={requirements}
+            onChange={(e) => setRequirements(e.target.value)}
           ></textarea>
         </div>
 
@@ -154,7 +229,7 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
           <div className="mt-2 border-dashed border-2 border-gray-300 p-4 rounded-md text-center">
             <input
               type="file"
-              id="fileUpload"
+              // id="fileUpload"
               onChange={handleFileChange}
               className="hidden"
             />

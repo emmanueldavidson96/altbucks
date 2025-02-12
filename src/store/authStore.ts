@@ -106,8 +106,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
     forgotPassword: async (email) => {
         set({isLoading: true, error: null});
         try {
-            const response = await axios.post(`${API_URL}/users/forgot-password`, {
-                email
+            const response = await axios.post(`${API_URL}/users/request`, {
+                email,
             });
             set({
                 message: response.data.message,
@@ -123,11 +123,11 @@ export const useAuthStore = create<AuthStore>((set) => ({
         }
     },
 
-    verifyToken: async (email, token) => {
+    verifyToken: async (resetCode, token) => {
         set({isLoading: true, error: null});
         try {
-            const response = await axios.post(`${API_URL}/users/verify-token`, {
-                email,
+            const response = await axios.post(`${API_URL}/users/verify`, {
+                resetCode,
                 token
             });
             set({

@@ -37,7 +37,7 @@ export const site_links = [
 
 export default function Header() {
   return (
-    <div className='w-screen h-fit flex items-center py-5 bg-[#F1F2F4]'>
+    <div className='w-full h-fit flex items-center py-5 bg-[#F1F2F4]'>
         <nav className='flex justify-between w-[90%] mx-auto '>            
             {/* Logo */}
             <div className='w-fit h-fit'>

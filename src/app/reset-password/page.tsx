@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation'
 import Header from '../components/Authentication/Header'
 import Image from 'next/image'
@@ -7,26 +7,75 @@ import illustrationImg from "../../../public/assets/Illustration.png"
 import { toast } from 'react-toastify';
 
 export default function ResetPasswordPage() {
-    const [password, setPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
-    const router = useRouter()
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [email, setEmail] = useState<string | null>(null);
+    const [resetCode, setResetCode] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+    
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+          // This ensures that sessionStorage is only accessed in the client-side
+          const storedEmail = sessionStorage.getItem("resetEmail");
+          const storedResetCode = sessionStorage.getItem("resetPasswordToken");
+          setEmail(storedEmail);
+          setResetCode(storedResetCode);
+    
+          console.log("Stored Reset Token:", storedResetCode);
+        }
+      }, []);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
 
         if (password !== confirmPassword) {
-            toast.error("Passwords do not match!")
-            return
+            toast.error("Passwords do not match!");
+            return;
         }
 
         if (password.length < 6) {
-            toast.error("Password must be at least 6 characters")
-            return
+            toast.error("Password must be at least 6 characters");
+            return;
         }
 
-        toast.success("Password reset successfully")
-        router.push('/login')
-    }
+        if (!email || !resetCode) {
+            toast.error("Missing verification details. Please restart the process.");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const response = await fetch("https://authentication-1-bqvg.onrender.com/users/reset", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    resetCode,
+                    password,
+                    confirmPassword,
+                }),
+            });
+
+            const data = await response.json();
+
+            console.log("API Response:", data);
+
+            if (response.ok && data.message.includes("Password has been reset successfully")) {
+                toast.success(data.message || "Password has been reset successfully");
+                router.push("/log-in");
+            } else {
+                throw new Error(data.message || "Failed to reset password. Please try again.");
+            }
+        } catch (error: any) {
+            toast.error(error.message || "Something went wrong. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className='bg-[#2877EA]'>

@@ -167,7 +167,7 @@ const Card: React.FC<CardProps> = ({
             </div>
 
             {/* Start Task Button */}
-            <div className="text-center">
+            <div className="text-center mb-4">
               <button className="w-full bg-blue-600 hover:bg-blue-700 text-white  py-2 text-sm  rounded-md">
                 Start Task
               </button>
