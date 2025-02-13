@@ -13,7 +13,7 @@ export default function Page() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [rememberMe, setRememberMe] = useState(true)
+    const [rememberMe, setRememberMe] = useState(true);
 
     const router = useRouter();
     const { login } = useAuthStore();
@@ -23,30 +23,11 @@ export default function Page() {
         setLoading(true);
 
         try {
-
             await login(email, password);
             toast.success("Successfully logged in!");
-            router.push("/dashboard");
-
-            const response = await fetch("https://authentication-1-bqvg.onrender.com/users/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password, rememberMe }),
-            });
-
-            const data = await response.json();
-
-
-            if (response.ok) {
-                toast.success("User Logged-in Successfully");
-                setTimeout(() => {
-                    router.push("/dashboard");
-                }, 500);
-            } else {
-                throw new Error("User failed to login. Please try again");
-            }
+            setTimeout(() => {
+                router.push("/dashboard");
+            }, 500);
         } catch (error: any) {
             toast.error(error.response?.data?.message || "Failed to login. Please try again.");
         } finally {
@@ -56,8 +37,8 @@ export default function Page() {
 
     const handleSocialLogin = (provider: string) => {
         console.log(`Logging in with ${provider}`);
+        // Implement social login logic here
     }
-
     return (
         <div className='min-h-screen bg-[#2877EA]'>
             <Header />
