@@ -53,62 +53,23 @@ export default function page() {
   const [updateTaskInfo, setUpdateTaskInfo] = useState<Task | null>(null);
 
   const handleSubmit = async (e:any) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('TaskTitle', newTask.taskTitle);
-    formData.append('TaskType', newTask.taskType);
-    formData.append('TaskNumberOfRespondents', newTask.taskNumberofRespondent);
-    formData.append('TaskDescription', newTask.taskDescription);
-    formData.append('TaskCompensation', newTask.taskCompensation);
-    formData.append('TaskDeadline', newTask.taskDeadline);
-    formData.append('TaskRequirement', newTask.taskRequirements);
-    if (newTask.taskLinkUpload) formData.append('TaskLinkUpload', newTask.taskLinkUpload);
-    if (newTask.taskLinkUploadTwo) formData.append('TaskLinkUploadTwo', newTask.taskLinkUploadTwo);
-    if (newTask.taskLocation) formData.append('TaskLocation', newTask.taskLocation);
-    
-    try {
-        const response = await axios.post('https://altbucks-server-u8rj.onrender.com/api/v1/tasks/create-task', formData, {
-            withCredentials: true,
-            headers: { "Content-Type": "multipart/form-data" }
-        });
-        console.log(response.data);
-        toast.success("Task successfully created!");
-        window.location.reload();
-    } catch (err) {
-        console.log(err);
-        toast.warn("Task creation unsuccessful!");
-    }
+    e.preventDefault()
+    try{
+      const response = await axios.post(`https://altbucks-server-u8rj.onrender.com/api/v1/tasks/create-task`, newTask, {withCredentials:true, headers: { "Content-Type": "multipart/form-data" }});
+      console.log(response.data);
+      toast.success("Task successfully created!")
+      window.location.reload();
+    }catch(err){
+      console.log(err)
+      toast.warn("Task creation unsuccessful!")
+    }  
   }
 
 
-const handleUpdateTaskInfo = async (id: string) => {
-    if (!updateTaskInfo) {
-        toast.warn("No task information available for update!");
-        return;
-    }
-
-    const formData = {
-        taskTitle: updateTaskInfo.taskTitle || "",
-        taskType: updateTaskInfo.taskType || "",
-        taskNumberOfRespondents: updateTaskInfo.taskNumberofRespondent || "",
-        taskDescription: updateTaskInfo.taskDescription || "",
-        taskCompensation: updateTaskInfo.taskCompensation || "",
-        taskDeadline: updateTaskInfo.taskDeadline || "",
-        taskRequirement: updateTaskInfo.taskRequirements || "",
-    };
-
-    try {
-        const response = await axios.put(`https://altbucks-server-u8rj.onrender.com/api/v1/tasks/update-task/${id}`, { newTask: formData }, {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" }
-        });
-        toast.success("Task updated successfully!");
-        window.location.reload();
-    } catch (err) {
-        console.log(err);
-        toast.warn("Task update unsuccessful!");
-    }
-}
+//   const handleUpdateTaskInfo = async (id:any) => {
+//     const response = await axios.post(`${API_URL}/tasks/update-task/${id}`, taskInfo, {withCredentials:true, headers:{"Content-Type":"multipart/form-data"}});
+//     toast.success("Task updated successfully")
+// }
  
   return (
     <div className='relative z-10 h-fit flex flex-col gap-2 overflow-hidden'>
