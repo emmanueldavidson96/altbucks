@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { BsThreeDots } from "react-icons/bs";
 import { FaAngleRight } from "react-icons/fa6";
 import { IoArrowBackOutline } from "react-icons/io5";
 
@@ -23,9 +24,32 @@ const Card: React.FC<CardProps> = ({
 }) => {
   // State for modal visibility
   const [isModalOpen, setModalOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
 
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
+
+  const handleDeleteUser = async (taskId: string) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this task?");
+  
+    if (confirmDelete) {
+      try {
+        const response = await fetch(`https://authentication-1-bqvg.onrender.com/users/${taskId}`, {
+          method: "DELETE",
+        });
+  
+        if (response.ok) {
+          console.log(`Task with ID ${taskId} deleted successfully!`);
+          // Optionally, refresh the task list or update the state
+        } else {
+          console.error("Failed to delete task:", await response.text());
+        }
+      } catch (error) {
+        console.error("Error deleting task:", error);
+      }
+    }
+  };
+  
 
   // Prevent click events inside the modal from propagating to the backdrop
   const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
@@ -72,13 +96,23 @@ const Card: React.FC<CardProps> = ({
             onClick={stopPropagation}
           >
             {/* Back Button */}
-            <div className="mb-4">
+            <div className="mb-4 flex justify-between">
               <button
                 className="text-black text-xs flex gap-1 items-center"
                 onClick={handleModalClose}
               >
                 <IoArrowBackOutline className="text-lg"/> Back
               </button>
+              <div className="flex gap-2 justify-center items-center">
+            {openDelete && 
+            <button className="border px-2 rounded-md"
+            // onClick={() => handleDeleteUser(task._id)}
+            >Delete</button>}
+            <div className="p-2 hover:bg-gray-200 rounded-full cursor-pointer mx-auto"
+            onClick={() => setOpenDelete(!openDelete)}>
+            <BsThreeDots className="text-lg"/>
+            </div>
+            </div>
             </div>
 
             {/* Header Section */}
@@ -167,7 +201,7 @@ const Card: React.FC<CardProps> = ({
             </div>
 
             {/* Start Task Button */}
-            <div className="text-center mb-4">
+            <div className="text-center">
               <button className="w-full bg-blue-600 hover:bg-blue-700 text-white  py-2 text-sm  rounded-md">
                 Start Task
               </button>

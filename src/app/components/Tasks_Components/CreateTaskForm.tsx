@@ -10,7 +10,7 @@ interface CreateTaskFormProps {
   }
 
 const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
-  const [file, setFile] = useState<File | null>(null);
+  // const [file, setFile] = useState<File | null>(null);
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [title, setTitle] = useState("");
@@ -114,6 +114,7 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
         >
           <IoArrowBackOutline className="text-lg"/> Back
         </button>
+        
       </div>
 
       <form
