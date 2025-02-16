@@ -187,7 +187,7 @@ const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ onClose }) => {
             >
               <option>Select Your Location</option>
               <option>Remote</option>
-              <option>On-Site</option>
+              <option>On-site</option>
             </select>
           </div>
           <div>
