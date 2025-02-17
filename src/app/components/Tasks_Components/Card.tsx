@@ -3,22 +3,7 @@
 import React, { useState } from "react";
 import TaskDetails from "./TaskDetails";
 
-interface CardProps {
-  taskType: string;
-  requirements?: string[];
-  onTaskDeleted?: () => void;
-  description: string;
-  compensation: {
-    currency: string;
-    amount: number;
-  };
-  _id: string;
-  title: string;
-  category: string;
-  deadline: string;
-  posted: string;
-}
-const Card = (props: CardProps) => {
+const Card = (props: any) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const formatDate = (dateString: string) => {
