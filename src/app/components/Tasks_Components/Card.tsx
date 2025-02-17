@@ -1,4 +1,3 @@
-// Card.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -8,7 +7,6 @@ interface TaskDetailsProps {
   isOpen: boolean;
   onClose: () => void;
   task: any;
-  onTaskDeleted?: () => void;
 }
 
 const Card = (props: any) => {
@@ -72,7 +70,6 @@ const Card = (props: any) => {
             isOpen={isModalOpen}
             onClose={handleClose}
             task={props}
-            onTaskDeleted={props.onTaskDeleted}
         />
       </>
   );
