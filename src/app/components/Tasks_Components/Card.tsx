@@ -9,6 +9,7 @@ interface CardProps {
   onTaskDeleted?: () => void;
   description: string;
   compensation: {
+    currency: string;
     amount: number;
   };
   _id: string;
@@ -17,7 +18,6 @@ interface CardProps {
   deadline: string;
   posted: string;
 }
-
 const Card = (props: CardProps) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
