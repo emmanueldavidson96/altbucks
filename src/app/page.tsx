@@ -8,20 +8,14 @@ import Footer from "./components/Homepage_Components/Footer";
 
 export default function Home() {
     return (
-        <div className="min-h-screen w-full bg-white overflow-x-hidden">
-            <div className="sticky top-0 z-50 bg-white border-b border-gray-100">
-                <Header />
-            </div>
-
-            <main className="flex flex-col">
-                <Banner />
-                <How_Altbucks_Works />
-                <PopularCategories />
-                <ViewReviews />
-                <EarnRewards />
-            </main>
-
-            <Footer />
+        <div className="w-screen h-fit bg-white">
+            <Header />
+            <Banner />
+            <How_Altbucks_Works />
+            <PopularCategories />
+            <ViewReviews />
+            <EarnRewards />
+            <Footer/>
         </div>
     );
 }
