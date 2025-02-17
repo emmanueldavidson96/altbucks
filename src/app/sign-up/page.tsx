@@ -1,5 +1,4 @@
-
-"use client";
+'use client';
 
 import React, { useState } from 'react'
 import Header from '../components/Authentication/Header'
@@ -9,6 +8,7 @@ import Link from 'next/link';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { Eye, EyeOff } from 'lucide-react';
 
 export default function Page() {
     const [userData, setUserData] = useState({
@@ -21,6 +21,8 @@ export default function Page() {
     });
     const [loading, setLoading] = useState(false);
     const [termsAccepted, setTermsAccepted] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const router = useRouter();
     const { signup } = useAuthStore();
@@ -30,11 +32,10 @@ export default function Page() {
         setLoading(true);
 
         try {
-            // Set a timeout for the request
             const timeoutId = setTimeout(() => {
                 setLoading(false);
                 toast.error("Request timed out. Please try again.");
-            }, 15000); // 15 seconds timeout
+            }, 15000);
 
             await signup(
                 userData.email,
@@ -116,25 +117,53 @@ export default function Page() {
 
                         <div className='flex flex-col gap-3 w-full'>
                             <label htmlFor="password" className='text-sm text-[#666666]'>Password</label>
-                            <input
-                                id="password"
-                                type="password"
-                                onChange={(e) => setUserData({...userData, password: e.target.value})}
-                                className='w-full p-3 border rounded-md border-gray-300 text-black text-sm'
-                                required
-                            />
+                            <div className="relative">
+                                <input
+                                    id="password"
+                                    type={showPassword ? "text" : "password"}
+                                    onChange={(e) => setUserData({...userData, password: e.target.value})}
+                                    className='w-full p-3 border rounded-md border-gray-300 text-black text-sm'
+                                    placeholder="••••••••"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                                >
+                                    {showPassword ? (
+                                        <EyeOff className="w-5 h-5" />
+                                    ) : (
+                                        <Eye className="w-5 h-5" />
+                                    )}
+                                </button>
+                            </div>
                             <p className='text-xs text-[#666666]'>Use 8 or more characters with a mix of letters, numbers & symbols</p>
                         </div>
 
                         <div className='flex flex-col gap-3 w-full'>
                             <label htmlFor="confirmPassword" className='text-sm text-[#666666]'>Confirm Password</label>
-                            <input
-                                id="confirmPassword"
-                                type="password"
-                                onChange={(e) => setUserData({...userData, confirmPassword: e.target.value})}
-                                className='w-full p-3 border rounded-md border-gray-300 text-black text-sm'
-                                required
-                            />
+                            <div className="relative">
+                                <input
+                                    id="confirmPassword"
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    onChange={(e) => setUserData({...userData, confirmPassword: e.target.value})}
+                                    className='w-full p-3 border rounded-md border-gray-300 text-black text-sm'
+                                    placeholder="••••••••"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                                >
+                                    {showConfirmPassword ? (
+                                        <EyeOff className="w-5 h-5" />
+                                    ) : (
+                                        <Eye className="w-5 h-5" />
+                                    )}
+                                </button>
+                            </div>
                         </div>
 
                         <div className='flex gap-3'>
