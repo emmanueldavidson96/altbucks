@@ -41,7 +41,7 @@ export default function Header() {
                     </Link>
                 </p>
                 <p className="text-sm text-gray-800 md:text-gray-600 hover:bg-blue-600 md:p-2 rounded-lg hover:text-white tracking-wide">
-                    <Link href="/dashboard/tasks" className="flex gap-2 items-center">
+                    <Link href="/dashboard/task" className="flex gap-2 items-center">
                     Tasks <FaAngleDown />
                     </Link>
                 </p>

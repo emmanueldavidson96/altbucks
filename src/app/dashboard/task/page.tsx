@@ -1,4 +1,3 @@
-
 "use client"
 import React, { useState } from 'react';
 import Header from '@/app/components/Tasks_Components/Header';
@@ -10,41 +9,36 @@ import { Sparkles, PlusCircle } from 'lucide-react';
 const Task: React.FC = () => {
     const [isFormOpen, setIsFormOpen] = useState(false);
 
-    const openForm = () => {
-        setIsFormOpen(true);
-    };
-
-    const closeForm = () => {
-        setIsFormOpen(false);
-    };
+    const openForm = () => setIsFormOpen(true);
+    const closeForm = () => setIsFormOpen(false);
 
     return (
         <>
             <Header />
-            <div className="bg-white font-Satoshi">
-                {/* Recent Posts Section with matching style */}
+            <div className="min-h-screen bg-white font-Satoshi overflow-x-hidden">
+                {/* Recent Posts Section */}
                 <div className="relative">
-                    {/* Decorative gradient backgrounds */}
+                    {/* Responsive gradient backgrounds */}
                     <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 opacity-70" />
-                    <div className="absolute -top-4 right-0 w-40 h-40 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70" />
-                    <div className="absolute -top-4 left-0 w-40 h-40 bg-indigo-100 rounded-full mix-blend-multiply filter blur-xl opacity-70" />
+                    <div className="absolute -top-4 right-0 w-32 sm:w-40 h-32 sm:h-40 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70" />
+                    <div className="absolute -top-4 left-0 w-32 sm:w-40 h-32 sm:h-40 bg-indigo-100 rounded-full mix-blend-multiply filter blur-xl opacity-70" />
 
-                    <div className="relative px-6 py-4">
-                        <div className="flex justify-between items-center gap-3">
+                    <div className="relative px-4 sm:px-6 py-4">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-3">
                             <div className="flex items-center gap-2.5">
                                 <div className="p-1.5 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm">
                                     <Sparkles className="w-4 h-4 text-blue-600" />
                                 </div>
-                                <h1 className="text-2xl font-semibold bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 bg-clip-text text-transparent">
+                                <h1 className="text-xl sm:text-2xl font-semibold bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 bg-clip-text text-transparent">
                                     Recent Posts
                                 </h1>
                             </div>
 
                             <button
                                 onClick={openForm}
-                                className="group relative flex items-center gap-2 px-6 py-2.5 rounded-full
+                                className="group relative w-full sm:w-auto flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 rounded-full
                                          bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600
-                                         text-white font-medium tracking-wide
+                                         text-white font-medium tracking-wide text-sm sm:text-base
                                          shadow-lg shadow-blue-500/30
                                          hover:shadow-blue-500/50 hover:scale-[1.02]
                                          active:scale-[0.98]
@@ -63,41 +57,44 @@ const Task: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="px-8 pb-8">
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+                {/* Recent Tasks Card */}
+                <div className="px-4 sm:px-8 pb-6 sm:pb-8">
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-x-auto">
                         <RecentTasks />
                     </div>
                 </div>
 
                 {/* Task List Section */}
-                <div className="px-8 pb-8">
+                <div className="px-4 sm:px-8 pb-6 sm:pb-8">
                     <div className="relative">
-                        {/* Matching gradient background for consistency */}
+                        {/* Responsive gradient backgrounds */}
                         <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 opacity-70" />
-                        <div className="absolute -top-4 right-0 w-40 h-40 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70" />
-                        <div className="absolute -top-4 left-0 w-40 h-40 bg-indigo-100 rounded-full mix-blend-multiply filter blur-xl opacity-70" />
+                        <div className="absolute -top-4 right-0 w-32 sm:w-40 h-32 sm:h-40 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70" />
+                        <div className="absolute -top-4 left-0 w-32 sm:w-40 h-32 sm:h-40 bg-indigo-100 rounded-full mix-blend-multiply filter blur-xl opacity-70" />
 
-                        <div className="relative px-6 py-4">
+                        <div className="relative px-4 sm:px-6 py-4">
                             <div className="flex items-center gap-2.5">
                                 <div className="p-1.5 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm">
                                     <Sparkles className="w-4 h-4 text-blue-600" />
                                 </div>
-                                <h2 className="text-2xl font-semibold bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 bg-clip-text text-transparent">
+                                <h2 className="text-xl sm:text-2xl font-semibold bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 bg-clip-text text-transparent">
                                     Task List
                                 </h2>
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-x-auto">
                         <TaskTable />
                     </div>
                 </div>
 
-                {/* Create Task Form */}
+                {/* Create Task Form Modal - Full screen on mobile */}
                 {isFormOpen && (
-                    <div>
-                        <CreateTaskForm onClose={closeForm} />
+                    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm">
+                        <div className="w-full h-full sm:h-auto sm:max-w-2xl mx-auto sm:mt-20">
+                            <CreateTaskForm onClose={closeForm} />
+                        </div>
                     </div>
                 )}
             </div>
