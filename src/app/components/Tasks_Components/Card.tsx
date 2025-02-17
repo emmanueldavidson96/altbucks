@@ -1,7 +1,15 @@
+// Card.tsx
 "use client";
 
 import React, { useState } from "react";
 import TaskDetails from "./TaskDetails";
+
+interface TaskDetailsProps {
+  isOpen: boolean;
+  onClose: () => void;
+  task: any;
+  onTaskDeleted?: () => void;
+}
 
 const Card = (props: any) => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -13,6 +21,10 @@ const Card = (props: any) => {
       day: '2-digit',
       year: 'numeric'
     });
+  };
+
+  const handleClose = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -56,14 +68,12 @@ const Card = (props: any) => {
           </div>
         </div>
 
-        {isModalOpen && (
-            <TaskDetails
-                isOpen={isModalOpen}
-                onClose={() => setModalOpen(false)}
-                task={props}
-                onTaskDeleted={props.onTaskDeleted}
-            />
-        )}
+        <TaskDetails
+            isOpen={isModalOpen}
+            onClose={handleClose}
+            task={props}
+            onTaskDeleted={props.onTaskDeleted}
+        />
       </>
   );
 };
