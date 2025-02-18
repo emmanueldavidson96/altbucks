@@ -56,73 +56,77 @@ export default function Page() {
     }
 
     return (
-        <div className='bg-[#2877EA] w-screen h-fit'>
+        <div className='bg-[#2877EA] min-h-screen w-full'>
             <Header />
-            <div className='flex justify-around w-[90%] mx-auto mt-12 pb-24'>
-                <div className='text-white flex flex-col gap-8 w-[30%]'>
-                    <h2 className='text-[48px] font-bold'>Grow with us</h2>
-                    <p className='font-light text-lg tracking-wide'>Access to thousands to task project and clients</p>
-                    <Image src={illustrationImg} className='w-full' alt='Illustration'/>
+            <div className='flex flex-col lg:flex-row justify-center lg:justify-around w-full px-4 lg:w-[90%] mx-auto mt-8 lg:mt-12 pb-12 lg:pb-24 gap-8 lg:gap-0'>
+                {/* Left section - Illustration */}
+                <div className='text-white flex flex-col gap-6 lg:gap-8 w-full lg:w-[30%]'>
+                    <h2 className='text-3xl lg:text-[48px] font-bold text-center lg:text-left'>Grow with us</h2>
+                    <p className='font-light text-base lg:text-lg tracking-wide text-center lg:text-left'>Access to thousands to task project and clients</p>
+                    <Image src={illustrationImg} className='w-full max-w-md mx-auto lg:mx-0' alt='Illustration'/>
                 </div>
 
                 {/* Authentication Section */}
-                <div className='bg-white w-[50%] rounded-3xl px-16 py-16 flex flex-col gap-4'>
-                    <h4 className='text-black tracking-wide text-2xl font-semibold'>Sign up now</h4>
+                <div className='bg-white w-full lg:w-[50%] rounded-3xl px-6 sm:px-8 lg:px-16 py-8 lg:py-16 flex flex-col gap-4'>
+                    <h4 className='text-black tracking-wide text-xl lg:text-2xl font-semibold'>Sign up now</h4>
                     <form className='flex w-full flex-col gap-4' onSubmit={handleSubmit}>
-
-                        <div className='flex items-center justify-between w-full'>
-                            <div className='w-[45%] h-fit flex flex-col gap-2'>
+                        {/* Name fields */}
+                        <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4 sm:gap-6'>
+                            <div className='w-full sm:w-[45%] flex flex-col gap-2'>
                                 <label htmlFor="firstName" className='text-sm text-[#666666]'>First name</label>
                                 <input
                                     id="firstName"
                                     onChange={(e) => setUserData({...userData, firstName: e.target.value})}
                                     type="text"
-                                    className='w-full p-3 rounded-md border border-gray-300 text-black text-sm'
+                                    className='w-full p-3 lg:p-3 rounded-md border border-gray-300 text-black text-base'
                                     required
                                 />
                             </div>
-                            <div className='w-[45%] h-fit flex flex-col gap-2'>
+                            <div className='w-full sm:w-[45%] flex flex-col gap-2'>
                                 <label htmlFor="lastName" className='text-sm text-[#666666]'>Last name</label>
                                 <input
                                     id="lastName"
                                     onChange={(e) => setUserData({...userData, lastName: e.target.value})}
                                     type="text"
-                                    className='w-full p-3 border rounded-md border-gray-300 text-black text-sm'
+                                    className='w-full p-3 lg:p-3 border rounded-md border-gray-300 text-black text-base'
                                     required
                                 />
                             </div>
                         </div>
 
-                        <div className='flex flex-col gap-3 w-full'>
+                        {/* Email field */}
+                        <div className='flex flex-col gap-2'>
                             <label htmlFor="email" className='text-sm text-[#666666]'>Email address</label>
                             <input
                                 id="email"
                                 type="email"
                                 onChange={(e) => setUserData({...userData, email: e.target.value})}
-                                className='w-full p-3 border rounded-md border-gray-300 text-black text-sm'
+                                className='w-full p-3 lg:p-3 border rounded-md border-gray-300 text-black text-base'
                                 required
                             />
                         </div>
 
-                        <div className='flex flex-col gap-3 w-full'>
+                        {/* Phone field */}
+                        <div className='flex flex-col gap-2'>
                             <label htmlFor="phoneNumber" className='text-sm text-[#666666]'>Phone number</label>
                             <input
                                 id="phoneNumber"
                                 type="tel"
                                 onChange={(e) => setUserData({...userData, phoneNumber: e.target.value})}
-                                className='w-full p-3 border rounded-md border-gray-300 text-black text-sm'
+                                className='w-full p-3 lg:p-3 border rounded-md border-gray-300 text-black text-base'
                                 required
                             />
                         </div>
 
-                        <div className='flex flex-col gap-3 w-full'>
+                        {/* Password field */}
+                        <div className='flex flex-col gap-2'>
                             <label htmlFor="password" className='text-sm text-[#666666]'>Password</label>
                             <div className="relative">
                                 <input
                                     id="password"
                                     type={showPassword ? "text" : "password"}
                                     onChange={(e) => setUserData({...userData, password: e.target.value})}
-                                    className='w-full p-3 border rounded-md border-gray-300 text-black text-sm'
+                                    className='w-full p-3 lg:p-3 border rounded-md border-gray-300 text-black text-base'
                                     placeholder="••••••••"
                                     required
                                 />
@@ -141,14 +145,15 @@ export default function Page() {
                             <p className='text-xs text-[#666666]'>Use 8 or more characters with a mix of letters, numbers & symbols</p>
                         </div>
 
-                        <div className='flex flex-col gap-3 w-full'>
+                        {/* Confirm Password field */}
+                        <div className='flex flex-col gap-2'>
                             <label htmlFor="confirmPassword" className='text-sm text-[#666666]'>Confirm Password</label>
                             <div className="relative">
                                 <input
                                     id="confirmPassword"
                                     type={showConfirmPassword ? "text" : "password"}
                                     onChange={(e) => setUserData({...userData, confirmPassword: e.target.value})}
-                                    className='w-full p-3 border rounded-md border-gray-300 text-black text-sm'
+                                    className='w-full p-3 lg:p-3 border rounded-md border-gray-300 text-black text-base'
                                     placeholder="••••••••"
                                     required
                                 />
@@ -166,12 +171,13 @@ export default function Page() {
                             </div>
                         </div>
 
-                        <div className='flex gap-3'>
+                        {/* Terms checkbox */}
+                        <div className='flex gap-3 items-start'>
                             <input
                                 type='checkbox'
                                 checked={termsAccepted}
                                 onChange={(e) => setTermsAccepted(e.target.checked)}
-                                className='bg-blue-600'
+                                className='mt-1 bg-blue-600'
                                 required
                             />
                             <p className='text-black text-xs tracking-wide'>
@@ -179,11 +185,12 @@ export default function Page() {
                             </p>
                         </div>
 
-                        <div className='flex items-center w-fit gap-8'>
+                        {/* Submit button and login link */}
+                        <div className='flex flex-col sm:flex-row items-center gap-4 sm:gap-8 mt-2'>
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className='px-6 py-3 rounded-xl hover:bg-blue-800 transition-all duration-500 text-base bg-blue-600 text-white disabled:opacity-70 disabled:cursor-not-allowed'
+                                className='w-full sm:w-auto px-6 py-3 rounded-xl hover:bg-blue-800 transition-all duration-500 text-base bg-blue-600 text-white disabled:opacity-70 disabled:cursor-not-allowed'
                             >
                                 {loading ? (
                                     <span className="flex items-center justify-center gap-2">
@@ -197,7 +204,7 @@ export default function Page() {
                                     "Sign Up"
                                 )}
                             </button>
-                            <p>Already have an account? <Link href="/log-in" className='text-blue-600'>Log In</Link></p>
+                            <p className='text-sm'>Already have an account? <Link href="/log-in" className='text-blue-600'>Log In</Link></p>
                         </div>
                     </form>
                 </div>
