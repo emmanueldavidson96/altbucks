@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { X, Trash2 } from "lucide-react"; // Changed from MoreVertical to Trash2
+import { X, MoreVertical } from "lucide-react";
 import { useTaskStore } from "@/store/taskStore";
 import { toast } from 'react-toastify';
+import { IoArrowBackOutline } from "react-icons/io5";
 import DeleteConfirmDialog from "./DeleteConfirmDialog";
 
 interface TaskDetailsProps {
@@ -22,16 +23,18 @@ interface TaskDetailsProps {
         deadline: string;
         posted: string;
         requirements: string | string[];
-        link1?: string;
-        link2?: string;
+        link1?: string;  // Video Link
+        link2?: string;  // Feedback Form Link
     };
 }
 
 const TaskDetails: React.FC<TaskDetailsProps> = ({ isOpen, onClose, task }) => {
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(false);
     const deleteTask = useTaskStore((state) => state.deleteTask);
     const fetchTasks = useTaskStore((state) => state.fetchTasks);
 
+    // Convert requirements to array if it's a string
     const requirementsList = Array.isArray(task.requirements)
         ? task.requirements
         : task.requirements ? [task.requirements] : [];
@@ -66,142 +69,149 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ isOpen, onClose, task }) => {
         }
     };
 
+    const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
+
     const modalContent = (
         <>
-            <div className="fixed inset-0 z-[9999] bg-black/50 flex items-center justify-center p-4">
-                <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl">
-                    {/* Header */}
-                    <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                        <div className="flex items-center gap-4">
-                            <button
-                                onClick={onClose}
-                                className="text-gray-700 hover:text-gray-900 text-sm font-medium"
-                            >
-                                ← Back
-                            </button>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <button
-                                onClick={() => setIsDeleteDialogOpen(true)}
-                                className="hover:bg-gray-100 p-2 rounded-full text-red-500 hover:text-red-600"
-                            >
-                                <Trash2 className="w-5 h-5" />
-                            </button>
-                            <button
-                                onClick={onClose}
-                                className="text-gray-500 hover:text-gray-700"
-                            >
-                                <X className="w-5 h-5" />
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Rest of the content remains the same */}
-                    <div className="overflow-y-auto p-6 max-h-[calc(90vh-8rem)]">
-                        <h2 className="text-xl font-semibold text-gray-900 mb-6">{task.title}</h2>
-
-                        <div className="grid grid-cols-3 gap-6 mb-8">
-                            <div>
-                                <h3 className="text-gray-500 text-sm mb-1">Task Type</h3>
-                                <p className="text-gray-900 font-medium">{task.taskType}</p>
-                            </div>
-                            <div>
-                                <h3 className="text-gray-500 text-sm mb-1">Earnings</h3>
-                                <p className="text-gray-900 font-medium">${task.compensation?.amount.toFixed(2)}</p>
-                            </div>
-                            <div>
-                                <h3 className="text-gray-500 text-sm mb-1">Deadline</h3>
-                                <p className="text-gray-900 font-medium">{formatDate(task.deadline)}</p>
-                            </div>
-                        </div>
-
-                        <div className="space-y-6">
-                            <section>
-                                <h3 className="text-gray-900 font-medium mb-2">Description</h3>
-                                <p className="text-gray-600">{task.description}</p>
-                            </section>
-
-                            <section>
-                                <h3 className="text-gray-900 font-medium mb-4">Task Requirements</h3>
-
-                                <div>
-                                    <h4 className="text-gray-600 mb-2">Instructions:</h4>
-                                    <ol className="list-decimal ml-4 space-y-2">
-                                        <li className="text-gray-600 pl-1">Watch the video using the provided link.</li>
-                                        <li className="text-gray-600 pl-1">Fill out the feedback form with detailed responses to the questions asked.</li>
-                                        <li className="text-gray-600 pl-1">Ensure you complete the task before the deadline to receive your earnings.</li>
-                                    </ol>
-                                </div>
-
-                                {requirementsList.length > 0 && (
-                                    <div className="mt-4">
-                                        <ul className="space-y-2">
-                                            {requirementsList.map((req, index) => (
-                                                <li key={index} className="text-gray-600 flex gap-2">
-                                                    <span className="text-blue-600">•</span>
-                                                    {req}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-
-                                <div className="mt-4">
-                                    <h4 className="text-gray-600 mb-2">Criteria for Completion:</h4>
-                                    <ol className="list-decimal ml-4 space-y-2">
-                                        <li className="text-gray-600 pl-1">Complete the video review by answering all questions in the feedback form.</li>
-                                        <li className="text-gray-600 pl-1">Submit feedback before the deadline.</li>
-                                        <li className="text-gray-600 pl-1">Provide at least 3 suggestions for improvement in the video.</li>
-                                    </ol>
-                                </div>
-                            </section>
-
-                            {(task.link1 || task.link2) && (
-                                <div className="grid grid-cols-2 gap-4">
-                                    {task.link1 && (
-                                        <div>
-                                            <h4 className="text-gray-600 mb-2">Video Link</h4>
-                                            <a
-                                                href={task.link1}
-                                                className="text-blue-600 hover:underline break-all"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                {task.link1}
-                                            </a>
-                                        </div>
-                                    )}
-                                    {task.link2 && (
-                                        <div>
-                                            <h4 className="text-gray-600 mb-2">Feedback Form Link</h4>
-                                            <a
-                                                href={task.link2}
-                                                className="text-blue-600 hover:underline break-all"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                {task.link2}
-                                            </a>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Footer */}
-                    <div className="border-t p-4">
-                        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-md font-medium transition-colors duration-200">
-                            Start Task
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 px-4"
+          onClick={onClose}
+        >
+          <div
+            className="w-[60%] max-h-[90%] mx-auto bg-white shadow-lg rounded-lg p-8 overflow-auto"
+            onClick={stopPropagation}
+          >
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+            <div className="mb-4">
+                <button
+                    className="text-black text-xs flex gap-1 items-center"
+                    onClick={onClose}
+                >
+                    <IoArrowBackOutline className="text-lg"/> Back
+                </button>
+                </div> 
+                <div className="flex items-center gap-2">
+                    <div className="relative">
+                        <button
+                            onClick={() => setShowDropdown(!showDropdown)}
+                            className="hover:bg-gray-100 p-2 rounded-full"
+                        >
+                            <MoreVertical className="w-5 h-5 text-gray-500" />
                         </button>
+                        {showDropdown && (
+                            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-50">
+                                <button
+                                    onClick={() => {
+                                        setIsDeleteDialogOpen(true);
+                                        setShowDropdown(false);
+                                    }}
+                                    className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-50"
+                                >
+                                    Delete Task
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
+                    
+            {/* Header Section */}
+            <div className="mb-6 flex justify-between items-center">
+              <h1 className="text-xl font-bold text-blue-500">{task.title}</h1>
+            </div>
 
-            <DeleteConfirmDialog
-                isOpen={isDeleteDialogOpen}
-                onClose={() => setIsDeleteDialogOpen(false)}
-                onConfirm={handleDelete}
+            {/* Task Details */}
+            <div className="mb-6">
+              <div className="flex flex-col gap-2">
+                <p className="text-sm text-black">
+                  <span>Task Type:</span> <span className="opacity-50">{task.taskType}</span>
+                </p>
+                <p className="text-sm text-black">
+                  <span>Earnings:</span> <span className="opacity-50">${task.compensation?.amount.toFixed(2)}</span>
+                </p>
+                <p className="text-sm text-black">
+                  <span>Deadline:</span> <span className="opacity-50">{formatDate(task.deadline)}</span>
+                </p>
+              </div>
+            </div>
+
+            {/* Description */}
+            <div className="mb-6">
+              <h2 className="text-sm font-semibold mb-2">Description</h2>
+              <p className="text-black opacity-60 text-xs">
+              {task.description}
+              </p>
+            </div>
+
+            {/* Task Requirements */}
+            <div className="mb-6">
+              <h2 className="text-sm font-semibold mb-2">Task Requirements</h2>
+              <div className="text-gray-700 text-sm space-y-4">
+                <div>
+                  <h3 className="font-semibold text-black text-xs">Instructions:</h3>
+                  <ol className="list-decimal list-inside pl-4 text-black opacity-60 text-xs">
+                    <li>Watch the video using the provided link.</li>
+                    <li>
+                      Fill out the feedback form with detailed responses to the
+                      questions asked.
+                    </li>
+                    <li>
+                      Ensure you complete the task before the deadline to
+                      receive your earnings.
+                    </li>
+                  </ol>
+                  
+                  {requirementsList.length > 0 && (
+                    <div className="mt-4">
+                    <ul className="space-y-2">
+                    {requirementsList.map((req, index) => (
+                    <li key={index} className="text-gray-600 flex gap-2">
+                    <span className="text-blue-600">•</span>
+                    {req}
+                    </li>
+                    ))}
+                    </ul>
+                    </div>
+                    )}
+                </div>
+              </div>
+            </div>
+
+            {/* Links */}
+            {(task.link1 || task.link2) && (
+            <div className="mb-6">
+              <div className="space-y-2 flex justify-between items-center w-full md:w-1/2">
+              {task.link1 && (
+                <p className="flex flex-col gap-2">
+                  <span className="font-semibold text-black text-sm">Video link:</span>{" "}
+                  <a href={task.link1} className="text-blue-800 text-sm underline">
+                  Video Link
+                  </a>
+                </p>
+            )}
+            {task.link2 && (
+                <p className="flex flex-col gap-1">
+                  <span className="font-semibold text-black text-sm">Feedback Form link:</span>{" "}
+                  <a href={task.link2} className="text-blue-800 text-sm underline">
+                  Feedback Link
+                  </a>
+                </p>
+                )}
+              </div>
+            </div>
+)}
+            {/* Start Task Button */}
+            <div className="text-center">
+              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white  py-2 text-sm  rounded-md">
+                Start Task
+              </button>
+            </div>
+          </div>
+        </div>
+        <DeleteConfirmDialog
+            isOpen={isDeleteDialogOpen}
+            onClose={() => setIsDeleteDialogOpen(false)}
+            onConfirm={handleDelete}
             />
         </>
     );

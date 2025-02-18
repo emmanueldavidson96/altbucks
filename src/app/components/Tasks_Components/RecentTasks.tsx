@@ -49,15 +49,15 @@ const RecentTasks = () => {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center mb-6">
+            {/* <div className="flex justify-between items-center mb-6">
                 <div className="text-sm text-gray-500">{tasks.length} tasks available</div>
-            </div>
+            </div> */}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {tasks.map((task, index) => (
                     <div
                         key={task._id}
-                        className="transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                        className="transform transition-all duration-300"
                         style={{
                             animationDelay: `${index * 100}ms`,
                             animation: 'fadeInUp 0.5s ease-out forwards'
