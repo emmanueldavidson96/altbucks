@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import TaskDetails from "./TaskDetails";
 import { FaAngleRight } from "react-icons/fa6";
+import UpdateTaskForm from "./UpdateTaskForm";
 
 interface TaskDetailsProps {
   isOpen: boolean;
@@ -12,6 +13,9 @@ interface TaskDetailsProps {
 
 const Card = (props: any) => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isUpdateOpen, setIsUpdateOpen] = useState(false);
+
+
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -57,6 +61,16 @@ const Card = (props: any) => {
                 >
                   View Details <FaAngleRight className="mt-1"/>
                 </button>
+
+                <button onClick={() => {
+                  console.log("Update Task Clicked");
+                  setIsUpdateOpen(true)}}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 text-sm rounded-md mt-5"
+                >
+
+                  Update Task
+                </button>
+
               </div>
             </div>
           </div>
@@ -67,9 +81,22 @@ const Card = (props: any) => {
             onClose={handleClose}
             task={props}
         />
+    
+    {isUpdateOpen && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="bg-white w-[120vw] h-[80vh] p-6 rounded-lg shadow-lg overflow-auto">
+      <UpdateTaskForm
+        onClose={() => setIsUpdateOpen(false)}
+        task={props}
+      />
+    </div>
+  </div>
+)}
 
-  
-      </>
+
+
+    </>
+
   );
 };
 
