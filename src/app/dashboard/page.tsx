@@ -10,106 +10,73 @@ import PersonalProfile from "../components/User-Dashboard/PersonalProfile";
 import TaskSummaryCard from "../components/User-Dashboard/TaskSummaryCard";
 import ReferralCard from "../components/User-Dashboard/ReferralCard";
 import "../globals.css";
+import Navbar from "../components/User-Dashboard/Navbar";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 
-interface User {
-    _id: string;
-    isTaskCreator: string;
-    name?: string;
-    email?: string;
-    balance?: number;
-    totalEarnings?: number;
-    tasksCompleted?: number;
-    profilePicture?: string;
-}
-
 export default function Dashboard() {
-    const router = useRouter();
-    const { isAuthenticated, user, profileAuth } = useAuthStore();
+  const router = useRouter();
+  // Define the event handler
+  const handleButtonClick = () => {
+    console.log("Post a Task button clicked!");
+  };
 
-    const handleButtonClick = () => {
-        console.log("Post a Task button clicked!");
-    };
+  const {isAuthenticated, user, profileAuth} = useAuthStore();
 
-    useEffect(() => {
-        profileAuth();
-        if (user?.isTaskCreator === "true") {
-            router.push("/dashboard_taskcreator");
-        }
-    }, [user, router, profileAuth]);
+  useEffect(() => {
+    profileAuth()
+    if(user?.isTaskCreator === "true"){
+      router.push("/dashboard_taskcreator")
+    }
+  }, [])
 
-   
-
+  
     return (
-        <div className="min-h-screen w-full flex flex-col bg-white font-mulish overflow-x-hidden">
-            {/* Header with shadow for better visual hierarchy */}
-            <div className="bg-white border-b border-gray-300 sticky top-0 z-50 shadow-sm">
-                <Header />
-            </div>
-
-            {/* Main Content */}
-            <div className="flex-grow container mx-auto px-4 sm:px-6 py-4 sm:py-6">
-                <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-8">
-                    {/* Left Column */}
-                    <div className="w-full lg:w-2/3 space-y-4 sm:space-y-6">
-                        {/* Hero Section */}
-                        <div className="bg-white rounded-xl shadow-sm">
-                            <HeroSection
-                                title="Build a hands-on team to work on your project faster and easier with"
-                                subtitle="We've got a whole new pack of updates coming soon, you'll love them."
-                                buttonText="Post a Task"
-                                onButtonClick={handleButtonClick}
-                                imageSrc="/assets/Arrows(2).png"
-                                imageAlt="Illustration of arrows"
-                            />
-                        </div>
-
-                        {/* User Cards */}
-                        
-                            <div className="bg-white rounded-xl shadow-sm p-4">
-                                <UserCards />
-                            </div>
-                        
-
-                        {/* Line Graph Section */}
-                        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6">
-                            <h2 className="text-base sm:text-lg font-bold text-black mb-4 font-mulish">
-                                Spending Over Time
-                            </h2>
-                            <div className="w-full overflow-x-auto">
-                                <div className="min-w-[600px] sm:min-w-0">
-                                    <LineGraph />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Featured Task Section */}
-                        <div className="bg-white rounded-xl shadow-sm">
-                            <FeaturedTask />
-                        </div>
-                    </div>
-
-                    {/* Right Column */}
-                    <div className="w-full lg:w-1/3 space-y-4 sm:space-y-6">
-                        {/* Personal Profile */}
-                            <div className="bg-white rounded-xl shadow-sm">
-                                <PersonalProfile />
-                            </div>
-                       
-
-                        {/* Task Summary */}
-                        <div className="bg-white rounded-xl shadow-sm">
-                            <TaskSummaryCard />
-                        </div>
-
-                        {/* Referral Card */}
-                        <div className="bg-white rounded-xl shadow-sm">
-                            <ReferralCard />
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div className="w-screen h-screen flex flex-col bg-white font-mulish">
+        {/* Navbar Section with Border */}
+        <div className="bg-white border-b border-gray-300">
+          <Header />
         </div>
+  
+        {/* Main Content Section */}
+        <div className="mx-auto w-[95%] flex flex-grow mt-6 flex-col lg:flex-row">
+          {/* LEFT */}
+          <div className="w-full lg:w-4/6 bg-white flex flex-col p-4 gap-6">
+            {/* HeroSection */}
+            <HeroSection
+              title="Build a hands-on team to work on your project faster and easier with"
+              subtitle="We've got a whole new pack of updates coming soon, you'll love them."
+              buttonText="Post a Task"
+              onButtonClick={handleButtonClick} // Pass the event handler
+              imageSrc="/assets/Arrows(2).png"
+              imageAlt="Illustration of arrows"
+            />
+  
+            {/* UserCards */}
+            <UserCards user={user} />
+  
+            {/* LineGraph */}
+            <div className="bg-white rounded-lg p-4 mt-4 font-mulish">
+              <h2
+                className="text-lg font-bold text-black p-2 font-mulish border 
+                  border-transparent"
+              >
+                Spending Over Time
+              </h2>
+              <LineGraph />
+            </div>
+  
+            {/* FeaturedTask */}
+            <FeaturedTask />
+          </div>
+  
+          {/* RIGHT */}
+          <div className="w-full lg:w-2/6 bg-white flex flex-col gap-4 p-4">
+            <PersonalProfile user={user}/>
+            <TaskSummaryCard />
+            <ReferralCard />
+          </div>
+        </div>
+      </div>
     );
-}
+  }
