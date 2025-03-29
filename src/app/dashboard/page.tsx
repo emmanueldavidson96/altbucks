@@ -1,4 +1,4 @@
-"use client"; // Ensure this is treated as a Client Component
+"use client";
 
 import React, { useEffect } from "react";
 import Header from "../components/User-Dashboard/Header";
